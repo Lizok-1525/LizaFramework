@@ -14,8 +14,8 @@ on:
     strategy:
       matrix:
         node-version: [18.x, 20.x]
-
-  steps:
+        
+    steps:
     - name: Checkout code
       uses: actions/checkout@v3
 
