@@ -11,7 +11,7 @@ jobs:
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
-        server: liza.ma-no.es
+        server: 139.59.210.86
         username: holyguard_liza
         password: 5rvAnW@m8zJMY
 
