@@ -46,7 +46,7 @@ jobs:
           remote-protocol: ftp
 
           # Credentials for SFTP access to server using GitHub secrets
-          remote-host: ${{ secrets.FTP_HOST }}
+          remote-host: ${{ secrets.FTP_HOSTNAME }}
           remote-user: ${{ secrets.FTP_USER }}
           remote-password: ${{ secrets.FTP_PASSWORD }}
 
