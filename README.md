@@ -34,19 +34,19 @@ Para mejorar la modularidad y mantenimiento del código, he implementado funcion
 
 - Routing: Maneja el enrutamiento de pagina y carga de controladores y vistas según la URL solicitada.
 
-- - Método: handleRequest()
+    - Método: handleRequest()
 
 - Encryption: Maneja la encriptación de datos y la generación de hashes seguros.
 
-- - Métodos: encryptSimple($texto), decryptSimple($texto), generateRandomCode($length), generarHash($password), verificarHash($password, $hash)
+     - Métodos: encryptSimple($texto), decryptSimple($texto), generateRandomCode($length), generarHash($password), verificarHash($password, $hash)
 
 - lizDb: Gestiona la conexión y consultas a la base de datos de manera segura.
 
-- - Métodos: conectar(), query($sql, $params), getRow($sql, $params = []), getResults($sql, $params = []), count($sql, $params = [])
+    - Métodos: conectar(), query($sql, $params), getRow($sql, $params = []), getResults($sql, $params = []), count($sql, $params = [])
 
 - Core: Contiene utilidades para manipulación de texto y conversión de contenido.
 
-- - Métodos: convertirTextoAHTML($texto), obtenerArticuloHTML($id, $conn),generarSlug($titulo), print_arr($arr)
+    - Métodos: convertirTextoAHTML($texto), obtenerArticuloHTML($id, $conn),generarSlug($titulo), print_arr($arr)
 
 
 ## Seguridad
