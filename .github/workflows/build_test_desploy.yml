@@ -7,8 +7,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2.1.0
         with:
-        fetch-depth: 2
-
       - name: FTP-Deploy-Action
         uses: SamKirkland/FTP-Deploy-Action@master
         with:
