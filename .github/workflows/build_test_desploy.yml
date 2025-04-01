@@ -6,7 +6,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2.1.0
-        with:
       - name: FTP-Deploy-Action
         uses: SamKirkland/FTP-Deploy-Action@master
         with:
