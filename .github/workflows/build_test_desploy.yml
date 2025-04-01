@@ -1,44 +1,36 @@
 name: 🚀 FTP Deploy
 
-
-# Controls when the workflow will run
 on:
-
-  # Triggers the workflow on push request event 
-  # but only for the specific branch
   push:
-    branches: [ test-branch ]
+    branches:
+      - main  # Se ejecuta cuando hay cambios en la rama principal
 
-# A workflow run is made up of one or more jobs 
-# that can run sequentially or in parallel
 jobs:
-
-  # This workflow contains a single job called "SFTP-Deploy-Action"
-  FTP-Deploy-Action:
-    name: FTP-Deploy-Action
-
-    # The type of runner that the job will run on 
-    # (depends on server but usually this value is works)
+  deploy:
+    name: 📂 Subir archivos por FTP
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks 
-    # that will be executed as part of the job
     steps:
+    - name: 🛒 Obtener el código del repositorio
+      uses: actions/checkout@v3
 
-      # This is a composite GitHub Action (Linux runner) 
-      # for deploying repository content to remote server
-      - name: 🛒 Checkout
-        uses: actions/checkout@v2
-        with:
-          remote-protocol: ftp
+    - name: 📦 Instalar LFTP
+      run: sudo apt update && sudo apt install -y lftp
 
-          # Credentials for SFTP access to server using GitHub secrets
-          remote-host: ${{ secrets.FTP_HOSTNAME }}
-          remote-user: ${{ secrets.FTP_USER }}
-          remote-password: ${{ secrets.FTP_PASSWORD }}
+    - name: 🏗️ Construir el proyecto (opcional)
+      run: |
+        npm install
+        npm run build
+      if: success()  # Solo si el paso anterior fue exitoso
 
-          # Path for specific folder on server for files deployment
-          remote-path: /web
+    - name: 📂 Verificar archivos generados
+      run: ls -la dist/  # Asegúrate de que 'dist/' existe antes de subir
 
-          # Port for SFTP access to server
-          remote-port: 21
+    - name: 📤 Subir archivos al servidor FTP
+      run: |
+        lftp -e "
+        set ftp:ssl-allow no;
+        open -u ${{ secrets.FTP_USER }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_HOSTNAME }};
+        mirror --reverse --delete --verbose ./dist/ /web/;
+        bye
+        "
