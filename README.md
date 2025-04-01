@@ -12,6 +12,8 @@ Mi página web es un currículum personal desarrollado con PHP, donde muestro mi
 
 - Frontend: HTML, CSS y JavaScript
 
+- CSS: Se utiliza Bootstrap como base, con personalizaciones en un fichero CSS propio.
+
 ## Características
 
 1. Presentación de mi experiencia laboral.
@@ -41,7 +43,6 @@ Para mejorar la modularidad y mantenimiento del código, he implementado funcion
     - Procesa los datos JSON y los inserta dinámicamente en una tabla HTML.
     
     - Maneja errores en caso de problemas de conexión.
-
 
 
 ### Clases
