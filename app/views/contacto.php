@@ -5,11 +5,11 @@
       <div class="row">
         <div class="col">
           <label for="name" class="form-label">Nombre y Apellido</label>
-          <input type="text" class="form-control" id="name" name="name" placeholder="John Miklay">
+          <input type="text" class="form-control" id="name" name="name" placeholder="John Miklay" required>
         </div>
         <div class="col">
           <label for="email" class="form-label">Email address</label>
-          <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com">
+          <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
         </div>
       </div>
       <div class="row">
