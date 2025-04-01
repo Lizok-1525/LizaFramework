@@ -25,5 +25,8 @@ jobs:
         lftp -e "
         set ftp:ssl-allow no;
         open -u ${{ secrets.FTP_USER }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_HOSTNAME }};
+        lcd dist/  # Cambia al directorio local donde están los archivos a subir
+        cd /web/  # Cambia al directorio remoto donde quieres subir los archivos
+        mput -O /web/ -c
         bye
         "
