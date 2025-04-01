@@ -1,19 +1,36 @@
-on: push
-name: 🚀 Deploy website on push
+name: 🚀 FTP Deploy
+
+on:
+  push:
+    branches:
+      - main  # Se ejecuta cuando hay cambios en la rama principal
+
 jobs:
-  web-deploy:
-    name: 🎉 Deploy
+  deploy:
+    name: 📂 Subir archivos por FTP
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v2.1.0
-      - name: FTP-Deploy-Action
-        uses: SamKirkland/FTP-Deploy-Action@master
-        with:
-          server: ${{ secrets.FTP_HOSTNAME }}
-          username: ${{ secrets.FTP_USER }}
-          password: ${{ secrets.FTP_PASSWORD }}
-    
+    - name: 🛒 Obtener el código del repositorio
+      uses: actions/checkout@v3
 
-    
+    - name: 📦 Instalar LFTP
+      run: sudo apt update && sudo apt install -y lftp
 
-  
+    - name: 🏗️ Construir el proyecto (opcional)
+      run: |
+        npm install
+        npm run build
+      if: success()  # Solo si el paso anterior fue exitoso
+
+    - name: 📂 Verificar archivos generados
+      run: ls -la dist/  # Asegúrate de que 'dist/' existe antes de subir
+
+    - name: 📤 Subir archivos al servidor FTP
+      run: |
+        lftp -e "
+        set ftp:ssl-allow no;
+        open -u ${{ secrets.FTP_USER }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_HOSTNAME }};
+        mirror --reverse --delete --verbose ./dist/ /web/;
+        bye
+        "
