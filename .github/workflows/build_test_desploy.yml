@@ -20,13 +20,6 @@ jobs:
     - name: Crear carpeta www/
       run: mkdir -p LizaFramework
 
-    - name: 🏗️ Construir el proyecto (opcional)
-      run: |
-        cd LizaFramework  # O la carpeta donde está package.json
-        npm install
-        npm run build
-      if: success()
-
     - name: 📤 Subir archivos al servidor FTP
       run: |
         lftp -e "
