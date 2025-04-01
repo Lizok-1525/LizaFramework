@@ -14,8 +14,8 @@ on:
 jobs:
 
   # This workflow contains a single job called "SFTP-Deploy-Action"
-  SFTP-Deploy-Action:
-    name: SFTP-Deploy-Action
+  FTP-Deploy-Action:
+    name: FTP-Deploy-Action
 
     # The type of runner that the job will run on 
     # (depends on server but usually this value is works)
@@ -40,7 +40,7 @@ jobs:
 
       # This is a composite GitHub Action (Linux runner) 
       # for deploying repository content to remote server
-      - name: SFTP-Deploy-Action
+      - name: FTP-Deploy-Action
         uses: milanmk/actions-file-deployer@master
         with:
           remote-protocol: ftp
