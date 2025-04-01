@@ -19,9 +19,10 @@ jobs:
 
     - name: 🏗️ Construir el proyecto (opcional)
       run: |
+        cd LizaFramework  # O la carpeta donde está package.json
         npm install
         npm run build
-      if: success()  # Solo si el paso anterior fue exitoso
+      if: success()
 
     - name: 📂 Verificar archivos generados
       run: ls -la dist/  # Asegúrate de que 'dist/' existe antes de subir
