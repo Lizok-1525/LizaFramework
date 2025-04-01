@@ -54,42 +54,6 @@
 
             });
         });
-
-        /*
-        function loadData(page) {
-            container.innerHTML = "";
-            fetch("https://liza.mano.app/api/usuarios") // Carga el archivo JSON
-                .then(response => response.json())
-                .then(data => {
-                    // Suponiendo que el JSON es un array de objetos
-                    const itemsPerPage = 20; // Número de elementos por página
-                    const startIndex = (page - 1) * itemsPerPage;
-                    const endIndex = startIndex + itemsPerPage;
-                    const paginatedData = data.slice(startIndex, endIndex);
-
-                    //--------------------------
-                    const tabla = document.createElement("table")
-
-                    const encabezado = document.createElement("tr");
-                    encabezado.innerHTML = '<th class="p-2">ID</th><th class="p-2">Nombre</th><th class="p-2">Email</th>';
-                    tabla.appendChild(encabezado);
-
-                    paginatedData.forEach(usuario => {
-                        const fila = document.createElement("tr");
-                        fila.innerHTML = `
-                        <td class="p-2">${usuario.ID}</td> 
-                        <td class="p-2">${usuario.name}</td>
-                        <td class="p-2"> ${usuario.email}</td>`;
-
-                        tabla.appendChild(fila);
-                    })
-                    container.appendChild(tabla);
-                })
-                .catch(error => console.error("Error cargando los datos:", error));
-        }
-
-        // Cargar la primera página al inicio
-        loadData();*/
     });
 
     async function cargarDatos(page = 1) {

@@ -6,37 +6,6 @@
 <div class="row intro">
 
     <div class="center ">
-        <!--     <form name="forms">
-            <input type="text" id="display" name="display" class="mb-3 w-20 fs-5 px-2 py-2" disabled />
-            <div class="buttons">
-                <div class="btn-group btn-group-lg me-2" role="group" aria-label="Second group">
-                    <button type="button" id="btn" class="btn btn-secondary" value="7">7</button>
-                    <button type="button" id="btn" class="btn btn-secondary" value="8">8</button>
-                    <button type="button" id="btn" class="btn btn-secondary" value="9">9</button>
-                    <button type="button" id="btn" class="btn btn-secondary" value="/">/</button>
-                </div><br />
-                <div class="btn-group btn-group-lg me-2" role="group" aria-label="Second group">
-                    <button type="button" id="btn" class="btn btn-secondary" value="4">4</button>
-                    <button type="button" id="btn" class="btn btn-secondary" value="5">5</button>
-                    <button type="button" id="btn" class="btn btn-secondary" value="6">6</button>
-                    <button type="button" id="btn" class="btn btn-secondary" value="*">*</button>
-                </div><br />
-                <div class="btn-group btn-group-lg me-2" role="group" aria-label="Second group">
-                    <button type="button" id="btn" class="btn btn-secondary" value="1">1</button>
-                    <button type="button" id="btn" class="btn btn-secondary" value="2">2</button>
-                    <button type="button" id="btn" class="btn btn-secondary" value="3">3</button>
-                    <button type="button" id="btn" class="btn btn-secondary" value="-">-</button>
-                </div><br />
-                <div class="btn-group btn-group-lg me-2" role="group" aria-label="Second group">
-                    <button type="button" id="btn" class="btn btn-secondary" value=".">.</button>
-                    <button type="button" id="btn" class="btn btn-secondary" value="0">0</button>
-                    <button type="button" id="btn" class="btn btn-secondary" value="+">+</button>
-                    <button type="button" id="clear" class="btn btn-secondary" value="C" onclick="document.forms.display.value=''">C</button>
-                </div><br />
-                <div class="btn-group btn-group-lg me-2" role="group" aria-label="Second group">
-                    <button type="button" id="equal" class="btn btn-secondary" value="=" onclick="document.forms.display.value=eval(document.forms.display.value)">=</button>
-                </div>
-        </form> -->
         <div class="col-sm-5 p-3 calculator">
             <form name="forms">
                 <input type="text" id="display" name="display" class="form-control mb-3" />
@@ -147,57 +116,11 @@
             });
         });
 
-        // --------------------------------------------------------------------------
-        /*
-        document.addEventListener('DOMContentLoaded', function() {
-            const capitalInput = document.getElementById('capital');
-            const interesInput = document.getElementById('interes');
-            const plazoSelect = document.getElementById('plazo');
-            const calcularBtn = document.getElementById('calcular');
-            const resultadoDiv = document.getElementById('resultado');
 
-            const capitalSlider = document.getElementById('capitalSlider');
-            const interesSlider = document.getElementById('interesSlider');
-
-            // Sincronizar inputs numéricos y sliders
-            capitalSlider.addEventListener('input', function() {
-                capitalInput.value = this.value;
-            });
-
-            capitalInput.addEventListener('input', function() {
-                capitalSlider.value = this.value;
-            });
-
-            interesSlider.addEventListener('input', function() {
-                interesInput.value = this.value;
-            });
-
-            interesInput.addEventListener('input', function() {
-                interesSlider.value = this.value;
-            });
-
-            calcularBtn.addEventListener('click', function() {
-                const capital = parseFloat(capitalInput.value);
-                const interes = parseFloat(interesInput.value) / 100 / 12; // Interés mensual
-                const plazo = parseInt(plazoSelect.value) * 12; // Plazo en meses
-
-                const cuotaMensual = (capital * interes * Math.pow(1 + interes, plazo)) / (Math.pow(1 + interes, plazo) - 1);
-
-                if (isNaN(cuotaMensual)) {
-                    resultadoDiv.innerHTML = '<p class="text-danger">Por favor, ingresa valores válidos.</p>';
-                } else {
-                    resultadoDiv.innerHTML = `<p>Cuota mensual: ${cuotaMensual.toFixed(2)} €</p>`;
-                }
-            });
-        }); */
-
-        // --------------------------------------------------------------------------
-
-
+        // ---------------------------------------------------------
         function calcularCuotaMensual(C, i, n) {
             return C * ((Math.pow(1 + i, n) * i) / (Math.pow(1 + i, n) - 1));
         }
-
 
         function calcularInteres(saldoPendiente, porcentajeInteres, cuotasAnuales) {
             return (saldoPendiente * (porcentajeInteres / 100)) / cuotasAnuales;
@@ -206,17 +129,6 @@
         function calcularCapitalAmortizado(cuota, interes) {
             return cuota - interes;
         }
-        /*
-                function calcularAmortizacioTotal(capital, amortizacion) {
-                    return capital + amortizacion;
-                }
-
-                function calcularCapitalPendiente(importeFinanciado, amortizacion) {
-                    return capital + amortizacion;
-                }*/
-
-        //let calcularBtn = document.getElementById('calcular');
-        //let resultado = document.getElementById('resultado');
 
         document.getElementById('calcular').addEventListener('click', function() {
             // Obtener valores de los inputs y convertirlos a números
@@ -236,9 +148,6 @@
             let totalPagos = años * cuotasAnuales;
             let cuotaMensual = calcularCuotaMensual(importeFinanciado, tasaMensual, totalPagos);
 
-            /*let interesMensual = calcularInteres(importeFinanciado, porcentajeInteres, cuotasAnuales);
-            let capitalAmortizado = calcularCapitalAmortizado(cuotaMensual, interesMensual);
-*/
             let saldoPendiente = importeFinanciado;
             let amortizacionAcumulada = 0;
 
@@ -253,13 +162,6 @@
                 <th>Capital pendiente</th>
             </tr>
     `;
-
-            /*let interesMensual = calcularInteres(importeFinanciado, porcentajeInteres, cuotasAnuales);
-            let capitalAmortizado = calcularCapitalAmortizado(cuotaMensual, interesMensual);
-*/
-
-
-
 
             for (let cuotaNum = 1; cuotaNum <= totalPagos; cuotaNum++) {
                 let interesMensual = calcularInteres(saldoPendiente, porcentajeInteres, cuotasAnuales); // Mantener fijo
@@ -288,36 +190,6 @@
             tablaHTML += `</table>`;
             document.getElementById('resultado').innerHTML = tablaHTML;
         });
-        /*
-        let importeFinanciado = document.getElementById('capital');
-        let porcentajeInteres = document.getElementById('interes');
-        let cuotasAnuales = 12;
-        let años = document.getElementById('plazo');
-
-
-        importeFinanciado.addEventListener('input', function() {
-            importeFinanciado.value = this.value;
-        });
-
-
-        porcentajeInteres.addEventListener('input', function() {
-            porcentajeInteres.value = this.value;
-        });
-
-        let tasaMensual = (porcentajeInteres / 100) / cuotasAnuales;
-        let totalPagos = años * cuotasAnuales;
-
-        let cuotaMensual = calcularCuotaMensual(importeFinanciado, tasaMensual, totalPagos);
-        let interesMensual = calcularInteres(importeFinanciado, porcentajeInteres, cuotasAnuales);
-        let capitalAmortizado = calcularCapitalAmortizado(cuotaMensual, interesMensual);
-
-        // Mostrar resultados
-        console.log("Cuota mensual:", cuotaMensual.toFixed(2));
-        console.log("Interés mensual:", interesMensual.toFixed(2));
-        console.log("Capital amortizado:", capitalAmortizado.toFixed(2));
-
-       */
-
 
         // Ejemplo de uso:
         /*   let importeFinanciado = 10000; // Monto financiado

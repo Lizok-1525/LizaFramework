@@ -26,7 +26,21 @@ Mi página web es un currículum personal desarrollado con PHP, donde muestro mi
 
 Para mejorar la modularidad y mantenimiento del código, he implementado funciones y clases en PHP:
 
-### Funciones
+### Funciones en JavaScript
+
+- calcularCuotaMensual(C, i, n): Calcula la cuota mensual de un préstamo según el capital, tasa de interés y número de pagos.
+
+- calcularInteres(saldoPendiente, porcentajeInteres, cuotasAnuales): Calcula el interés de una cuota con base en el saldo pendiente y la tasa de interés.
+
+- calcularCapitalAmortizado(cuota, interes): Obtiene la cantidad del capital amortizado en una cuota.
+
+- cargarDatos(page): Recupera y muestra una lista paginada de usuarios desde una API externa.
+
+    - Realiza una solicitud fetch a la API.
+
+    - Procesa los datos JSON y los inserta dinámicamente en una tabla HTML.
+    
+    - Maneja errores en caso de problemas de conexión.
 
 
 
