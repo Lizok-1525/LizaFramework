@@ -17,15 +17,15 @@ jobs:
     - name: 📦 Instalar LFTP
       run: sudo apt update && sudo apt install -y lftp
 
+    - name: Crear carpeta www/
+      run: mkdir -p LizaFramework
+
     - name: 🏗️ Construir el proyecto (opcional)
       run: |
         cd LizaFramework  # O la carpeta donde está package.json
         npm install
         npm run build
       if: success()
-
-    - name: 📂 Verificar archivos generados
-      run: ls -la dist/  # Asegúrate de que 'dist/' existe antes de subir
 
     - name: 📤 Subir archivos al servidor FTP
       run: |
