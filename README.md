@@ -32,6 +32,6 @@ Dado mi conocimiento en seguridad informática y bases de datos, he implementado
 
 - Gestión de sesiones segura para autenticación de usuarios.
 
-- Objetivo
+## Objetivo
 
 Este proyecto no solo es una presentación profesional, sino también una demostración de mis habilidades en **desarrollo web y seguridad en bases de datos**.
