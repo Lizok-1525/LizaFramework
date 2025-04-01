@@ -20,13 +20,12 @@ jobs:
     - name: Crear carpeta www/
       run: mkdir -p LizaFramework
 
-    - name: 📤 Subir archivos al servidor FTP
+    - name: 📤 Subir archivos al servidor FTP (Sobreescribir sin eliminar)
       run: |
         lftp -e "
         set ftp:ssl-allow no;
         open -u ${{ secrets.FTP_USER }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_HOSTNAME }};
-        lcd dist/  # Cambia al directorio local donde están los archivos a subir
-        cd /web/  # Cambia al directorio remoto donde quieres subir los archivos
-        mput -O /web/ -c
+        cd /public_html/  # Ir al directorio remoto donde se subirán los archivos
+        mput -E -c -O /public_html/ dist/*  # Sube todos los archivos de 'dist/' y sobrescribe los existentes
         bye
         "
