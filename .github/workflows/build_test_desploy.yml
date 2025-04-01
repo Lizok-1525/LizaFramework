@@ -1,20 +1,56 @@
 name: 🚀 FTP Deploy
 
-on:
-  push:
-    branches:
-      - main  # Se ejecuta cuando hay cambios en la rama principal
 
+# Controls when the workflow will run
+on:
+
+  # Triggers the workflow on push request event 
+  # but only for the specific branch
+  push:
+    branches: [ test-branch ]
+
+# A workflow run is made up of one or more jobs 
+# that can run sequentially or in parallel
 jobs:
-  deploy:
-    name: 📂 Subir archivos por FTP
+
+  # This workflow contains a single job called "SFTP-Deploy-Action"
+  SFTP-Deploy-Action:
+    name: SFTP-Deploy-Action
+
+    # The type of runner that the job will run on 
+    # (depends on server but usually this value is works)
     runs-on: ubuntu-latest
 
+    # Steps represent a sequence of tasks 
+    # that will be executed as part of the job
     steps:
-      - name: 📂 Subir archivos con FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+
+      # Checks-out your repository under $GITHUB_WORKSPACE, 
+      # so your job can access it
+      - name: Checkout
+        uses: actions/checkout@v3
         with:
-          server: ${{ secrets.FTP_HOSTNAME }}
-          username: ${{ secrets.FTP_USER }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /web/
+
+          # Fetch all history for all tags and branches
+          fetch-depth: 0
+
+          # Checkout a specific branch
+          ref: test-branch
+
+      # This is a composite GitHub Action (Linux runner) 
+      # for deploying repository content to remote server
+      - name: SFTP-Deploy-Action
+        uses: milanmk/actions-file-deployer@master
+        with:
+          remote-protocol: sftp
+
+          # Credentials for SFTP access to server using GitHub secrets
+          remote-host: ${{ secrets.FTP_HOST }}
+          remote-user: ${{ secrets.FTP_USER }}
+          remote-password: ${{ secrets.FTP_PASSWORD }}
+
+          # Path for specific folder on server for files deployment
+          remote-path: /web
+
+          # Port for SFTP access to server
+          remote-port: 221
