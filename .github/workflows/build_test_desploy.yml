@@ -10,9 +10,18 @@ jobs:
     
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-      with:
+      with: 
+        name: liza.ma-no.es
         server: 139.59.210.86
+        protocol: ftp
+        port: 21
         username: ${{ secrets.FTP_USER }}
         password: ${{ secrets.FTP_PASSWORD }}
+        remotePath: /web
+    
+    
+    
+
+    
 
   
