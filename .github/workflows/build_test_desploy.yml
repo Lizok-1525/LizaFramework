@@ -31,6 +31,5 @@ jobs:
         lftp -e "
         set ftp:ssl-allow no;
         open -u ${{ secrets.FTP_USER }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_HOSTNAME }};
-        mirror --reverse --delete --verbose ./dist/ /web/;
         bye
         "
