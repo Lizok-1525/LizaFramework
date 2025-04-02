@@ -7,8 +7,6 @@ jobs:
     steps:
     - name: 🚚 Get latest code
       uses: actions/checkout@v4
-    - name: Crear carpeta LizaFramework/
-      run: mkdir -p LizaFramework/
 
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@v4.3.5
@@ -16,11 +14,4 @@ jobs:
         server: ${{ secrets.FTP_HOSTNAME }}
         username: ${{ secrets.FTP_USER }}
         password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: LizaFramework/  # Carpeta local a sincronizar
         server-dir: /web/  # Carpeta remota donde se sincronizarán los archivos
-    - name: 📤 Subir archivos al servidor FTP (Sobreescribir sin eliminar)
-      run: | 
-        " cd /web/ 
-        mput -E -c -O /web/ LizaFramework/*
-        bye
-        "
