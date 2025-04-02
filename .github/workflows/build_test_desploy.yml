@@ -19,11 +19,8 @@ jobs:
         local-dir: LizaFramework/  # Carpeta local a sincronizar
         server-dir: /web/  # Carpeta remota donde se sincronizarán los archivos
     - name: 📤 Subir archivos al servidor FTP (Sobreescribir sin eliminar)
-      run: |
-        lftp -e "
-        set ftp:ssl-allow no;
-        open -u ${{ secrets.FTP_USER }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_HOSTNAME }};
-        cd /web/ 
+      run: | 
+        " cd /web/ 
         mput -E -c -O /web/ LizaFramework/*
         bye
         "
