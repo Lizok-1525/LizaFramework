@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Luz Interactiva</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script>
+      AFRAME.registerComponent('mouse-follower', {
+        init: function () {
+          document.body.addEventListener('mousemove', (event) => {
+            const light = this.el;
+            const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+            const mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+            light.setAttribute('position', {x: mouseX * 5, y: mouseY * 5, z: 2});
+          });
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <a-scene>
+      <a-light type="spot" mouse-follower="true" intensity="1" target="#box"></a-light>
+      <a-box id="box" position="0 1 -5" color="#4CC3D9"></a-box>
+      <a-camera></a-camera>
+    </a-scene>
+  </body>
+</html>
