@@ -1,31 +1,21 @@
-name: 🚀 FTP Deploy
-
-on:
-  push:
-    branches:
-      - main  # Se ejecuta cuando hay cambios en la rama principal
-
+on: push
+name: 🚀 Deploy website on push
 jobs:
-  deploy:
-    name: 📂 Subir archivos por FTP
+  web-deploy:
+    name: 🎉 Deploy
     runs-on: ubuntu-latest
-
     steps:
-    - name: 🛒 Obtener el código del repositorio
-      uses: actions/checkout@v3
+    - name: 🚚 Get latest code
+      uses: actions/checkout@v4
+    - name: Crear carpeta LizaFramework/
+      run: mkdir -p LizaFramework/
 
-    - name: 📦 Instalar LFTP
-      run: sudo apt update && sudo apt install -y lftp
-
-    - name: Crear carpeta www/
-      run: mkdir -p LizaFramework
-
-    - name: 📤 Subir archivos al servidor FTP (Sobreescribir sin eliminar)
-      run: |
-        lftp -e "
-        set ftp:ssl-allow no;
-        open -u ${{ secrets.FTP_USER }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_HOSTNAME }};
-        cd /public_html/  # Ir al directorio remoto donde se subirán los archivos
-        mput -E -c -O /public_html/ dist/*  # Sube todos los archivos de 'dist/' y sobrescribe los existentes
-        bye
-        "
+    - name: 📂 Sync files
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      with:
+        server: ${{ secrets.FTP_HOSTNAME }}
+        username: ${{ secrets.FTP_USER }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        local-dir: LizaFramework/  # Carpeta local a sincronizar
+        server-dir: /web/  # Carpeta remota donde se sincronizarán los archivos
+        git-ftp: true  # Habilitar git-ftp para sincronización
