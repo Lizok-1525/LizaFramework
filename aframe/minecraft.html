@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+
+    <script>
+        // Componente para eliminar bloques al hacer clic
+        AFRAME.registerComponent('block-interaction', {
+            init: function () {
+                this.el.addEventListener('click', () => {
+                    this.el.parentNode.removeChild(this.el);
+                });
+            }
+        });
+
+        // Componente para colocar bloques alineados
+        AFRAME.registerComponent('block-spawner', {
+            init: function () {
+                let scene = document.querySelector('a-scene');
+                let blocksContainer = document.getElementById('blocks');
+
+                this.el.addEventListener('click', (event) => {
+                    let intersection = event.detail.intersection;
+                    if (!intersection) return;
+
+                    let pos = intersection.point;
+
+                    // Alinear a la cuadrícula
+                    let gridX = Math.round(pos.x);
+                    let gridZ = Math.round(pos.z);
+
+                    // Encontrar altura máxima en esa posición
+                    let maxHeight = 0;
+                    blocksContainer.querySelectorAll('[block]').forEach(block => {
+                        let blockPos = block.getAttribute('position');
+                        if (Math.round(blockPos.x) === gridX && Math.round(blockPos.z) === gridZ) {
+                            maxHeight = Math.max(maxHeight, blockPos.y);
+                        }
+                    });
+
+                    // Crear un nuevo bloque encima del más alto
+                    let newBlock = document.createElement('a-box');
+                    newBlock.setAttribute('position', `${gridX} ${maxHeight + 1} ${gridZ}`);
+                    newBlock.setAttribute('width', 1);
+                    newBlock.setAttribute('height', 1);
+                    newBlock.setAttribute('depth', 1);
+                    newBlock.setAttribute('material', 'src: #blockTexture');
+                    newBlock.setAttribute('block', '');
+                    newBlock.setAttribute('block-interaction', ''); // Permitir eliminarlo
+
+                    blocksContainer.appendChild(newBlock);
+                });
+            }
+        });
+
+    </script>
+</head>
+
+<body>
+    <a-scene>
+
+        <a-assets>
+            <img id="blockTexture" src="https://i.imgur.com/mYmmbrp.jpg">
+        </a-assets>
+
+        <a-box position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9"></a-box>
+        <a-sphere position="0 1.25 -5" radius="1.25" color="#EF2D5E"></a-sphere>
+        <a-cylinder position="1 0.75 -3" radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
+
+        <!-- Suelo -->
+        <a-plane position="0 0 0" rotation="-90 0 0" width="10" height="10" color="green" block-spawner></a-plane>
+
+        <!-- Cámara y controles -->
+        <a-entity id="player" position="0 1.6 0">
+            <a-camera wasd-controls look-controls>
+                <a-cursor></a-cursor>
+            </a-camera>
+        </a-entity>
+
+        <!-- Jugador con gravedad -->
+        <a-entity id="player-body" position="0 2 0" dynamic-body>
+            <a-camera wasd-controls look-controls>
+                <a-cursor></a-cursor>
+            </a-camera>
+        </a-entity>
+
+        <!-- Contenedor de bloques -->
+        <a-entity id="blocks"></a-entity>
+
+    </a-scene>
+
+    <script>
+        // Agregar un bloque inicial en el suelo
+        window.onload = function () {
+            let blocksContainer = document.getElementById('blocks');
+            let firstBlock = document.createElement('a-box');
+            firstBlock.setAttribute('position', '0 0.5 0');
+            firstBlock.setAttribute('width', 1);
+            firstBlock.setAttribute('height', 1);
+            firstBlock.setAttribute('depth', 1);
+            firstBlock.setAttribute('material', 'src: #blockTexture');
+            firstBlock.setAttribute('block', '');
+            firstBlock.setAttribute('block-interaction', ''); // Se puede eliminar
+
+            blocksContainer.appendChild(firstBlock);
+        };
+    </script>
+
+</body>
+
+</html>
