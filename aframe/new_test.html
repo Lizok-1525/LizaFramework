@@ -1,27 +1,63 @@
-<!DOCTYPE html>
 <html>
+<link rel="icon" href="data:;base64,iVBORw0KGgo=">
+<script src="js/aframe.min.js"></script>
+<script src="js/aframe-ar.js"></script>
 
-<head>
-    <meta charset="utf-8">
-    <title>AR con marcador Hiro</title>
-    <script data-cfasync="false" src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
-    <script data-cfasync="false"
-        src="https://cdn.rawgit.com/jeromeetienne/ar.js/1.7.2/aframe/build/aframe-ar.min.js"></script>
-</head>
+<body style="margin: 0px; overflow: hidden;">
 
-<body style="margin: 0; overflow: hidden;">
-    <a-scene embedded arjs>
+    <script>
+
+        AFRAME.registerComponent('updater', {
+
+            init: function () {
+                // declare variable for later access
+                this.num = 0;
+                // you can also access the underlying 3D object of a scene object,
+                //   for example:
+                // let target = document.querySelector('#earth').object3D;
+                // target.scale.set( 0.75, 0.75, 0.75 );
+            },
+
+            // time      = total time since init (milliseconds)
+            // timeDelta = time since last tick
+            tick: function (time, timeDelta) {
+                this.num += 1;
+                // console.log( this.num );
+            }
+
+        });
+
+        // access underlying 3D object this component is attached to
+        AFRAME.registerComponent('spinner', {
+
+            init: function () {
+                this.el.object3D.scale.set(0.75, 0.75, 0.75);
+            },
+
+            tick: function (time, timeDelta) {
+                this.el.object3D.rotation.y += 0.01
+            }
+
+        });
+
+
+    </script>
+
+
+    <a-scene embedded vr-mode-ui="enabled: false;" arjs="debugUIEnabled: false;">
+
         <a-assets>
-            <!-- Puedes reemplazar esta URL con la tuya -->
-            <a-asset-item id="crowModel" src="../assets/images/gltf/Rise of the Guardianse.glb"></a-asset-item>
+            <img id="earth-sphere" src="images/earth-sphere.jpg" />
         </a-assets>
 
-        <a-marker preset="hiro">
-            <a-entity gltf-model="#crowModel" scale="0.5 0.5 0.5" position="0 0 0"></a-entity>
+        <a-marker type="pattern" url="data/kanji.patt">
+            <a-sphere id="earth" position="0 0.5 0" material="src: #earth-sphere; transparent: true; opacity: 0.95;"
+                spinner>
+
+            </a-sphere>
         </a-marker>
 
         <a-entity camera></a-entity>
-    </a-scene>
-</body>
 
-</html>
+        <!-- empty entity, running previously declared script -->
+        <a-entity updater></a-entity>
