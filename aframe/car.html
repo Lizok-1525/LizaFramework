@@ -1,0 +1,60 @@
+<html>
+
+<head>
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+</head>
+
+<body>
+    <a-scene>
+        <!-- Modelo del coche (puedes cambiar src más adelante) -->
+        <a-assets>
+            <a-asset-item id="testbed"
+                src="https://cdn.aframe.io/test-models/models/gltf/testbed/scene.gltf"></a-asset-item>
+        </a-assets>
+
+        <!-- Entidad del coche con componente de control -->
+        <a-entity id="car" position="0 0 -2" car-controls>
+            <a-entity gltf-model="#testbed" position="0 0 0" scale="2 2 2" shadow></a-entity>
+        </a-entity>
+
+        <!-- Cámara -->
+        <a-entity camera position="0 2 5"></a-entity>
+
+        <!-- Suelo -->
+        <a-plane rotation="-90 0 0" width="10" height="10" color="#7BC8A4"></a-plane>
+    </a-scene>
+
+    <!-- Script para mover el coche -->
+    <script>
+        AFRAME.registerComponent('car-controls', {
+            init: function () {
+                const el = this.el;
+                this.speed = 0.2;
+                window.addEventListener('keydown', (e) => {
+                    let pos = el.getAttribute('position');
+                    switch (e.key) {
+                        case 'ArrowUp':
+                        case 'w':
+                            pos.z -= this.speed;
+                            break;
+                        case 'ArrowDown':
+                        case 's':
+                            pos.z += this.speed;
+                            break;
+                        case 'ArrowLeft':
+                        case 'a':
+                            pos.x -= this.speed;
+                            break;
+                        case 'ArrowRight':
+                        case 'd':
+                            pos.x += this.speed;
+                            break;
+                    }
+                    el.setAttribute('position', pos);
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
