@@ -18,41 +18,23 @@
     
   </head>
   <body>
-    <a-scene>
-      <a-assets>
-        <a-asset-item id="testbed" src="https://cdn.aframe.io/examples/post-processing/fancy-car.glb"></a-asset-item>
-      </a-assets>
-     
-      <a-entity id="rig" position="0 0 2">
-        <a-entity id="camera" position="0 1.6 0" camera look-controls wasd-controls></a-entity>
-
-        <a-entity id="lhand" effect-controls="hand: left;"> </a-entity>
-
-        <a-entity id="rhand" effect-controls="hand: right;"> </a-entity>
-      </a-entity>
-
-      <a-entity
-        id="base"
-        geometry="primitive: cylinder; height: 0.1; radius: 1.93"
-        position="0 0 -2"
-        material="color: #201d1d"
-        shadow
-        animation="property: rotation; to: 0 360 0 ; loop: true; dur: 15000; easing: linear;"
-      >
-        <a-entity id="tooncar" gltf-model="#testbed" position="0 0.050 0" scale="2 2 2" shadow> </a-entity>
-
-        <a-entity
-          id="neon01"
-          geometry="primitive: torus; radius: 1.92; radiusTubular: 0.02; segmentsRadial: 50; segmentsTubular: 40"
-          material="color: #d100e0; emissive: #b300a4; emissiveIntensity: 9.34"
-          rotation="90 0 0"
-        >
-        </a-entity>
-      </a-entity>
-
-      <a-entity id="ambient" light="type: ambient; intensity: 0.48; color: #ffffff"> </a-entity>
-
-      <a-entity id="point01" light="color: #7cd2fe; intensity: 5; type: point;" position="0 3.51 -1"> </a-entity>
+    <a-scene renderer="colorManagement: true;"
+    info-message="htmlSrc: #messageText"
+    model-viewer="gltfModel: #triceratops; title: Triceratops"
+    xr-mode-ui="XRMode: xr">
+    <a-assets timeout="10000">
+      <!--
+        Model source: https://sketchfab.com/3d-models/triceratops-d16aabe33dc24f8ab37e3df50c068265
+        Model author: https://sketchfab.com/VapTor
+        Model license: Sketchfab Standard
+      -->
+      <a-asset-item id="triceratops"
+        src="https://cdn.aframe.io/examples/ar/models/triceratops/scene.gltf"
+        response-type="arraybuffer"></a-asset-item>
+  
+      <img id="shadow" src="shadow.png">
+      <a-asset-item id="messageText" src="message.html"></a-asset-item>
+    </a-assets>
     </a-scene>
   </body>
 </html>
