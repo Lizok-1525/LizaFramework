@@ -10,8 +10,13 @@
 
 <body style="margin : 0px; overflow: hidden;">
     <a-scene embedded arjs>
+        <a-assets>
+            <a-asset-item id="crowModel" src="../assets/images/gltf/Crow.gltf"></a-asset-item>
+        </a-assets>
+
+        <!-- Mostrar el modelo cuando se detecta el marcador Hiro -->
         <a-marker preset="hiro">
-            <a-sphere position="0 0 0" radius="0.6" color="#EF2D5E"></a-sphere>
+            <a-entity gltf-model="#crowModel" scale="0.5 0.5 0.5" position="0 0 0"></a-entity>
         </a-marker>
         <a-entity camera></a-entity>
     </a-scene>
