@@ -28,11 +28,11 @@
 
 <body>
   <div class="buttons">
-    <button onclick="changeModel('#buho')">Búho</button>
-    <button onclick="changeModel('#aguila')">Aguila</button>
-    <button onclick="changeModel('#halcón')">Halcón</button>
+    <button onclick="changeModel('#buho', 'Búho')">Búho</button>
+    <button onclick="changeModel('#aguila', 'Águila')">Aguila</button>
+    <button onclick="changeModel('#halcón', 'Halcón')">Halcón</button>
   </div>
-  <a-scene renderer="colorManagement: true;" model-viewer="gltfModel: #buho; title: The birds" xr-mode-ui="XRMode: xr">
+  <a-scene renderer="colorManagement: true;" model-viewer="gltfModel: #buho; title: Búho" xr-mode-ui="XRMode: xr">
     <a-assets timeout="10000">
       <a-asset-item id="buho" src="../assets/images/gltf/Owl.gltf" response-type="arraybuffer"></a-asset-item>
       <a-asset-item id="aguila" src="../assets/images/gltf/Eagle.gltf" response-type="arraybuffer"></a-asset-item>
@@ -42,9 +42,9 @@
     </a-assets>
   </a-scene>
   <script>
-    function changeModel(modelId) {
-      const modelViewer = document.querySelector(model - viewer);
-      modelViewer.setAttribute('gltf-model', modelId);
+    function changeModel(modelId, title) {
+      const scene = document.querySelector('a-scene');
+      scene.setAttribute('model-viewer', `gltfModel: ${modelId}; title: ${title}`);
     }
   </script>
 </body>
