@@ -14,15 +14,15 @@
         </a-assets>
 
         <!-- Entidad del coche con componente de control -->
-        <a-entity id="car" position="0 0 -2" car-controls>
-            <a-entity gltf-model="#testbed" position="0 0 0" scale="2 2 2" shadow></a-entity>
+        <a-entity id="base" position="0 0 -2"
+            animation="property: rotation; to: 0 360 0; loop: true; dur: 15000; easing: linear;">
+            <a-entity id="tooncar" gltf-model="#testbed" position="0 0.050 0" scale="2 2 2" shadow></a-entity>
         </a-entity>
+
 
         <!-- Cámara -->
         <a-entity camera position="0 2 5"></a-entity>
 
-        <!-- Suelo -->
-        <a-plane rotation="-90 0 0" width="10" height="10" color="#7BC8A4"></a-plane>
     </a-scene>
 
     <!-- Script para mover el coche -->
