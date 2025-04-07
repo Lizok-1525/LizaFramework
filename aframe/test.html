@@ -10,21 +10,39 @@
 
   </head>
   <body>
-    <a-scene renderer="colorManagement: true;"
-    model-viewer="gltfModel: #buho; title: Buhos"
-    xr-mode-ui="XRMode: xr">
-    <a-assets timeout="10000">
-      <!--
-        Model source: https://sketchfab.com/3d-models/triceratops-d16aabe33dc24f8ab37e3df50c068265
-        Model author: https://sketchfab.com/VapTor
-        Model license: Sketchfab Standard
-      -->
+    <div class="buttons">
+      <button onclick="changeModel('#buho')">Búho</button>
+      <button onclick="changeModel('#águila')">Aguila</button>
+      <button onclick="changeModel('#halcón')">Halcón</button>
+    </div>
+    <a-scene renderer="colorManagement: true;">
+      <a-assets timeout="10000">
+
       <a-asset-item id="buho"
-        src="../assets/images/Owl.gltf"
+        src="../assets/images/gltf/Owl.gltf"
         response-type="arraybuffer"></a-asset-item>
-  
-      <img id="shadow" src="shadow.png">
+        <a-asset-item id="águila"
+        src="../assets/images/gltf/Eagle.gltf"
+        response-type="arraybuffer"></a-asset-item>
+        <a-asset-item id="halcón"
+        src="../assets/images/gltf/Hawk.gltf"
+        response-type="arraybuffer"></a-asset-item>
     </a-assets>
-    </a-scene>
+
+    <a-entity id="model-viewer"
+                gltf-model="#buho"
+                position="0 1.5 -3"
+                scale="0.5 0.5 0.5"
+                animation-mixer>
+      </a-entity>
+
+      <a-sky color="#ECECEC"></a-sky>
+      </a-scene>
+      <script>
+        function changeModel(modelId) {
+          const modelViewer = document.querySelector('#model-viewer');
+          modelViewer.setAttribute('gltf-model', modelId);
+        }
+      </script>
   </body>
 </html>
