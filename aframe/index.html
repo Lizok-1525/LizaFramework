@@ -21,8 +21,47 @@
                 });
             }
         });
+        //---------------------------------------------
+        AFRAME.registerComponent('car-controls', {
+            schema: {},
+
+            init: function () {
+                this.direction = new THREE.Vector3();
+                this.speed = 0.05;
+                window.addEventListener('keydown', (e) => {
+                    const car = this.el.object3D.position;
+                    switch (e.key) {
+                        case 'ArrowUp':
+                        case 'w':
+                            car.z -= this.speed;
+                            break;
+                        case 'ArrowDown':
+                        case 's':
+                            car.z += this.speed;
+                            break;
+                        case 'ArrowLeft':
+                        case 'a':
+                            car.x -= this.speed;
+                            break;
+                        case 'ArrowRight':
+                        case 'd':
+                            car.x += this.speed;
+                            break;
+                    }
+                });
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelector('#car').setAttribute('car-controls', '');
+        });
     </script>
+
     <a-scene>
+        <a-entity id="car" position="0 0 -2">
+            <a-entity gltf-model="#testbed" position="0 0.050 0" scale="2 2 2" shadow></a-entity>
+        </a-entity>
+
         <a-assets>
             <img id="boxTexture" src="https://i.imgur.com/mYmmbrp.jpg">
             <img id="skyTexture" src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/sechelt.jpg">
@@ -52,20 +91,21 @@
         <!--     <a-entity id="neon01"
             geometry="primitive: torus; radius: 1.92; radiusTubular: 0.02; segmentsRadial: 50; segmentsTubular: 40"
             material="color: #d100e0; emissive: #b300a4; emissiveIntensity: 9.34" rotation="90 0 0">
-        </a-entity> geometry="primitive: cylinder; height: 0.1; radius: 1.93" -->
-        <a-entity id="base" position="0 0 -2" shadow
+        </a-entity> geometry="primitive: cylinder; height: 0.1; radius: 1.93" shadow <a-entity id="ambient" light="type: ambient; intensity: 0.48; color: #ffffff"> </a-entity>
+
+        <a-entity id="point01" light="color: #7cd2fe; intensity: 5; type: point;" position="0 3.51 -1"> </a-entity> -->
+        <a-entity id="base" position="0 0 -2"
             animation="property: rotation; to: 0 360 0 ; loop: true; dur: 15000; easing: linear;">
             <a-entity id="tooncar" gltf-model="#testbed" position="0 0.050 0" scale="2 2 2" shadow> </a-entity>
         </a-entity>
 
-        <a-entity id="ambient" light="type: ambient; intensity: 0.48; color: #ffffff"> </a-entity>
 
-        <a-entity id="point01" light="color: #7cd2fe; intensity: 5; type: point;" position="0 3.51 -1"> </a-entity>
 
         <a-entity environment="preset: forest; dressingAmount: 500"></a-entity>
         <a-camera>
             <a-cursor color="#FAFAFA"></a-cursor>
         </a-camera>
+        <a-entity camera look-controls position="0 2 5"></a-entity>
     </a-scene>
 </body>
 
