@@ -1,74 +1,64 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Pruebas</title>
-    <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="https://aframe.io/aframe/dist/aframe-master.min.js"></script>
-<script src="https://aframe.io/aframe/examples/showcase/model-viewer/background-gradient.js"></script>
-<script src="https://aframe.io/aframe/examples/showcase/model-viewer/animation-mixer.js"></script>
-<script src="https://aframe.io/aframe/examples/showcase/model-viewer/ar-shadows.js"></script>
-<script src="https://aframe.io/aframe/examples/showcase/model-viewer/model-viewer.js"></script>
-<style>
-  .buttons {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    z-index: 999;
-  }
-  button {
-    margin: 5px;
-    padding: 10px 15px;
-    font-size: 14px;
-  }
-</style>
 
-  </head>
-  <body>
-    <div class="buttons">
-      <button onclick="changeModel('#buho')">Búho</button>
-      <button onclick="changeModel('#águila')">Aguila</button>
-      <button onclick="changeModel('#halcón')">Halcón</button>
-    </div>
-    <a-scene renderer="colorManagement: true;">
-      <a-assets timeout="10000">
+<head>
+  <title>Pruebas</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://aframe.io/aframe/dist/aframe-master.min.js"></script>
+  <script src="https://aframe.io/aframe/examples/showcase/model-viewer/background-gradient.js"></script>
+  <script src="https://aframe.io/aframe/examples/showcase/model-viewer/animation-mixer.js"></script>
+  <script src="https://aframe.io/aframe/examples/showcase/model-viewer/ar-shadows.js"></script>
+  <script src="https://aframe.io/aframe/examples/showcase/model-viewer/model-viewer.js"></script>
+  <style>
+    .buttons {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      z-index: 999;
+    }
 
-      <a-asset-item id="buho"
-        src="../assets/images/gltf/Owl.gltf"
-        response-type="arraybuffer"></a-asset-item>
-        <a-asset-item id="águila"
-        src="../assets/images/gltf/Eagle.gltf"
-        response-type="arraybuffer"></a-asset-item>
-        <a-asset-item id="halcón"
-        src="../assets/images/gltf/Hawk.gltf"
-        response-type="arraybuffer"></a-asset-item>
+    button {
+      margin: 5px;
+      padding: 10px 15px;
+      font-size: 14px;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div class="buttons">
+    <button onclick="changeModel('#buho')">Búho</button>
+    <button onclick="changeModel('#águila')">Aguila</button>
+    <button onclick="changeModel('#halcón')">Halcón</button>
+  </div>
+  <a-scene renderer="colorManagement: true;">
+    <a-assets timeout="10000">
+
+      <a-asset-item id="buho" src="../assets/images/gltf/Owl.gltf" response-type="arraybuffer"></a-asset-item>
+      <a-asset-item id="águila" src="../assets/images/gltf/Eagle.gltf" response-type="arraybuffer"></a-asset-item>
+      <a-asset-item id="halcón" src="../assets/images/gltf/Hawk.gltf" response-type="arraybuffer"></a-asset-item>
     </a-assets>
 
-    <a-entity id="model-viewer"
-                gltf-model="#buho"
-                position="0 1.5 -3"
-                scale="0.5 0.5 0.5"
-                animation-mixer 
-                >
-                <a-animation attribute="rotation"
-             dur="10000"
-             to="0 360 0"
-             repeat="indefinite"
-             easing="linear">
-</a-animation>
-      </a-entity>
+    <a-entity id="model-viewer" gltf-model="#buho" position="0 1.5 -3" scale="0.5 0.5 0.5" animation-mixer>
+      <a-animation attribute="rotation" dur="10000" to="0 360 0" repeat="indefinite" easing="linear">
+      </a-animation>
       <a-plane rotation="-90 0 0" width="10" height="10" color="#222" shadow></a-plane>
       <a-light type="directional" position="0 4 -2" intensity="0.8" castShadow></a-light>
       <a-light type="ambient" intensity="0.5"></a-light>
-<a-light type="point" position="2 4 4" intensity="1.5"></a-light>
+      <a-light type="point" position="2 4 4" intensity="1.5"></a-light>
+    </a-entity>
 
 
-      </a-scene>
-      <script>
-        function changeModel(modelId) {
-          const modelViewer = document.querySelector('#model-viewer');
-          modelViewer.setAttribute('gltf-model', modelId);
-        }
-      </script>
-  </body>
+
+  </a-scene>
+  <script>
+    function changeModel(modelId) {
+      const modelViewer = document.querySelector('#model-viewer');
+      modelViewer.setAttribute('gltf-model', modelId);
+    }
+  </script>
+</body>
+
 </html>
