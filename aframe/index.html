@@ -98,43 +98,16 @@
             animation="property: rotation; to: 0 360 0 ; loop: true; dur: 15000; easing: linear;">
             <a-entity id="tooncar" gltf-model="#testbed" position="0 0.050 0" scale="2 2 2" shadow> </a-entity>
         </a-entity>-->
-        <a-entity id="base" position="0 0 -2">
-            <a-entity id="tooncar" gltf-model="#testbed" position="0 0.050 0" scale="2 2 2" shadow></a-entity>
+        <a-entity id="car" position="0 0 -2" car-controls>
+            <a-entity gltf-model="#testbed" position="0 0 0" scale="2 2 2" shadow></a-entity>
+        </a-entity>
 
 
-            <a-entity environment="preset: forest; dressingAmount: 500"></a-entity>
-            <script>
-                // Obtener las entidades del coche
-                const tooncar = document.querySelector('#tooncar');
-                let carPosition = { x: 0, y: 0.050, z: -2 };
-                let carRotation = 0;
-
-                // Escuchar eventos de teclado para mover el coche
-                window.addEventListener('keydown', function (e) {
-                    switch (e.key) {
-                        case 'w': // Mover hacia adelante
-                            carPosition.z -= 0.1;
-                            break;
-                        case 's': // Mover hacia atrás
-                            carPosition.z += 0.1;
-                            break;
-                        case 'a': // Girar hacia la izquierda
-                            carRotation += 5;
-                            break;
-                        case 'd': // Girar hacia la derecha
-                            carRotation -= 5;
-                            break;
-                    }
-
-                    // Actualizar la posición y rotación del coche
-                    tooncar.setAttribute('position', carPosition);
-                    tooncar.setAttribute('rotation', { x: 0, y: carRotation, z: 0 });
-                });
-            </script>
-            <a-camera>
-                <a-cursor color="#FAFAFA"></a-cursor>
-            </a-camera>
-            <a-entity camera look-controls position="0 2 5"></a-entity>
+        <a-entity environment="preset: forest; dressingAmount: 500"></a-entity>
+        <a-camera>
+            <a-cursor color="#FAFAFA"></a-cursor>
+        </a-camera>
+        <a-entity camera look-controls position="0 2 5"></a-entity>
     </a-scene>
 </body>
 
