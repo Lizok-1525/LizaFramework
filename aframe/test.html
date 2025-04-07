@@ -23,6 +23,15 @@
       padding: 10px 15px;
       font-size: 14px;
     }
+
+    #model-title {
+      position: absolute;
+      top: 60px;
+      left: 20px;
+      font-size: 24px;
+      color: white;
+      z-index: 999;
+    }
   </style>
 </head>
 
@@ -32,7 +41,10 @@
     <button onclick="changeModel('#aguila', 'Águila')">Aguila</button>
     <button onclick="changeModel('#halcón', 'Halcón')">Halcón</button>
   </div>
-  <a-scene renderer="colorManagement: true;" model-viewer="gltfModel: #buho; title: Buho" xr-mode-ui="XRMode: xr">
+
+  <div id="model-title">Búho</div>
+  <!--model-viewer="gltfModel: #buho; title: Buho"-->
+  <a-scene renderer="colorManagement: true;" xr-mode-ui="XRMode: xr">
     <a-assets timeout="10000">
       <a-asset-item id="buho" src="../assets/images/gltf/Owl.gltf" response-type="arraybuffer"
         title="Buho"></a-asset-item>
@@ -43,11 +55,18 @@
       <img id="shadow" src="shadow.png">
 
     </a-assets>
+
+    <a-entity id="model" gltf-model="#buho" position="0 1.5 -4"></a-entity>
+
   </a-scene>
   <script>
     function changeModel(modelId, title) {
-      const scene = document.querySelector('a-scene');
-      scene.setAttribute('model-viewer', `gltfModel: ${modelId}; title: ${title}`);
+      const modelEntity = document.querySelector('#model');
+      modelEntity.setAttribute('gltf-model', modelId);
+
+      // Cambiar el título visual
+      const modelTitle = document.getElementById('model-title');
+      modelTitle.innerText = title; // Aquí actualizamos el título visible en la página
     }
   </script>
 </body>
