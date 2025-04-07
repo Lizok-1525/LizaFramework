@@ -27,34 +27,63 @@
 
     <!-- Script para mover el coche -->
     <script>
-        AFRAME.registerComponent('car-controls', {
-            init: function () {
-                const el = this.el;
-                this.speed = 0.2;
-                window.addEventListener('keydown', (e) => {
-                    let pos = el.getAttribute('position');
-                    switch (e.key) {
-                        case 'ArrowUp':
-                        case 'w':
-                            pos.z -= this.speed;
-                            break;
-                        case 'ArrowDown':
-                        case 's':
-                            pos.z += this.speed;
-                            break;
-                        case 'ArrowLeft':
-                        case 'a':
-                            pos.x -= this.speed;
-                            break;
-                        case 'ArrowRight':
-                        case 'd':
-                            pos.x += this.speed;
-                            break;
-                    }
-                    el.setAttribute('position', pos);
-                });
+
+        // Obtener las entidades del coche
+        const tooncar = document.querySelector('#tooncar');
+        let carPosition = { x: 0, y: 0.050, z: -2 };
+        let carRotation = 0;
+
+        // Escuchar eventos de teclado para mover el coche
+        window.addEventListener('keydown', function (e) {
+            switch (e.key) {
+                case 'w': // Mover hacia adelante
+                    carPosition.z -= 0.1;
+                    break;
+                case 's': // Mover hacia atrás
+                    carPosition.z += 0.1;
+                    break;
+                case 'a': // Girar hacia la izquierda
+                    carRotation += 5;
+                    break;
+                case 'd': // Girar hacia la derecha
+                    carRotation -= 5;
+                    break;
             }
+
+            // Actualizar la posición y rotación del coche
+            tooncar.setAttribute('position', carPosition);
+            tooncar.setAttribute('rotation', { x: 0, y: carRotation, z: 0 });
         });
+
+        /*
+            AFRAME.registerComponent('car-controls', {
+                init: function () {
+                    const el = this.el;
+                    this.speed = 0.2;
+                    window.addEventListener('keydown', (e) => {
+                        let pos = el.getAttribute('position');
+                        switch (e.key) {
+                            case 'ArrowUp':
+                            case 'w':
+                                pos.z -= this.speed;
+                                break;
+                            case 'ArrowDown':
+                            case 's':
+                                pos.z += this.speed;
+                                break;
+                            case 'ArrowLeft':
+                            case 'a':
+                                pos.x -= this.speed;
+                                break;
+                            case 'ArrowRight':
+                            case 'd':
+                                pos.x += this.speed;
+                                break;
+                        }
+                        el.setAttribute('position', pos);
+                    });
+                }
+            });*/
     </script>
 </body>
 
