@@ -18,15 +18,14 @@
             margin: 0;
             overflow: hidden;
             position: relative;
-            /* Necesario para posicionar los elementos absolutos */
         }
 
         button#find-me {
             position: absolute;
             top: 20px;
             left: 20px;
-            z-index: 10;
-            /* Asegura que esté por encima de la escena A-Frame */
+            z-index: 1000;
+            /* Asegúrate de que sea alto */
             padding: 10px 20px;
             font-size: 16px;
         }
@@ -35,9 +34,8 @@
             position: absolute;
             top: 60px;
             left: 20px;
-            z-index: 10;
+            z-index: 1000;
             color: black;
-            /* Para que sea visible sobre la escena AR */
             font-size: 14px;
         }
 
@@ -45,14 +43,13 @@
             position: absolute;
             top: 80px;
             left: 20px;
-            z-index: 10;
+            z-index: 1000;
             color: black;
             font-size: 14px;
         }
 
         a-scene {
             position: absolute;
-            /* Importante para la superposición */
             top: 0;
             left: 0;
             width: 100%;
