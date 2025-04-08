@@ -103,6 +103,16 @@
         }
 
         document.querySelector("#find-me").addEventListener("click", geoFindMe);
+
+        window.onload = function() {
+            const button = document.getElementById('find-me');
+            if (button) {
+                button.style.display = 'none'; // Ocultar temporalmente
+                setTimeout(() => {
+                    button.style.display = 'block'; // Mostrar después de un breve retraso
+                }, 100); // Ajusta el tiempo si es necesario
+            }
+        };
     </script>
 
 </body>
