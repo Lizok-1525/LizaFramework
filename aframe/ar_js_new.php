@@ -13,6 +13,43 @@
     <script>
         THREEx.ArToolkitContext.baseURL = 'https://raw.githack.com/jeromeetienne/ar.js/master/three.js/'
     </script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            position: relative;
+            /* Necesario para posicionar los elementos absolutos */
+        }
+
+        button#find-me {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 10;
+            /* Asegura que esté por encima de la escena A-Frame */
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+
+        p#status {
+            position: absolute;
+            top: 60px;
+            left: 20px;
+            z-index: 10;
+            color: white;
+            /* Para que sea visible sobre la escena AR */
+            font-size: 14px;
+        }
+
+        a#map-link {
+            position: absolute;
+            top: 80px;
+            left: 20px;
+            z-index: 10;
+            color: white;
+            font-size: 14px;
+        }
+    </style>
 </head>
 
 <body style='margin: 0; overflow: hidden;'>
