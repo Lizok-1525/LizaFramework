@@ -58,7 +58,7 @@
     </style>
 </head>
 
-<body style='margin: 0; overflow: hidden;'>
+<body style='margin: 0;'>
 
     <button id="find-me">Show my location</button><br />
     <p id="status"></p>
