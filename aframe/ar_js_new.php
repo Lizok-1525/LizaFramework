@@ -64,7 +64,7 @@
             gltf-model="./assets/magnemite/scene.gltf"
             scale="0.15 0.15 0.15"
             rotation="0 180 0"
-            gps-entity-place="longitude: 2.6577131; latitude: 39.5727872;"
+            gps-entity-place="longitude: 2.6729299; latitude: 39.5688987;"
             animation-mixer>
         </a-entity>
 
