@@ -20,7 +20,7 @@
         arjs='sourceType: webcam; sourceWidth:1280; sourceHeight:960; displayWidth: 1280; displayHeight: 960; debugUIEnabled: false;'
         renderer='antialias: true; alpha: true'>
         <a-entity gltf-model="./assets/magnemite/scene.gltf" rotation="0 180 0" scale="0.15 0.15 0.15"
-            gps-entity-place="longitude: 2.6608208; latitude: 39.5734182;" animation-mixer />
+            gps-entity-place="longitude: 2.6586873; latitude: 39.5729811;" animation-mixer />
         <a-camera gps-camera rotation-reader></a-camera>
     </a-scene>
 </body>
