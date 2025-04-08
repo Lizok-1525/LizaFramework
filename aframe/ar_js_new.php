@@ -21,7 +21,7 @@
             position: relative;
         }
 
-        button#find-me {
+        button#getLocationBtn {
             position: fixed;
             /* Prueba con fixed en lugar de absolute */
             top: 20px;
@@ -31,7 +31,7 @@
             font-size: 16px;
         }
 
-        p#status {
+        p#location {
             position: fixed;
             top: 60px;
             left: 20px;
@@ -40,14 +40,7 @@
             font-size: 14px;
         }
 
-        a#map-link {
-            position: fixed;
-            top: 80px;
-            left: 20px;
-            z-index: 1000;
-            color: black;
-            font-size: 14px;
-        }
+
 
         a-scene {
             position: fixed;
@@ -60,12 +53,12 @@
     </style>
 </head>
 
+
+
 <body style='margin: 0; overflow: hidden;'>
 
-    <button id="find-me">Show my location</button><br />
-    <p id="status"></p>
-    <a id="map-link" target="_blank"></a>
-
+    <button id="getLocationBtn">Show my location</button><br />
+    <p id="location"></p>
 
     <a-scene vr-mode-ui="enabled: false" embedded
         arjs='sourceType: webcam; sourceWidth:1280; sourceHeight:960; displayWidth: 1280; displayHeight: 960; debugUIEnabled: false;'
@@ -75,47 +68,41 @@
         <a-camera gps-camera rotation-reader></a-camera>
     </a-scene>
 
+
+
     <script>
-        function geoFindMe() {
-            const status = document.querySelector("#status");
-            const mapLink = document.querySelector("#map-link");
-
-            mapLink.href = "";
-            mapLink.textContent = "";
-
-            function success(position) {
-                const latitude = position.coords.latitude;
-                const longitude = position.coords.longitude;
-
-                status.textContent = "";
-                mapLink.href = `https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`;
-                mapLink.textContent = `Latitude: ${latitude} °, Longitude: ${longitude} °`;
-            }
-
-            function error() {
-                status.textContent = "Unable to retrieve your location";
-            }
-
-            if (!navigator.geolocation) {
-                status.textContent = "Geolocation is not supported by your browser";
+        document.getElementById('getLocationBtn').addEventListener('click', function() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
             } else {
-                status.textContent = "Locating…";
-                navigator.geolocation.getCurrentPosition(success, error);
+                document.getElementById('location').innerText = "La geolocalización no es soportada por este navegador.";
             }
+        });
+
+        function showPosition(position) {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            document.getElementById('location').innerText = `Latitud: ${lat}, Longitud: ${lon}`;
         }
 
-        document.querySelector("#find-me").addEventListener("click", geoFindMe);
-
-        window.onload = function() {
-            const button = document.getElementById('find-me');
-            if (button) {
-                button.style.display = 'none'; // Ocultar temporalmente
-                setTimeout(() => {
-                    button.style.display = 'block'; // Mostrar después de un breve retraso
-                }, 10); // Ajusta el tiempo si es necesario
+        function showError(error) {
+            switch (error.code) {
+                case error.PERMISSION_DENIED:
+                    document.getElementById('location').innerText = "Permiso denegado para acceder a la ubicación.";
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    document.getElementById('location').innerText = "La ubicación no está disponible.";
+                    break;
+                case error.TIMEOUT:
+                    document.getElementById('location').innerText = "La solicitud para obtener la ubicación ha caducado.";
+                    break;
+                case error.UNKNOWN_ERROR:
+                    document.getElementById('location').innerText = "Se ha producido un error desconocido.";
+                    break;
             }
-        };
+        }
     </script>
+
 
 </body>
 
