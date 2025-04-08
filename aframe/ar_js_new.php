@@ -21,11 +21,11 @@
         }
 
         button#find-me {
-            position: absolute;
+            position: fixed;
+            /* Prueba con fixed en lugar de absolute */
             top: 20px;
             left: 20px;
             z-index: 1000;
-            /* Asegúrate de que sea alto */
             padding: 10px 20px;
             font-size: 16px;
         }
@@ -49,7 +49,8 @@
         }
 
         a-scene {
-            position: absolute;
+            position: fixed;
+            /* Haz lo mismo con la escena A-Frame */
             top: 0;
             left: 0;
             width: 100%;
