@@ -21,10 +21,9 @@
         arjs='sourceType: webcam; sourceWidth:1280; sourceHeight:960; displayWidth: 1280; displayHeight: 960; debugUIEnabled: false;'
         renderer='antialias: true; alpha: true'>
 
+
+        <a-entity gltf-model="./assets/magnemite/scene.gltf" rotation="0 180 0" scale="1 1 1"
+            gps-entity-place="longitude: 2.659933; latitude: 39.573160;" animation-mixer />
         <a-camera gps-camera rotation-reader></a-camera>
-        <!--  <a-entity gltf-model="./assets/magnemite/scene.gltf" rotation="0 180 0" scale="1 1 1"
-            gps-entity-place="longitude: 2.659933; latitude: 39.573160;" animation-mixer />-->
-        <a-entity material='color: red' geometry='primitive: box'
-            gps-entity-place="longitude: 2.660013; latitude: 39.572928;" />
     </a-scene>
 </body>
