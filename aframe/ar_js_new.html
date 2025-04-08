@@ -7,21 +7,21 @@
     <title>GeoAR.js demo</title>
 
     <!-- ✅ 1. A-Frame -->
-    <<script src="https://aframe.io/releases/1.2.0/aframe.min.js" onload="loadExtrasAndAR();">
-        </script>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js" onload="loadExtrasAndAR();">
+    </script>
 
-        <!-- ✅ Script que espera a que AFRAME esté listo -->
-        <script>
-            function loadExtrasAndAR() {
-                const extras = document.createElement('script');
-                extras.src = "https://raw.githack.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js";
-                document.head.appendChild(extras);
+    <!-- ✅ Script que espera a que AFRAME esté listo -->
+    <script>
+        function loadExtrasAndAR() {
+            const extras = document.createElement('script');
+            extras.src = "https://raw.githack.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js";
+            document.head.appendChild(extras);
 
-                const ar = document.createElement('script');
-                ar.src = "https://raw.githack.com/jeromeetienne/AR.js/master/aframe/build/aframe-ar.js";
-                document.head.appendChild(ar);
-            }
-        </script>
+            const ar = document.createElement('script');
+            ar.src = "https://raw.githack.com/jeromeetienne/AR.js/master/aframe/build/aframe-ar.js";
+            document.head.appendChild(ar);
+        }
+    </script>
 
 <body style='margin: 0; overflow: hidden;'>
     <a-scene embedded vr-mode-ui="enabled: false" renderer="logarithmicDepthBuffer: true;"
