@@ -49,8 +49,8 @@
             smoothThreshold="5">
             <a-entity
                 gltf-model="./assets/scene.gltf"
-                scale="3 3 3"
-                position="50 100 0" rotation="0 0 0" animation="property: rotation; to: 0 360 0; loop: true; dur: 10000"></a-entity>
+                scale="5 5 5"
+                position="60 100 0" rotation="0 0 0" animation="property: rotation; to: 0 360 0; loop: true; dur: 10000"></a-entity>
         </a-nft>
 
         <a-entity camera></a-entity>
