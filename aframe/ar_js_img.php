@@ -35,7 +35,7 @@
 
         <a-nft
             type="nft"
-            url="https://raw.githubusercontent.com/AR-js-org/AR.js/master/aframe/examples/image-tracking/nft/trex-image-big.jpeg"
+            url="https://arjs-cors-proxy.herokuapp.com/https://raw.githack.com/AR-js-org/AR.js/master/aframe/examples/image-tracking/nft/trex/trex-image/trex"
             smooth="true"
             smoothCount="10"
             smoothTolerance=".01"
