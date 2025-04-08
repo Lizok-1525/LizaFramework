@@ -36,7 +36,7 @@
             top: 60px;
             left: 20px;
             z-index: 10;
-            color: white;
+            color: black;
             /* Para que sea visible sobre la escena AR */
             font-size: 14px;
         }
@@ -48,6 +48,15 @@
             z-index: 10;
             color: black;
             font-size: 14px;
+        }
+
+        a-scene {
+            position: absolute;
+            /* Importante para la superposición */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
         }
     </style>
 </head>
