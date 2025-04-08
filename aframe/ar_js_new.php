@@ -15,12 +15,6 @@
         THREEx.ArToolkitContext.baseURL = 'https://raw.githack.com/jeromeetienne/ar.js/master/three.js/'
     </script>
     <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-            position: relative;
-        }
-
         button#getLocationBtn {
             position: fixed;
             /* Prueba con fixed en lugar de absolute */
@@ -39,8 +33,6 @@
             color: black;
             font-size: 14px;
         }
-
-
 
         a-scene {
             position: fixed;
@@ -102,8 +94,6 @@
             }
         }
     </script>
-
-
 </body>
 
 </html>
