@@ -31,7 +31,7 @@
         }
 
         p#status {
-            position: absolute;
+            position: fixed;
             top: 60px;
             left: 20px;
             z-index: 1000;
@@ -40,7 +40,7 @@
         }
 
         a#map-link {
-            position: absolute;
+            position: fixed;
             top: 80px;
             left: 20px;
             z-index: 1000;
