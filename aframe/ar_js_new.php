@@ -110,7 +110,7 @@
                 button.style.display = 'none'; // Ocultar temporalmente
                 setTimeout(() => {
                     button.style.display = 'block'; // Mostrar después de un breve retraso
-                }, 100); // Ajusta el tiempo si es necesario
+                }, 10); // Ajusta el tiempo si es necesario
             }
         };
     </script>
