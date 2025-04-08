@@ -46,7 +46,7 @@
             top: 80px;
             left: 20px;
             z-index: 10;
-            color: white;
+            color: black;
             font-size: 14px;
         }
     </style>
