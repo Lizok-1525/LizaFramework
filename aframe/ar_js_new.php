@@ -16,6 +16,12 @@
 </head>
 
 <body style='margin: 0; overflow: hidden;'>
+
+    <button id="find-me">Show my location</button><br />
+    <p id="status"></p>
+    <a id="map-link" target="_blank"></a>
+
+
     <a-scene vr-mode-ui="enabled: false" embedded
         arjs='sourceType: webcam; sourceWidth:1280; sourceHeight:960; displayWidth: 1280; displayHeight: 960; debugUIEnabled: false;'
         renderer='antialias: true; alpha: true'>
@@ -23,6 +29,39 @@
             gps-entity-place="longitude: 2.6586873; latitude: 39.5729811;" animation-mixer />
         <a-camera gps-camera rotation-reader></a-camera>
     </a-scene>
+
+    <script>
+        function geoFindMe() {
+            const status = document.querySelector("#status");
+            const mapLink = document.querySelector("#map-link");
+
+            mapLink.href = "";
+            mapLink.textContent = "";
+
+            function success(position) {
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
+
+                status.textContent = "";
+                mapLink.href = `https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`;
+                mapLink.textContent = `Latitude: ${latitude} °, Longitude: ${longitude} °`;
+            }
+
+            function error() {
+                status.textContent = "Unable to retrieve your location";
+            }
+
+            if (!navigator.geolocation) {
+                status.textContent = "Geolocation is not supported by your browser";
+            } else {
+                status.textContent = "Locating…";
+                navigator.geolocation.getCurrentPosition(success, error);
+            }
+        }
+
+        document.querySelector("#find-me").addEventListener("click", geoFindMe);
+    </script>
+
 </body>
 
 </html>
