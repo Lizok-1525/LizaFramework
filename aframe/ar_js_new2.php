@@ -22,8 +22,8 @@
 
             top: 0;
             left: 0;
-            width: 80%;
-            height: 100%;
+            width: 100%;
+            height: 80%;
         }
 
         #result {
