@@ -55,6 +55,8 @@
                 let modelY = modelPos.y;
                 let modelZ = modelPos.z;
 
+                document.getElementById('result').innerHTML = `modelo: ${modelX}, ${modelY}, ${modelZ} <br> camara: ${camX}, ${camY}, ${camZ}`;
+
                 // Calcular la distancia entre el modelo y la cámara
                 let distancia = calcularDistancia(camX, camY, camZ, modelX, modelY, modelZ);
 
