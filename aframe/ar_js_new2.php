@@ -15,7 +15,7 @@
 
         <a-camera id="camera" position="0 1.6 0"></a-camera>
     </a-scene>
-    <div id="result"></div>
+    <div id="result" style="position: fixed;"></div>
     <script>
         // Función para calcular la distancia entre dos puntos (en 3D)
         function calcularDistancia(x1, y1, z1, x2, y2, z2) {
