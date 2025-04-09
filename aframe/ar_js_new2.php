@@ -15,7 +15,9 @@
 
         <a-camera id="camera" position="0 1.6 0"></a-camera>
     </a-scene>
-
+    <div><?php echo '<pre style="border:1px dotted rgb(255, 17, 0);margin:5px;padding:5px;background-color:#222;color:#fff;min-height:400px;">';
+            print_r($position);
+            echo '</pre>'; ?></div>
     <script>
         // Función para calcular la distancia entre dos puntos (en 3D)
         function calcularDistancia(x1, y1, z1, x2, y2, z2) {
