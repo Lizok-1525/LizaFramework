@@ -13,6 +13,11 @@
         <a-camera gps-new-camera='gpsMinDistance: 5'></a-camera>
         <a-box color="red" gps-new-entity-place="latitude: 39.573047; longitude: 2.659985" depth="10" height="10" width="10"></a-box>
     </a-scene>
+    <script>
+        window.addEventListener('gps-camera-update-position', e => {
+            console.log('Posición actual:', e.detail.position);
+        });
+    </script>
 </body>
 
 </html>
