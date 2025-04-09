@@ -2,37 +2,71 @@
 <html>
 
 <head>
-    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
 </head>
 
 <body>
-    <a-scene vr-mode-ui="enabled: false"
+    <a-scene>
+        <!-- Modelo 3D que se muestra solo si está cerca -->
+        <a-entity id="model" gltf-model="./assets/scene.gltf" rotation="0 180 0" visible="false"></a-entity>
 
-        arjs='sourceType: webcam; sourceWidth:1280; sourceHeight:960; displayWidth: 1280; displayHeight: 960; debugUIEnabled: false;'>
+        <!-- Modelo 3D cargado -->
 
-        <a-entity id="model" gltf-model="./assets/scene.gltf" rotation="0 180 0"></a-entity>
 
-        <a-camera gps-camera rotation-reader></a-camera>
+        <a-camera id="camera" position="0 1.6 0"></a-camera>
     </a-scene>
 
     <script>
+        // Función para calcular la distancia entre dos puntos (en 3D)
+        function calcularDistancia(x1, y1, z1, x2, y2, z2) {
+            return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2) + Math.pow(z2 - z1, 2));
+        }
+
+        // Obtener la posición del usuario
         navigator.geolocation.getCurrentPosition(function(position) {
             let lat = position.coords.latitude;
             let lon = position.coords.longitude;
 
-            // Asumiendo que la latitud y longitud deben ser transformadas en coordenadas de A-Frame
-            // Necesitamos hacer un mapeo. Este es un ejemplo muy básico:
+            // Mapeo de coordenadas geográficas a A-Frame (escala de 1000)
+            let x = lon * 1000;
+            let z = lat * 1000;
 
-            let x = lon * 1000; // Mapea longitud (ajusta el factor según necesites)
-            let z = lat * 1000; // Mapea latitud (ajusta el factor según necesites)
-
-            // Obtenemos el modelo de la escena
+            // Obtenemos el modelo y la cámara en la escena
             let model = document.querySelector('#model');
+            let camera = document.querySelector('#camera');
 
-            // Actualizamos la posición del modelo
+            // Asignamos la posición del modelo
             model.setAttribute('position', `${x} 1 ${-z}`);
 
-            console.log(`Posición del modelo ajustada a Lat: ${lat}, Lon: ${lon}`);
+            // Función para actualizar la visibilidad del modelo
+            function verificarProximidad() {
+                // Obtener las coordenadas de la cámara (usuario)
+                let camPos = camera.getAttribute('position');
+                let camX = camPos.x;
+                let camY = camPos.y;
+                let camZ = camPos.z;
+
+                // Obtener las coordenadas del modelo
+                let modelPos = model.getAttribute('position');
+                let modelX = modelPos.x;
+                let modelY = modelPos.y;
+                let modelZ = modelPos.z;
+
+                // Calcular la distancia entre el modelo y la cámara
+                let distancia = calcularDistancia(camX, camY, camZ, modelX, modelY, modelZ);
+
+                // Mostrar el modelo solo si la distancia es menor a 10 metros
+                if (distancia <= 10) {
+                    model.setAttribute('visible', 'true');
+                } else {
+                    model.setAttribute('visible', 'false');
+                }
+
+                console.log(`Distancia: ${distancia} metros`);
+            }
+
+            // Verificar la proximidad cada 500ms
+            setInterval(verificarProximidad, 500);
         });
     </script>
 </body>
