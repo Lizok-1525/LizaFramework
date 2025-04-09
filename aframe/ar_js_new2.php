@@ -14,7 +14,7 @@
             <a-asset-item id="model3D" src="./assets/scene.gltf"></a-asset-item>
         </a-assets>
 
-        <a-camera position="0 1.6 0"></a-camera>
+        <a-camera position="0 1.6 0" gps-camera rotation-reader></a-camera>
     </a-scene>
 
     <script>
