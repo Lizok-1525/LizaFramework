@@ -12,6 +12,41 @@
     <script>
         THREEx.ArToolkitContext.baseURL = 'https://raw.githack.com/jeromeetienne/ar.js/master/three.js/';
     </script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        #main-block {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 800px;
+            /* Ajusta el ancho deseado */
+            height: 600px;
+            /* Ajusta la altura deseada */
+            transform: translate(-50%, -50%);
+            overflow: hidden;
+        }
+
+        #result {
+            background-color: grey;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            color: white;
+            font-weight: bold;
+            padding: 10px;
+            z-index: 9999;
+        }
+
+        .aframebox {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
 </head>
 
 <body>
@@ -52,35 +87,6 @@
             model.setAttribute('visible', 'true');
         });
     </script>
-    <style>
-        body {}
-
-        #main-block {
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 80% !important;
-            overflow: hidden;
-        }
-
-        #result {
-            background-color: grey;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            text-align: center;
-            color: white;
-            font-weight: bold;
-            padding: 10px;
-            z-index: 9999;
-        }
-
-        .aframebox {
-            height: 500px;
-            width: 500px;
-            position: relative;
-        }
-    </style>
 </body>
 
 </html>
