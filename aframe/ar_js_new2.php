@@ -7,13 +7,9 @@
 
 <body>
     <a-scene style="position: fixed; top: 0; left: 0; width: 100%; height: 50%;">
-        <!-- Modelo 3D que se muestra solo si está cerca -->
-        <a-entity id="model" gltf-model="./assets/scene.gltf" rotation="0 180 0"></a-entity>
+        <a-entity id="model" gltf-model="./assets/scene.gltf" rotation="0 180 0" visible="false"></a-entity>
 
-        <!-- Modelo 3D cargado -->
-
-
-        <a-camera id="camera" gps-camera rotation-reader></a-camera>
+        <a-camera id="camera" position="0 1.6 0"></a-camera>
     </a-scene>
     <div id="result" style="position: fixed;"></div>
     <script>
@@ -25,22 +21,29 @@
         const LAT_TO_METERS = 111132; // Aproximadamente metros por grado de latitud
         const LON_TO_METERS_AT_MID_LAT = Math.cos(MODEL_LAT * Math.PI / 180) * 111386; // Aproximadamente metros por grado de longitud (depende de la latitud)
 
+        function calcularDistanciaGPS(lat1, lon1, lat2, lon2) {
+            const R = 6371e3; // Radio de la Tierra en metros
+            const φ1 = lat1 * Math.PI / 180; // φ, λ en radianes
+            const φ2 = lat2 * Math.PI / 180;
+            const Δφ = (lat2 - lat1) * Math.PI / 180;
+            const Δλ = (lon2 - lon1) * Math.PI / 180;
 
+            const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+                Math.cos(φ1) * Math.cos(φ2) *
+                Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-        // Función para calcular la distancia entre dos puntos (en 3D)
-        function calcularDistancia(x1, y1, z1, x2, y2, z2) {
-            return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2) + Math.pow(z2 - z1, 2));
+            return R * c; // Distancia en metros
         }
 
-        // Obtener la posición del usuario
         navigator.geolocation.getCurrentPosition(function(position) {
-            let lat = position.coords.latitude;
-            let lon = position.coords.longitude;
+            let userLat = position.coords.latitude;
+            let userLon = position.coords.longitude;
 
-            console.log(`Latitud: ${lat}, Longitud: ${lon}`);
-            document.getElementById('result').innerHTML = `Latitud: ${lat}, Longitud: ${lon}`;
+            console.log(`Latitud usuario: ${userLat}, Longitud usuario: ${userLon}`);
+            document.getElementById('result').innerHTML = `Latitud usuario: ${userLat}, Longitud usuario: ${userLon}`;
 
-
+            // Calcular la diferencia en latitud y longitud
             let deltaLat = userLat - MODEL_LAT;
             let deltaLon = userLon - MODEL_LON;
 
@@ -55,38 +58,23 @@
 
             document.getElementById('result').innerHTML += `<br> Posición modelo (relativa): X=${x.toFixed(2)}, Z=${z.toFixed(2)}`;
 
-            // Función para actualizar la visibilidad del modelo
-            /* function verificarProximidad() {
-                // Obtener las coordenadas de la cámara (usuario)
-                let camPos = camera.getAttribute('position');
-                let camX = camPos.x;
-                let camY = camPos.y;
-                let camZ = camPos.z;
+            // Opcional: Actualizar la posición si la ubicación del usuario cambia
+            // navigator.geolocation.watchPosition(function(newPosition) {
+            //     let newUserLat = newPosition.coords.latitude;
+            //     let newUserLon = newPosition.coords.longitude;
 
-                // Obtener las coordenadas del modelo
-                let modelPos = model.getAttribute('position');
-                let modelX = modelPos.x;
-                let modelY = modelPos.y;
-                let modelZ = modelPos.z;
+            //     let newDeltaLat = newUserLat - MODEL_LAT;
+            //     let newDeltaLon = newUserLon - MODEL_LON;
 
-                document.getElementById('result').innerHTML = `modelo: ${modelX}, ${modelY}, ${modelZ} <br> camara: ${camX}, ${camY}, ${camZ}`;
+            //     let newX = newDeltaLon * LON_TO_METERS_AT_MID_LAT;
+            //     let newZ = -newDeltaLat * LAT_TO_METERS;
 
-                // Calcular la distancia entre el modelo y la cámara
-                let distancia = calcularDistancia(camX, camY, camZ, modelX, modelY, modelZ);
+            //     model.setAttribute('position', `${newX} 1 ${newZ}`);
+            //     document.getElementById('result').innerHTML = `Latitud usuario: ${newUserLat}, Longitud usuario: ${newUserLon} <br> Posición modelo (relativa): X=${newX.toFixed(2)}, Z=${newZ.toFixed(2)}`;
+            // }, function(error) {
+            //     console.error('Error al obtener la ubicación GPS:', error);
+            // });
 
-
-                // Mostrar el modelo solo si la distancia es menor a 10 metros
-                if (distancia <= 10) {
-                    model.setAttribute('visible', 'true');
-                } else {
-                    model.setAttribute('visible', 'false');
-                }
-
-                console.log(`Distancia: ${distancia} metros`);
-            }
-*/
-            // Verificar la proximidad cada 500ms
-            setInterval(verificarProximidad, 500);
         }, function(error) {
             console.error('Error al obtener la ubicación GPS:', error);
             document.getElementById('result').innerHTML = 'Error al obtener la ubicación GPS.';
