@@ -33,7 +33,7 @@
         <a-camera gps-camera rotation-reader></a-camera>
     </a-scene>
 
-    <div id="result"> </div>
+    <div id="result"> resultados </div>
     <script>
         const model = document.querySelector('#model');
         const MODEL_LAT = 39.5709918;
@@ -62,12 +62,10 @@
         #main-block {}
 
         #result {
-            background-color: grey;
-            position: fixed;
-            bottom: 0;
+            background-color: #eee;
             width: 100%;
             text-align: center;
-            color: white;
+            color: #000;
             font-weight: bold;
             padding: 10px;
             z-index: 9999;
