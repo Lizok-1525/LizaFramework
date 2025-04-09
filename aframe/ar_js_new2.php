@@ -16,21 +16,22 @@
 </head>
 
 <body style='margin: 0; overflow: hidden;'>
+    <div id="main-block">
+        <a-scene
+            vr-mode-ui="enabled: false"
+            embedded
+            arjs='sourceType: webcam; sourceWidth:1280; sourceHeight:960; debugUIEnabled: false;'>
+            <a-entity
+                id="model"
+                gltf-model="./assets/scene.gltf"
+                rotation="0 180 0"
+                scale="5 5 5"
+                visible="false">
+            </a-entity>
 
-    <a-scene
-        vr-mode-ui="enabled: false"
-        embedded
-        arjs='sourceType: webcam; sourceWidth:1280; sourceHeight:960; debugUIEnabled: false;'>
-        <a-entity
-            id="model"
-            gltf-model="./assets/scene.gltf"
-            rotation="0 180 0"
-            scale="5 5 5"
-            visible="false">
-        </a-entity>
-
-        <a-camera gps-camera rotation-reader></a-camera>
-    </a-scene>
+            <a-camera gps-camera rotation-reader></a-camera>
+        </a-scene>
+    </div>
     <div id="result"> </div>
     <script>
         const model = document.querySelector('#model');
@@ -57,7 +58,7 @@
             overflow: hidden;
         }
 
-        a-scene {
+        #main-block {
             top: 0;
             left: 0;
             width: 100%;
