@@ -3,28 +3,61 @@
 
 <head>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        #cameraFeed {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            /* Colocar detrás de la escena de A-Frame */
+        }
+    </style>
 </head>
 
 <body>
-    <a-scene style="position: fixed; top: 0; left: 0; width: 100%; height: 50%;">
-        <a-entity id="model" gltf-model="./assets/scene.gltf" rotation="0 180 0" visible="false"></a-entity>
-
-        <a-camera id="camera" position="0 1.6 0"></a-camera>
+    <video id="cameraFeed" autoplay playsinline></video>
+    <a-scene style="position: fixed; top: 0; left: 0; width: 100%; height: 100%;">
+        <a-entity id="model" gltf-model="./assets/scene.gltf" rotation="0 180 0" visible="false" position="0 1 -5"></a-entity>
+        <a-camera position="0 1.6 0"></a-camera>
     </a-scene>
-    <div id="result" style="position: fixed;"></div>
-    <script>
-        // Coordenadas GPS de referencia para el modelo
-        const MODEL_LAT = 39.5731819;
-        const MODEL_LON = 2.6593544;
+    <div id="result" style="position: fixed; top: 10px; width: 100%; text-align: center; color: white;">Cargando ubicación...</div>
 
-        // Factor de escala para la conversión de grados a metros (aproximado)
-        const LAT_TO_METERS = 111132; // Aproximadamente metros por grado de latitud
-        const LON_TO_METERS_AT_MID_LAT = Math.cos(MODEL_LAT * Math.PI / 180) * 111386; // Aproximadamente metros por grado de longitud (depende de la latitud)
+    <script>
+        const MODEL_LAT = 39.5731819; // Latitud del modelo
+        const MODEL_LON = 2.6593544; // Longitud del modelo
+        const PROXIMITY_THRESHOLD = 10; // Distancia en metros para mostrar el modelo
+        const cameraFeed = document.getElementById('cameraFeed');
+        const model = document.getElementById('model');
+        const resultDiv = document.getElementById('result');
+
+        // Obtener acceso a la cámara
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({
+                    video: {
+                        facingMode: 'environment'
+                    }
+                }) // 'environment' para la cámara trasera
+                .then(function(stream) {
+                    cameraFeed.srcObject = stream;
+                })
+                .catch(function(error) {
+                    console.error('Error al acceder a la cámara:', error);
+                    resultDiv.innerText = 'Error al acceder a la cámara.';
+                });
+        } else {
+            resultDiv.innerText = 'La API getUserMedia no es compatible con este navegador.';
+        }
 
         function calcularDistanciaGPS(lat1, lon1, lat2, lon2) {
             const R = 6371e3; // Radio de la Tierra en metros
-            const φ1 = lat1 * Math.PI / 180; // φ, λ en radianes
+            const φ1 = lat1 * Math.PI / 180;
             const φ2 = lat2 * Math.PI / 180;
             const Δφ = (lat2 - lat1) * Math.PI / 180;
             const Δλ = (lon2 - lon1) * Math.PI / 180;
@@ -34,52 +67,36 @@
                 Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
             const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-            return R * c; // Distancia en metros
+            return R * c;
         }
 
-        navigator.geolocation.getCurrentPosition(function(position) {
-            let userLat = position.coords.latitude;
-            let userLon = position.coords.longitude;
+        function updateLocation() {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                let userLat = position.coords.latitude;
+                let userLon = position.coords.longitude;
 
-            console.log(`Latitud usuario: ${userLat}, Longitud usuario: ${userLon}`);
-            document.getElementById('result').innerHTML = `Latitud usuario: ${userLat}, Longitud usuario: ${userLon}`;
+                resultDiv.innerText = `Latitud: ${userLat.toFixed(6)}, Longitud: ${userLon.toFixed(6)}`;
 
-            // Calcular la diferencia en latitud y longitud
-            let deltaLat = userLat - MODEL_LAT;
-            let deltaLon = userLon - MODEL_LON;
+                const distance = calcularDistanciaGPS(userLat, userLon, MODEL_LAT, MODEL_LON);
+                resultDiv.innerText += `<br> Distancia al modelo: ${distance.toFixed(2)} metros`;
 
-            // Convertir las diferencias a metros (aproximado)
-            let x = deltaLon * LON_TO_METERS_AT_MID_LAT; // Eje X (Este/Oeste)
-            let z = -deltaLat * LAT_TO_METERS; // Eje Z (Norte/Sur) - Negativo porque Z positivo suele ser hacia adelante
+                if (distance <= PROXIMITY_THRESHOLD) {
+                    model.setAttribute('visible', 'true');
+                } else {
+                    model.setAttribute('visible', 'false');
+                }
+            }, function(error) {
+                console.error('Error al obtener la ubicación:', error);
+                resultDiv.innerText = 'Error al obtener la ubicación.';
+            }, {
+                enableHighAccuracy: true,
+                timeout: 5000,
+                maximumAge: 0
+            });
+        }
 
-            // Posicionar el modelo
-            let model = document.querySelector('#model');
-            model.setAttribute('position', `${x} 1 ${z}`); // Y se mantiene en 1 para estar a una altura razonable
-            model.setAttribute('visible', 'true');
-
-            document.getElementById('result').innerHTML += `<br> Posición modelo (relativa): X=${x.toFixed(2)}, Z=${z.toFixed(2)}`;
-
-            // Opcional: Actualizar la posición si la ubicación del usuario cambia
-            // navigator.geolocation.watchPosition(function(newPosition) {
-            //     let newUserLat = newPosition.coords.latitude;
-            //     let newUserLon = newPosition.coords.longitude;
-
-            //     let newDeltaLat = newUserLat - MODEL_LAT;
-            //     let newDeltaLon = newUserLon - MODEL_LON;
-
-            //     let newX = newDeltaLon * LON_TO_METERS_AT_MID_LAT;
-            //     let newZ = -newDeltaLat * LAT_TO_METERS;
-
-            //     model.setAttribute('position', `${newX} 1 ${newZ}`);
-            //     document.getElementById('result').innerHTML = `Latitud usuario: ${newUserLat}, Longitud usuario: ${newUserLon} <br> Posición modelo (relativa): X=${newX.toFixed(2)}, Z=${newZ.toFixed(2)}`;
-            // }, function(error) {
-            //     console.error('Error al obtener la ubicación GPS:', error);
-            // });
-
-        }, function(error) {
-            console.error('Error al obtener la ubicación GPS:', error);
-            document.getElementById('result').innerHTML = 'Error al obtener la ubicación GPS.';
-        });
+        // Actualizar la ubicación periódicamente (puedes ajustar el intervalo)
+        setInterval(updateLocation, 1000);
     </script>
 </body>
 
