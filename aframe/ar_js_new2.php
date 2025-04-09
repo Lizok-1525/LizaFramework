@@ -44,7 +44,7 @@
             const lon = e.detail.position.longitude;
 
 
-            console.log(lat, lon);
+            console.log('lat:' + lat, 'lon:' + lon);
 
             document.getElementById('result').innerText = `Ubicación: ${lat}, ${lon}`;
 
