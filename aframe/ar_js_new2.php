@@ -58,6 +58,7 @@
                 // Calcular la distancia entre el modelo y la cámara
                 let distancia = calcularDistancia(camX, camY, camZ, modelX, modelY, modelZ);
 
+                document.getElementById('result').innerHTML = `Distancia: ${distancia} metros`;
                 // Mostrar el modelo solo si la distancia es menor a 10 metros
                 if (distancia <= 10) {
                     model.setAttribute('visible', 'true');
