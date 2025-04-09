@@ -35,6 +35,39 @@
 
     <div id="result"> resultados </div>
     <script>
+        // Verificar el estado del permiso de geolocalización al cargar la página
+        navigator.permissions.query({
+                name: 'geolocation'
+            })
+            .then(function(permissionStatus) {
+                if (permissionStatus.state === 'granted') {
+                    document.getElementById('result').innerText = 'El permiso de geolocalización está concedido.';
+                } else if (permissionStatus.state === 'denied') {
+                    document.getElementById('result').innerText = 'El permiso de geolocalización está denegado.';
+                } else {
+                    document.getElementById('result').innerText = 'El permiso de geolocalización está pendiente.';
+                }
+
+                // Escuchar cambios en el estado del permiso
+                permissionStatus.onchange = function() {
+                    if (this.state === 'granted') {
+                        document.getElementById('result').innerText = 'El permiso de geolocalización ha sido concedido.';
+                    } else if (this.state === 'denied') {
+                        document.getElementById('result').innerText = 'El permiso de geolocalización ha sido denegado.';
+                    } else {
+                        document.getElementById('result').innerText = 'El permiso de geolocalización está pendiente.';
+                    }
+                };
+            })
+            .catch(function(error) {
+                console.error('Error al verificar el permiso de geolocalización:', error);
+                document.getElementById('result').innerText = 'No se pudo verificar el permiso de geolocalización.';
+            });
+
+
+
+
+
         const model = document.querySelector('#model');
         const MODEL_LAT = 39.5709918;
         const MODEL_LON = 2.6660998;
