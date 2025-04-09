@@ -43,6 +43,9 @@
             const lat = e.detail.position.latitude;
             const lon = e.detail.position.longitude;
 
+
+            console.log(lat, lon);
+
             document.getElementById('result').innerText = `Ubicación: ${lat}, ${lon}`;
 
             model.setAttribute('gps-entity-place', {
