@@ -26,7 +26,7 @@
         }
 
         #result {
-            background-color: blue;
+            background-color: grey;
             position: fixed;
             bottom: 0;
             width: 100%;
