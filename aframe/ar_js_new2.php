@@ -123,7 +123,6 @@
             overflow: hidden;
         }
 
-        #main-block {}
 
         #result,
         #result-arjs {
