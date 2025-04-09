@@ -8,7 +8,7 @@
 <body>
     <a-scene>
         <!-- Modelo 3D que se muestra solo si está cerca -->
-        <a-entity id="model" gltf-model="./assets/scene.gltf" rotation="0 180 0" visible="false"></a-entity>
+        <a-entity id="model" gltf-model="./assets/scene.gltf" rotation="0 180 0"></a-entity>
 
         <!-- Modelo 3D cargado -->
 
@@ -28,8 +28,8 @@
             let lon = position.coords.longitude;
 
             // Mapeo de coordenadas geográficas a A-Frame (escala de 1000)
-            let x = lon * 1000;
-            let z = lat * 1000;
+            let x = lon * 100;
+            let z = lat * 100;
 
             // Obtenemos el modelo y la cámara en la escena
             let model = document.querySelector('#model');
