@@ -10,9 +10,8 @@
     <script type='text/javascript' src='https://raw.githack.com/AR-js-org/AR.js/3.4.5/three.js/build/ar-threex-location-only.js'></script>
     <script type='text/javascript' src='https://raw.githack.com/AR-js-org/AR.js/3.4.5/aframe/build/aframe-ar.js'></script>
     <script>
-        THREEx.ArToolkitContext.baseURL = 'https://raw.githack.com/jeromeetienne/ar.js/master/three.js/'
+        THREEx.ArToolkitContext.baseURL = 'https://raw.githack.com/jeromeetienne/ar.js/master/three.js/';
     </script>
-
 </head>
 
 <body>
@@ -20,8 +19,8 @@
         <a-scene
             class="aframebox" embedded
             vr-mode-ui="enabled: false"
-            embedded
             arjs='sourceType: webcam; sourceWidth:1280; sourceHeight:960; debugUIEnabled: false;'>
+
             <a-entity
                 id="model"
                 gltf-model="./assets/scene.gltf"
