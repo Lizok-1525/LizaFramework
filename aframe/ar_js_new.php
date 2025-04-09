@@ -53,9 +53,10 @@
     <button id="getLocationBtn">Show my location</button><br />
     <p id="location"></p>
 
-    <a-scene vr-mode-ui="enabled: false" embedded
-        arjs='sourceType: webcam; sourceWidth:1280; sourceHeight:960; displayWidth: 1280; displayHeight: 960; debugUIEnabled: false;'
-        renderer='antialias: true; alpha: true'>
+    <a-scene
+        vr-mode-ui="enabled: false"
+        embedded
+        arjs='sourceType: webcam; sourceWidth:1280; sourceHeight:960; displayWidth: 1280; displayHeight: 960; debugUIEnabled: false;'>
         <a-entity gltf-model="./assets/magnemite/scene.gltf"
             position="0 0 -3"
             scale="0.15 0.15 0.15"
