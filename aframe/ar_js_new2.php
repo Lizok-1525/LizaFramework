@@ -89,8 +89,7 @@
         }
 
         #arjs-video {
-            height: 80%;
-            ;
+            height: 80% !important;
         }
     </style>
 </body>
