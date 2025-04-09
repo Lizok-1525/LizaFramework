@@ -22,7 +22,7 @@
     <div id="result" style="position: fixed; top: 10px; width: 100%; text-align: center; color: white;">Cargando ubicación...</div>
 
     <script>
-        const MODEL_LAT = 39.5731819;
+        const MODEL_LAT = 39.5729567;
         const MODEL_LON = 2.6593544;
         const PROXIMITY_THRESHOLD_METERS = 10; // Umbral en metros (aproximado en 3D)
         const LAT_TO_METERS = 111132;
