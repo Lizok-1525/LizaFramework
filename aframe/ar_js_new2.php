@@ -55,7 +55,6 @@
         const LAT_TO_METERS = 110574; // Aproximación para latitud
 
 
-
         const model = document.querySelector('#model');
 
         // Añadir el atributo gps-entity-place con las variables
@@ -65,44 +64,54 @@
             return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2) + Math.pow(z2 - z1, 2));
         }
 
-        function updateLocation() {
-            navigator.geolocation.getCurrentPosition(function(position) {
-                let userLat = position.coords.latitude;
-                let userLon = position.coords.longitude;
-                let userAlt = position.coords.altitude || 0; // Obtener altitud si está disponible
+        // Obtener la posición del usuario
+        navigator.geolocation.getCurrentPosition(function(position) {
+            let lat = position.coords.latitude;
+            let lon = position.coords.longitude;
 
-                resultDiv.innerText = `Latitud: ${userLat.toFixed(6)}, Longitud: ${userLon.toFixed(6)}, Altitud: ${userAlt.toFixed(2)}`;
+            document.getElementById('result').innerText = `Ubicación: ${lat}, ${lon}`;
 
-                // Convertir coordenadas geográficas a coordenadas relativas en metros (aproximado)
-                const modelOffsetX = (MODEL_LON - userLon) * LON_TO_METERS_AT_MID_LAT;
-                const modelOffsetZ = (MODEL_LAT - userLat) * LAT_TO_METERS;
-                const modelOffsetY = 0; // Asumimos misma altitud para simplificar
+            // Mapeo de coordenadas geográficas a A-Frame (escala ajustada)
+            let x = lon * 100; // Ajusta esta escala si es necesario
+            let z = lat * 100; // Ajusta esta escala si es necesario
 
-                // Posición del modelo en la escena (puedes ajustar la altura inicial)
-                const modelX = modelOffsetX;
-                const modelY = 1;
-                const modelZ = -modelOffsetZ - 5; // Ajuste en Z para que no esté justo en la cámara
+            // Obtenemos el modelo y la cámara en la escena
+            let model = document.querySelector('#model');
+            let camera = document.querySelector('#camera');
 
-                model.setAttribute('position', `${modelX} ${modelY} ${modelZ}`);
+            // Asignamos la posición del modelo
+            model.setAttribute('position', `${x} 1 ${-z}`);
 
-                // Calcular la distancia 3D entre la cámara y el modelo (en metros aproximados)
-                const distance = calcularDistancia(cameraX, cameraY, cameraZ, modelX, modelY, modelZ);
-                resultDiv.innerText += `<br> Distancia (3D aprox.): ${distance.toFixed(2)} metros`;
+            // Función para actualizar la visibilidad del modelo
+            function verificarProximidad() {
+                // Obtener las coordenadas de la cámara (usuario)
+                let camPos = camera.getAttribute('position');
+                let camX = camPos.x;
+                let camY = camPos.y;
+                let camZ = camPos.z;
 
-                if (distance <= PROXIMITY_THRESHOLD_METERS) {
+                // Obtener las coordenadas del modelo
+                let modelPos = model.getAttribute('position');
+                let modelX = modelPos.x;
+                let modelY = modelPos.y;
+                let modelZ = modelPos.z;
+
+                // Calcular la distancia entre el modelo y la cámara
+                let distancia = calcularDistancia(camX, camY, camZ, modelX, modelY, modelZ);
+
+                // Mostrar el modelo solo si la distancia es menor a 10 metros
+                if (distancia <= 10) {
                     model.setAttribute('visible', 'true');
                 } else {
                     model.setAttribute('visible', 'false');
                 }
-            }, function(error) {
-                console.error('Error al obtener la ubicación:', error);
-                document.getElementById('result').innerText = 'Error al obtener la ubicación.';
-            }, {
-                enableHighAccuracy: true,
-                timeout: Infinity,
-                maximumAge: 0
-            });
-        }
+
+                console.log(`Distancia: ${distancia} metros`);
+            }
+
+            // Verificar la proximidad cada 500ms
+            setInterval(verificarProximidad, 500);
+        });
     </script>
 </body>
 
