@@ -51,6 +51,7 @@
                             const lat = position.coords.latitude;
                             const lon = position.coords.longitude;
                             console.log('Coordenadas:', lat, lon);
+                            document.getElementById('result').innerText = 'Coordenadas Camara.' + lat + ' ' + lon;
                         },
                         function(error) {
                             console.error('Error al obtener la ubicación:', error);
@@ -74,7 +75,7 @@
                                 const lon = position.coords.longitude;
                                 console.log('Coordenadas:', lat, lon);
 
-                                document.getElementById('result').innerHTML = 'Coordenadas Camara.' + lat + ' ' + lon;
+                                document.getElementById('result').innerText = 'Coordenadas Camara.' + lat + ' ' + lon;
 
                             },
                             function(error) {
