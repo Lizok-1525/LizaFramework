@@ -71,6 +71,7 @@
                                 const lat = position.coords.latitude;
                                 const lon = position.coords.longitude;
                                 console.log('Coordenadas:', lat, lon);
+                                document.getElementById('result').innerText = `Ubicación: ${lat}, ${lon}`;
                             },
                             function(error) {
                                 console.error('Error al obtener la ubicación:', error);
