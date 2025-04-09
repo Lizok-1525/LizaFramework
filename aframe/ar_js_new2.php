@@ -38,7 +38,7 @@
 </head>
 
 <body style='margin: 0; overflow: hidden;'>
-    <div id="result">Cargando ubicación...</div>
+
     <a-scene
         vr-mode-ui="enabled: false"
         embedded
@@ -46,7 +46,7 @@
         <a-entity id="model" gltf-model="./assets/scene.gltf" rotation="0 180 0" scale="1 1 1" visible="false"></a-entity>
         <a-camera id="camera" gps-camera rotation-reader></a-camera>
     </a-scene>
-
+    <div id="result">Cargando ubicación...</div>
     <script>
         const MODEL_LAT = 39.5709918;
         const MODEL_LON = 2.6660998;
