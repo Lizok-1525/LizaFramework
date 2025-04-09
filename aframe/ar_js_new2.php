@@ -43,74 +43,33 @@
         vr-mode-ui="enabled: false"
         embedded
         arjs='sourceType: webcam; sourceWidth:1280; sourceHeight:960; displayWidth: 1280; displayHeight: 960; debugUIEnabled: false;'>
-        <a-entity id="model" gltf-model="./assets/scene.gltf" rotation="0 180 0" scale="1 1 1" visible="false"></a-entity>
-        <a-camera id="camera" gps-camera rotation-reader></a-camera>
+        <a-entity
+            id="model"
+            gltf-model="./assets/scene.gltf"
+            rotation="0 180 0"
+            scale="5 5 5"
+            visible="false">
+        </a-entity>
+
+        <a-camera gps-camera rotation-reader></a-camera>
     </a-scene>
-    <div id="result">Cargando ubicación...</div>
     <script>
+        const model = document.querySelector('#model');
         const MODEL_LAT = 39.5709918;
         const MODEL_LON = 2.6660998;
-        const PROXIMITY_THRESHOLD = 10; // Metros
-        const LON_TO_METERS_AT_MID_LAT = 111320; // Aproximación para longitud
-        const LAT_TO_METERS = 110574; // Aproximación para latitud
 
-
-        const model = document.querySelector('#model');
-
-        // Añadir el atributo gps-entity-place con las variables
-        model.setAttribute('gps-entity-place', `latitude: ${MODEL_LAT}; longitude: ${MODEL_LON}`);
-
-        function calcularDistancia(x1, y1, z1, x2, y2, z2) {
-            return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2) + Math.pow(z2 - z1, 2));
-        }
-
-        // Obtener la posición del usuario
-        navigator.geolocation.getCurrentPosition(function(position) {
-            let lat = position.coords.latitude;
-            let lon = position.coords.longitude;
+        window.addEventListener('gps-camera-update-position', (e) => {
+            const lat = e.detail.position.latitude;
+            const lon = e.detail.position.longitude;
 
             document.getElementById('result').innerText = `Ubicación: ${lat}, ${lon}`;
 
-            // Mapeo de coordenadas geográficas a A-Frame (escala ajustada)
-            let x = lon * 100; // Ajusta esta escala si es necesario
-            let z = lat * 100; // Ajusta esta escala si es necesario
+            model.setAttribute('gps-entity-place', {
+                latitude: MODEL_LAT,
+                longitude: MODEL_LON
+            });
 
-            // Obtenemos el modelo y la cámara en la escena
-            // let model = document.querySelector('#model');
-            let camera = document.querySelector('#camera');
-
-            // Asignamos la posición del modelo
-            model.setAttribute('position', `${x} 1 ${-z}`);
-
-            // Función para actualizar la visibilidad del modelo
-            function verificarProximidad() {
-                // Obtener las coordenadas de la cámara (usuario)
-                let camPos = camera.getAttribute('position');
-                let camX = camPos.x;
-                let camY = camPos.y;
-                let camZ = camPos.z;
-
-                // Obtener las coordenadas del modelo
-                let modelPos = model.getAttribute('position');
-                let modelX = modelPos.x;
-                let modelY = modelPos.y;
-                let modelZ = modelPos.z;
-
-                // Calcular la distancia entre el modelo y la cámara
-                let distancia = calcularDistancia(camX, camY, camZ, modelX, modelY, modelZ);
-
-                // Mostrar el modelo solo si la distancia es menor a 10 metros
-                if (distancia <= 10) {
-                    model.setAttribute('visible', 'true');
-                } else {
-                    model.setAttribute('visible', 'false');
-                }
-
-                console.log(`Distancia: ${distancia} metros`);
-            }
-
-            // Verificar la proximidad cada 500ms
-            setInterval(verificarProximidad, 500);
+            model.setAttribute('visible', 'true');
         });
     </script>
 </body>
