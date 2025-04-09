@@ -7,7 +7,7 @@
     <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar-nft.js"></script>
 </head>
 
-<body>
+<body style='margin: 0; overflow: hidden;'>
     <a-scene vr-mode-ui='enabled: false' embedded arjs='sourceType: webcam; videoTexture: true; debugUIEnabled: false' renderer='antialias: true; alpha: true'>
         <a-camera gps-new-camera='gpsMinDistance: 5'></a-camera>
         <a-box position="0 0 0" color="red" gps-new-entity-place="latitude: 39.573047; longitude: 2.659985" depth="10" height="10" width="10"></a-box>
