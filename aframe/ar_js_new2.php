@@ -34,7 +34,29 @@
     </a-scene>
 
     <div id="result"> resultados </div>
+    <div id="result-arjs"> resultados arjs </div>
     <script>
+        const model = document.querySelector('#model');
+        const MODEL_LAT = 39.5709918;
+        const MODEL_LON = 2.6660998;
+
+        window.addEventListener('gps-camera-update-position', (e) => {
+            const lat = e.detail.position.latitude;
+            const lon = e.detail.position.longitude;
+
+            console.log('lat:' + lat, 'lon:' + lon);
+
+            document.getElementById('result').innerText = `Ubicación: ${lat}, ${lon}`;
+
+            model.setAttribute('gps-entity-place', {
+                latitude: MODEL_LAT,
+                longitude: MODEL_LON
+            });
+
+            model.setAttribute('visible', 'true');
+        });
+
+
         // Verificar el estado del permiso de geolocalización al cargar la página
         navigator.permissions.query({
                 name: 'geolocation'
@@ -93,32 +115,6 @@
                 console.error('Error al verificar el permiso de geolocalización:', error);
                 document.getElementById('result').innerText = 'No se pudo verificar el permiso de geolocalización.';
             });
-
-
-
-
-
-
-        const model = document.querySelector('#model');
-        const MODEL_LAT = 39.5709918;
-        const MODEL_LON = 2.6660998;
-
-        window.addEventListener('gps-camera-update-position', (e) => {
-            const lat = e.detail.position.latitude;
-            const lon = e.detail.position.longitude;
-
-
-            console.log('lat:' + lat, 'lon:' + lon);
-
-            document.getElementById('result').innerText = `Ubicación: ${lat}, ${lon}`;
-
-            model.setAttribute('gps-entity-place', {
-                latitude: MODEL_LAT,
-                longitude: MODEL_LON
-            });
-
-            model.setAttribute('visible', 'true');
-        });
     </script>
     <style>
         body {
