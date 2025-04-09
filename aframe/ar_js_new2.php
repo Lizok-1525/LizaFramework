@@ -6,13 +6,13 @@
 </head>
 
 <body>
-    <a-scene>
-        <a-entity id="model" gltf-model="#model3D" rotation="0 180 0"></a-entity>
+    <a-scene vr-mode-ui="enabled: false"
+        embedded
+        arjs='sourceType: webcam; sourceWidth:1280; sourceHeight:960; displayWidth: 1280; displayHeight: 960; debugUIEnabled: false;'>
+        <a-entity id="model" gltf-model="./assets/scene.gltf" rotation="0 180 0"></a-entity>
 
         <!-- Aquí puedes agregar un lugar para mostrar el modelo -->
-        <a-assets>
-            <a-asset-item id="model3D" src="./assets/scene.gltf"></a-asset-item>
-        </a-assets>
+
 
         <a-camera gps-camera rotation-reader></a-camera>
     </a-scene>
