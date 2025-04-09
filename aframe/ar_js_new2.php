@@ -7,14 +7,14 @@
 
 <body>
     <a-scene>
-        <a-entity id="model" gltf-model="#model3D" position="0 1 -5" rotation="0 180 0"></a-entity>
+        <a-entity id="model" gltf-model="#model3D" rotation="0 180 0"></a-entity>
 
         <!-- Aquí puedes agregar un lugar para mostrar el modelo -->
         <a-assets>
             <a-asset-item id="model3D" src="./assets/scene.gltf"></a-asset-item>
         </a-assets>
 
-        <a-camera position="0 1.6 0" gps-camera rotation-reader></a-camera>
+        <a-camera gps-camera rotation-reader></a-camera>
     </a-scene>
 
     <script>
