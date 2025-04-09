@@ -7,12 +7,10 @@
 
 <body>
     <a-scene vr-mode-ui="enabled: false"
-        embedded
+
         arjs='sourceType: webcam; sourceWidth:1280; sourceHeight:960; displayWidth: 1280; displayHeight: 960; debugUIEnabled: false;'>
+
         <a-entity id="model" gltf-model="./assets/scene.gltf" rotation="0 180 0"></a-entity>
-
-        <!-- Aquí puedes agregar un lugar para mostrar el modelo -->
-
 
         <a-camera gps-camera rotation-reader></a-camera>
     </a-scene>
