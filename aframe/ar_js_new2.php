@@ -6,7 +6,7 @@
 </head>
 
 <body>
-    <a-scene>
+    <a-scene style="position: fixed; top: 0; left: 0; width: 100%; height: 50%;">
         <!-- Modelo 3D que se muestra solo si está cerca -->
         <a-entity id="model" gltf-model="./assets/scene.gltf" rotation="0 180 0"></a-entity>
 
