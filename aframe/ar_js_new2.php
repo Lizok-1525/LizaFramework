@@ -13,8 +13,10 @@
 
 <body>
 
-    <a-scene style="position: fixed; top: 0; left: 0; width: 100%; height: 100%;">
-        <a-entity id="model" gltf-model="./assets/scene.gltf" rotation="0 180 0" visible="false" position="0 1 -5"></a-entity>
+    <a-scene style="position: fixed; top: 0; left: 0; width: 100%; height: 100%;" vr-mode-ui="enabled: false"
+        embedded
+        arjs='sourceType: webcam; sourceWidth:1280; sourceHeight:960; displayWidth: 1280; displayHeight: 960; debugUIEnabled: false;'>
+        <a-entity id="model" gltf-model="./assets/scene.gltf" rotation="0 180 0" visible="false"></a-entity>
         <a-camera id="camera" position="0 1.6 0"></a-camera>
     </a-scene>
     <div id="result" style="position: fixed; top: 10px; width: 100%; text-align: center; color: white;">Cargando ubicación...</div>
