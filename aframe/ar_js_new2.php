@@ -53,6 +53,7 @@
 
         <a-camera gps-camera rotation-reader></a-camera>
     </a-scene>
+    <div id="result"> </div>
     <script>
         const model = document.querySelector('#model');
         const MODEL_LAT = 39.5709918;
