@@ -27,7 +27,7 @@
         }
 
         #result {
-            position: fixed;
+
             bottom: 10px;
             width: 100%;
             text-align: center;
