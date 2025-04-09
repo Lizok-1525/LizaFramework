@@ -8,20 +8,11 @@
             margin: 0;
             overflow: hidden;
         }
-
-        #cameraFeed {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
     </style>
 </head>
 
 <body>
-    <video id="cameraFeed" autoplay playsinline></video>
+
     <a-scene style="position: fixed; top: 0; left: 0; width: 100%; height: 100%;">
         <a-entity id="model" gltf-model="./assets/scene.gltf" rotation="0 180 0" visible="false" position="0 1 -5"></a-entity>
         <a-camera id="camera" position="0 1.6 0"></a-camera>
@@ -35,28 +26,12 @@
         const LAT_TO_METERS = 111132;
         const LON_TO_METERS_AT_MID_LAT = Math.cos(MODEL_LAT * Math.PI / 180) * 111386;
 
-        const cameraFeed = document.getElementById('cameraFeed');
+
         const model = document.getElementById('model');
         const resultDiv = document.getElementById('result');
         const cameraElement = document.getElementById('camera');
 
-        // Obtener acceso a la cámara
-        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-            navigator.mediaDevices.getUserMedia({
-                    video: {
-                        facingMode: 'environment'
-                    }
-                })
-                .then(function(stream) {
-                    cameraFeed.srcObject = stream;
-                })
-                .catch(function(error) {
-                    console.error('Error al acceder a la cámara:', error);
-                    resultDiv.innerText = 'Error al acceder a la cámara.';
-                });
-        } else {
-            resultDiv.innerText = 'La API getUserMedia no es compatible con este navegador.';
-        }
+
 
         function calcularDistancia(x1, y1, z1, x2, y2, z2) {
             return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2) + Math.pow(z2 - z1, 2));
