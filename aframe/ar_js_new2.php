@@ -2,20 +2,39 @@
 <html>
 
 <head>
-    <title>AR.js A-Frame Location-based</title>
-    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar-nft.js"></script>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
 </head>
 
-<body style='margin: 0; overflow: hidden;'>
-    <a-scene vr-mode-ui='enabled: false' embedded arjs='sourceType: webcam; videoTexture: true; debugUIEnabled: false' renderer='antialias: true; alpha: true'>
-        <a-camera gps-new-camera='gpsMinDistance: 1'></a-camera>
-        <a-box color="red" gps-entity-place="latitude: 39.573047; longitude: 2.659985" depth="10" height="10" width="10"></a-box>
-        <a-box position="0 0 -5" color="blue" depth="2" height="2" width="2"></a-box>
+<body>
+    <a-scene>
+        <a-entity id="model" gltf-model="#model3D" position="0 1 -5" rotation="0 180 0"></a-entity>
+
+        <!-- Aquí puedes agregar un lugar para mostrar el modelo -->
+        <a-assets>
+            <a-asset-item id="model3D" src="./assets/scene.gltf"></a-asset-item>
+        </a-assets>
+
+        <a-camera position="0 1.6 0"></a-camera>
     </a-scene>
+
     <script>
-        window.addEventListener('gps-camera-update-position', e => {
-            console.log('Posición actual:', e.detail.position);
+        navigator.geolocation.getCurrentPosition(function(position) {
+            let lat = position.coords.latitude;
+            let lon = position.coords.longitude;
+
+            // Asumiendo que la latitud y longitud deben ser transformadas en coordenadas de A-Frame
+            // Necesitamos hacer un mapeo. Este es un ejemplo muy básico:
+
+            let x = lon * 1000; // Mapea longitud (ajusta el factor según necesites)
+            let z = lat * 1000; // Mapea latitud (ajusta el factor según necesites)
+
+            // Obtenemos el modelo de la escena
+            let model = document.querySelector('#model');
+
+            // Actualizamos la posición del modelo
+            model.setAttribute('position', `${x} 1 ${-z}`);
+
+            console.log(`Posición del modelo ajustada a Lat: ${lat}, Lon: ${lon}`);
         });
     </script>
 </body>
