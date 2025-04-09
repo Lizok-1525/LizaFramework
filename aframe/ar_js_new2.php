@@ -13,7 +13,7 @@
         <!-- Modelo 3D cargado -->
 
 
-        <a-camera id="camera" position="0 1.6 0" gps-camera rotation-reader></a-camera>
+        <a-camera id="camera" gps-camera rotation-reader></a-camera>
     </a-scene>
     <div id="result" style="position: fixed;"></div>
     <script>
