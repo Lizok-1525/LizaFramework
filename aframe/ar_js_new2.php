@@ -42,6 +42,18 @@
             .then(function(permissionStatus) {
                 if (permissionStatus.state === 'granted') {
                     document.getElementById('result').innerText = 'El permiso de geolocalización está concedido.';
+
+                    // Obtener y mostrar coordenadas
+                    navigator.geolocation.getCurrentPosition(
+                        function(position) {
+                            const lat = position.coords.latitude;
+                            const lon = position.coords.longitude;
+                            console.log('Coordenadas:', lat, lon);
+                        },
+                        function(error) {
+                            console.error('Error al obtener la ubicación:', error);
+                        }
+                    );
                 } else if (permissionStatus.state === 'denied') {
                     document.getElementById('result').innerText = 'El permiso de geolocalización está denegado.';
                 } else {
@@ -52,6 +64,18 @@
                 permissionStatus.onchange = function() {
                     if (this.state === 'granted') {
                         document.getElementById('result').innerText = 'El permiso de geolocalización ha sido concedido.';
+
+                        // Obtener y mostrar coordenadas al cambiar el estado a concedido
+                        navigator.geolocation.getCurrentPosition(
+                            function(position) {
+                                const lat = position.coords.latitude;
+                                const lon = position.coords.longitude;
+                                console.log('Coordenadas:', lat, lon);
+                            },
+                            function(error) {
+                                console.error('Error al obtener la ubicación:', error);
+                            }
+                        );
                     } else if (this.state === 'denied') {
                         document.getElementById('result').innerText = 'El permiso de geolocalización ha sido denegado.';
                     } else {
@@ -63,6 +87,7 @@
                 console.error('Error al verificar el permiso de geolocalización:', error);
                 document.getElementById('result').innerText = 'No se pudo verificar el permiso de geolocalización.';
             });
+
 
 
 
