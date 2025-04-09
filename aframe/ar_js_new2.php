@@ -124,7 +124,8 @@
 
         #main-block {}
 
-        #result {
+        #result,
+        #result-arjs {
             background-color: #eee;
             width: 100%;
             text-align: center;
