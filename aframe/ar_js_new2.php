@@ -15,7 +15,7 @@
 
 </head>
 
-<body style='margin: 0; overflow: hidden;'>
+<body>
     <div id="main-block">
         <a-scene
             class="aframebox" embedded
@@ -54,10 +54,7 @@
         });
     </script>
     <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-        }
+        body {}
 
         #main-block {
             top: 0;
