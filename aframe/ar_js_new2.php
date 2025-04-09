@@ -2,89 +2,89 @@
 <html>
 
 <head>
-    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <title>GeoAR.js con Proximidad</title>
+    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+    <script type='text/javascript' src='https://raw.githack.com/AR-js-org/AR.js/3.4.5/three.js/build/ar-threex-location-only.js'></script>
+    <script type='text/javascript' src='https://raw.githack.com/AR-js-org/AR.js/3.4.5/aframe/build/aframe-ar.js'></script>
+    <script>
+        THREEx.ArToolkitContext.baseURL = 'https://raw.githack.com/jeromeetienne/ar.js/master/three.js/'
+    </script>
     <style>
         body {
             margin: 0;
             overflow: hidden;
         }
+
+        a-scene {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        #result {
+            position: fixed;
+            top: 10px;
+            width: 100%;
+            text-align: center;
+            color: white;
+            z-index: 1;
+        }
     </style>
 </head>
 
-<body>
-
-    <a-scene style="position: fixed; top: 0; left: 0; width: 100%; height: 100%;" vr-mode-ui="enabled: false"
+<body style='margin: 0; overflow: hidden;'>
+    <div id="result">Cargando ubicación...</div>
+    <a-scene
+        vr-mode-ui="enabled: false"
         embedded
         arjs='sourceType: webcam; sourceWidth:1280; sourceHeight:960; displayWidth: 1280; displayHeight: 960; debugUIEnabled: false;'>
-        <a-entity id="model" gltf-model="./assets/scene.gltf" rotation="0 180 0" visible="false"></a-entity>
-        <a-camera id="camera" position="0 1.6 0"></a-camera>
+        <a-entity id="model" gltf-model="./assets/scene.gltf" rotation="0 180 0" scale="1 1 1" visible="false"
+            gps-entity-place="latitude: 39.5709918; longitude: 2.6660998;"></a-entity>
+        <a-camera gps-camera rotation-reader></a-camera>
     </a-scene>
-    <div id="result" style="position: fixed; top: 10px; width: 100%; text-align: center; color: white;">Cargando ubicación...</div>
 
     <script>
-        const MODEL_LAT = 39.5729567;
-        const MODEL_LON = 2.6593544;
-        const PROXIMITY_THRESHOLD_METERS = 10; // Umbral en metros (aproximado en 3D)
-        const LAT_TO_METERS = 111132;
-        const LON_TO_METERS_AT_MID_LAT = Math.cos(MODEL_LAT * Math.PI / 180) * 111386;
+        const MODEL_LAT = 39.5709918;
+        const MODEL_LON = 2.6660998;
+        const PROXIMITY_THRESHOLD = 10; // Metros
 
-
-        const model = document.getElementById('model');
-        const resultDiv = document.getElementById('result');
-        const cameraElement = document.getElementById('camera');
-
-
-
-        function calcularDistancia(x1, y1, z1, x2, y2, z2) {
-            return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2) + Math.pow(z2 - z1, 2));
+        function calcularDistanciaGPS(lat1, lon1, lat2, lon2) {
+            const R = 6371e3; // Radio de la Tierra en metros
+            const φ1 = lat1 * Math.PI / 180;
+            const φ2 = lat2 * Math.PI / 180;
+            const Δφ = (lat2 - lat1) * Math.PI / 180;
+            const Δλ = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+                Math.cos(φ1) * Math.cos(φ2) *
+                Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c;
         }
 
-        function updateLocation() {
-            navigator.geolocation.getCurrentPosition(function(position) {
-                let userLat = position.coords.latitude;
-                let userLon = position.coords.longitude;
-                let userAlt = position.coords.altitude || 0; // Obtener altitud si está disponible
-
-                resultDiv.innerText = `Latitud: ${userLat.toFixed(6)}, Longitud: ${userLon.toFixed(6)}, Altitud: ${userAlt.toFixed(2)}`;
-
-                // Convertir coordenadas geográficas a coordenadas relativas en metros (aproximado)
-                const modelOffsetX = (MODEL_LON - userLon) * LON_TO_METERS_AT_MID_LAT;
-                const modelOffsetZ = (MODEL_LAT - userLat) * LAT_TO_METERS;
-                const modelOffsetY = 0; // Asumimos misma altitud para simplificar
-
-                // La cámara en A-Frame está en (0, 1.6, 0) por defecto
-                const cameraX = 0;
-                const cameraY = 1.6;
-                const cameraZ = 0;
-
-                // Posición del modelo en la escena (puedes ajustar la altura inicial)
-                const modelX = modelOffsetX;
-                const modelY = 1;
-                const modelZ = -modelOffsetZ - 5; // Ajuste en Z para que no esté justo en la cámara
-
-                model.setAttribute('position', `${modelX} ${modelY} ${modelZ}`);
-
-                // Calcular la distancia 3D entre la cámara y el modelo (en metros aproximados)
-                const distance = calcularDistancia(cameraX, cameraY, cameraZ, modelX, modelY, modelZ);
-                resultDiv.innerText += `<br> Distancia (3D aprox.): ${distance.toFixed(2)} metros`;
-
-                if (distance <= PROXIMITY_THRESHOLD_METERS) {
-                    model.setAttribute('visible', 'true');
-                } else {
-                    model.setAttribute('visible', 'false');
-                }
-
-            }, function(error) {
-                console.error('Error al obtener la ubicación:', error);
-                resultDiv.innerText = 'Error al obtener la ubicación.';
-            }, {
-                enableHighAccuracy: true,
-                timeout: 5000,
-                maximumAge: 0
-            });
-        }
-
-        setInterval(updateLocation, 1000);
+        navigator.geolocation.watchPosition(function(position) {
+            const userLat = position.coords.latitude;
+            const userLon = position.coords.longitude;
+            const distance = calcularDistanciaGPS(userLat, userLon, MODEL_LAT, MODEL_LON);
+            document.getElementById('result').innerText = `Distancia al modelo: ${distance.toFixed(2)} metros`;
+            const model = document.getElementById('model');
+            if (distance <= PROXIMITY_THRESHOLD) {
+                model.setAttribute('visible', 'true');
+            } else {
+                model.setAttribute('visible', 'false');
+            }
+        }, function(error) {
+            console.error('Error al obtener la ubicación:', error);
+            document.getElementById('result').innerText = 'Error al obtener la ubicación.';
+        }, {
+            enableHighAccuracy: true,
+            timeout: Infinity,
+            maximumAge: 0
+        });
     </script>
 </body>
 
