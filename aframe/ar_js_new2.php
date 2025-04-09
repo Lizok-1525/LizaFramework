@@ -43,6 +43,8 @@
                 if (permissionStatus.state === 'granted') {
                     document.getElementById('result').innerText = 'El permiso de geolocalización está concedido.';
 
+                    console.log('permiso concedido');
+
                     // Obtener y mostrar coordenadas
                     navigator.geolocation.getCurrentPosition(
                         function(position) {
