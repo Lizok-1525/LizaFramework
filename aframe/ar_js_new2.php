@@ -39,7 +39,7 @@
                 longitude: 2.6593544,
             });
 
-            document.getElementById('result').innerHTML = `Latitud: ${lat}, Longitud: ${lon}`;
+            document.getElementById('result').innerHTML = `Latitud: ${lat}, Longitud: ${lon} <br> modelo: ${model.getAttribute('gps-entity-place').latitude}, ${model.getAttribute('gps-entity-place').longitude}`;
 
             // Mapeo de coordenadas geográficas a A-Frame (escala de 1000)
             let x = lon * 100;
