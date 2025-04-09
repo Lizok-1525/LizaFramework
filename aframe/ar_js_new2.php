@@ -41,7 +41,6 @@
             document.getElementById('result').innerHTML = `Latitud: ${lat}, Longitud: ${lon}`;
 
 
-
             let deltaLat = userLat - MODEL_LAT;
             let deltaLon = userLon - MODEL_LON;
 
@@ -54,7 +53,7 @@
             model.setAttribute('position', `${x} 1 ${z}`); // Y se mantiene en 1 para estar a una altura razonable
             model.setAttribute('visible', 'true');
 
-
+            document.getElementById('result').innerHTML += `<br> Posición modelo (relativa): X=${x.toFixed(2)}, Z=${z.toFixed(2)}`;
 
             // Función para actualizar la visibilidad del modelo
             /* function verificarProximidad() {
