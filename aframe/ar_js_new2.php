@@ -30,12 +30,25 @@
             console.log(`Latitud: ${lat}, Longitud: ${lon}`);
             document.getElementById('result').innerHTML = `Latitud: ${lat}, Longitud: ${lon}`;
 
+
+            const modelCoords = {
+                latitude: 39.5731819,
+                longitude: 2.6593544,
+            };
+
+            let model = document.querySelector('#model');
+
+            model.setAttribute("gps-entity-place", {
+                latitude: modelCoords.latitude,
+                longitude: modelCoords.longitude,
+            });
+
             // Mapeo de coordenadas geográficas a A-Frame (escala de 1000)
             let x = lon * 100;
             let z = lat * 100;
 
             // Obtenemos el modelo y la cámara en la escena
-            let model = document.querySelector('#model');
+            // let model = document.querySelector('#model');
             let camera = document.querySelector('#camera');
 
             // Asignamos la posición del modelo
