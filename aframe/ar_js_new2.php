@@ -19,14 +19,15 @@
         }
 
         a-scene {
-
             top: 0;
             left: 0;
             width: 100%;
             height: 80%;
+            position: fixed;
         }
 
         #result {
+            position: fixed;
             background-color: blue;
             bottom: 10px;
             width: 100%;
