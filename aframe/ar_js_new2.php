@@ -18,6 +18,7 @@
 <body style='margin: 0; overflow: hidden;'>
     <div id="main-block">
         <a-scene
+            class="aframebox" embedded
             vr-mode-ui="enabled: false"
             embedded
             arjs='sourceType: webcam; sourceWidth:1280; sourceHeight:960; debugUIEnabled: false;'>
@@ -75,6 +76,11 @@
             font-weight: bold;
             padding: 10px;
             z-index: 9999;
+        }
+
+        .aframebox {
+            height: 500px;
+            width: 500px;
         }
     </style>
 </body>
