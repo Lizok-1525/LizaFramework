@@ -16,23 +16,23 @@
 </head>
 
 <body>
-    <div id="main-block">
-        <a-scene
-            class="aframebox" embedded
-            vr-mode-ui="enabled: false"
-            arjs='sourceType: webcam; sourceWidth:1280; sourceHeight:960; debugUIEnabled: false;'>
 
-            <a-entity
-                id="model"
-                gltf-model="./assets/scene.gltf"
-                rotation="0 180 0"
-                scale="5 5 5"
-                visible="false">
-            </a-entity>
+    <a-scene
+        class="aframebox" embedded
+        vr-mode-ui="enabled: false"
+        arjs='sourceType: webcam; sourceWidth:1280; sourceHeight:960; debugUIEnabled: false;'>
 
-            <a-camera gps-camera rotation-reader></a-camera>
-        </a-scene>
-    </div>
+        <a-entity
+            id="model"
+            gltf-model="./assets/scene.gltf"
+            rotation="0 180 0"
+            scale="5 5 5"
+            visible="false">
+        </a-entity>
+
+        <a-camera gps-camera rotation-reader></a-camera>
+    </a-scene>
+
     <div id="result"> </div>
     <script>
         const model = document.querySelector('#model');
@@ -59,17 +59,7 @@
             overflow: hidden;
         }
 
-        #main-block {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 800px;
-            /* Ajusta el ancho deseado */
-            height: 600px;
-            /* Ajusta la altura deseada */
-            transform: translate(-50%, -50%);
-            overflow: hidden;
-        }
+        #main-block {}
 
         #result {
             background-color: grey;
@@ -85,7 +75,7 @@
 
         .aframebox {
             width: 100%;
-            height: 100%;
+            height: 80%;
         }
 
         #arjs-video {
