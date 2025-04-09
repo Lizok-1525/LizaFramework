@@ -61,6 +61,7 @@
             left: 0;
             width: 100%;
             height: 80% !important;
+            overflow: hidden;
         }
 
         #result {
@@ -78,6 +79,7 @@
         .aframebox {
             height: 500px;
             width: 500px;
+            position: relative;
         }
     </style>
 </body>
