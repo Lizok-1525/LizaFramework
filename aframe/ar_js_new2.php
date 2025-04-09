@@ -22,7 +22,7 @@
 
             top: 0;
             left: 0;
-            width: 90%;
+            width: 80%;
             height: 100%;
         }
 
@@ -42,7 +42,7 @@
     <a-scene
         vr-mode-ui="enabled: false"
         embedded
-        arjs='sourceType: webcam; sourceWidth:1280; sourceHeight:960; displayWidth: 1280; displayHeight: 960; debugUIEnabled: false;'>
+        arjs='sourceType: webcam; sourceWidth:1280; sourceHeight:960; debugUIEnabled: false;'>
         <a-entity
             id="model"
             gltf-model="./assets/scene.gltf"
