@@ -43,8 +43,7 @@
         vr-mode-ui="enabled: false"
         embedded
         arjs='sourceType: webcam; sourceWidth:1280; sourceHeight:960; displayWidth: 1280; displayHeight: 960; debugUIEnabled: false;'>
-        <a-entity id="model" gltf-model="./assets/scene.gltf" rotation="0 180 0" scale="1 1 1" visible="false"
-            gps-entity-place="latitude: 39.5709918; longitude: 2.6660998;"></a-entity>
+        <a-entity id="model" gltf-model="./assets/scene.gltf" rotation="0 180 0" scale="1 1 1" visible="false"></a-entity>
         <a-camera id="camera" gps-camera rotation-reader></a-camera>
     </a-scene>
 
@@ -52,6 +51,11 @@
         const MODEL_LAT = 39.5709918;
         const MODEL_LON = 2.6660998;
         const PROXIMITY_THRESHOLD = 10; // Metros
+
+        const model = document.querySelector('#model');
+
+        // Añadir el atributo gps-entity-place con las variables
+        model.setAttribute('gps-entity-place', `latitude: ${MODEL_LAT}; longitude: ${MODEL_LON}`);
 
         function calcularDistancia(x1, y1, z1, x2, y2, z2) {
             return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2) + Math.pow(z2 - z1, 2));
