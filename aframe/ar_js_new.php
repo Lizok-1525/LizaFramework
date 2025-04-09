@@ -53,7 +53,7 @@
             const userLat = position.coords.latitude;
             const userLon = position.coords.longitude;
 
-            document.getElementById('result').innerText = `Distancia al modelo: ${distance.toFixed(2)} metros`;
+
             const model = document.getElementById('model');
             if (distance <= PROXIMITY_THRESHOLD) {
                 model.setAttribute('visible', 'true');
