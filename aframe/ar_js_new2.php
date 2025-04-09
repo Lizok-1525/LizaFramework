@@ -23,17 +23,18 @@
             left: 0;
             width: 100%;
             height: 80%;
-            position: fixed;
         }
 
         #result {
-            position: fixed;
             background-color: blue;
-            bottom: 10px;
+            position: fixed;
+            bottom: 0;
             width: 100%;
             text-align: center;
-            color: black;
-            z-index: 1;
+            color: white;
+            font-weight: bold;
+            padding: 10px;
+            z-index: 9999;
         }
     </style>
 </head>
