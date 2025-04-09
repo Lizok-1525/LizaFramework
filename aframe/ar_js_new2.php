@@ -31,17 +31,15 @@
             document.getElementById('result').innerHTML = `Latitud: ${lat}, Longitud: ${lon}`;
 
 
-            const modelCoords = {
-                latitude: 39.5731819,
-                longitude: 2.6593544,
-            };
-
+            // Asignar la posición GPS al modelo 3D
             let model = document.querySelector('#model');
 
             model.setAttribute("gps-entity-place", {
-                latitude: modelCoords.latitude,
-                longitude: modelCoords.longitude,
+                latitude: 39.5731819,
+                longitude: 2.6593544,
             });
+
+            document.getElementById('result').innerHTML = `Latitud: ${lat}, Longitud: ${lon}`;
 
             // Mapeo de coordenadas geográficas a A-Frame (escala de 1000)
             let x = lon * 100;
