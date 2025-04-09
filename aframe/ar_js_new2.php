@@ -27,7 +27,7 @@
         }
 
         #result {
-
+            background-color: blue;
             bottom: 10px;
             width: 100%;
             text-align: center;
@@ -76,7 +76,7 @@
             let z = lat * 100; // Ajusta esta escala si es necesario
 
             // Obtenemos el modelo y la cámara en la escena
-            let model = document.querySelector('#model');
+            // let model = document.querySelector('#model');
             let camera = document.querySelector('#camera');
 
             // Asignamos la posición del modelo
