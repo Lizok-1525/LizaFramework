@@ -36,6 +36,7 @@
                 position="0 -1 0"></a-mixin>
             <a-mixin id="unhinge" animation="property: rotation; to: 0 0 0; dur: 1000"></a-mixin>
             <img id="shadow" src="https://aframe.io/aframe/examples/assets/img/radial-shadow-2.png">
+            <img id="bosque" src="https://s1.1zoom.me/big0/180/401709-svetik.jpg">
         </a-assets>
 
 
@@ -45,7 +46,7 @@
 
             <!-- Pivot and position are used to set the "hinge" of each board to it's top edge. -->
 
-            <a-box mixin="board unhinge" color="#F16745" rotation="-20 0 0" animation="delay: 1000">
+            <a-box mixin="board unhinge" src="#bosque" rotation="-20 0 0" animation="delay: 1000">
                 <a-plane width="6" height="1" position="0 0 0.03" rotation="0 0 0"
                     material="color: #FFF; opacity: 0; transparent: true" link-on-click="./index.html">
                 </a-plane>
