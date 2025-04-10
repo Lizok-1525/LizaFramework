@@ -34,6 +34,11 @@
         <a-entity id="content" position="0 1 -4"></a-entity>
 
         <a-box src="#boxTexture" position="0 2 -9" rotation="0 45 45" scale="1.5 1.5 1.5"></a-box>
+
+        <a-box id="myBox" position="0 1 -1" color="tomato" class="clickable"
+            event-set__click="_event: click; visible: false"></a-box>
+
+
         <a-sky src="#skyTexture"></a-sky>
         <a-entity environment="preset: forest; dressingAmount: 500"></a-entity>
         <a-camera></a-camera>
