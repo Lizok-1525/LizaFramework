@@ -24,7 +24,8 @@
                 this.el.addEventListener('click', () => {
                     this.el.sceneEl.exitVR();  // Salir de VR temporalmente
                     setTimeout(() => {
-                        window.location.href = this.data;
+                        window.location.href = this.data + '?autoVR=true';
+
                         setTimeout(() => {
                             const newScene = document.querySelector('a-scene');
                             if (newScene) newScene.enterVR();

@@ -100,6 +100,32 @@
 
     <!-- Scripts -->
     <script>
+        window.addEventListener('load', () => {
+            const scene = document.querySelector('a-scene');
+            const params = new URLSearchParams(window.location.search);
+
+            // Solo si viene con ?autoVR=true
+            if (params.get('autoVR') !== 'true') return;
+
+            scene.addEventListener('loaded', () => {
+                if (scene.xrSession) return;
+                if (scene.renderer.xr) {
+                    scene.renderer.xr.enabled = true;
+                    scene.renderer.xr.setSessionInit({ optionalFeatures: ['local-floor', 'bounded-floor'] });
+
+                    navigator.xr.requestSession('immersive-vr', {
+                        optionalFeatures: ['local-floor', 'bounded-floor']
+                    }).then(session => {
+                        scene.renderer.xr.setSession(session);
+                    }).catch(err => {
+                        console.warn('No se pudo iniciar VR automáticamente:', err);
+                    });
+                }
+            });
+        });
+
+
+
         // Componentes de A-Frame
         AFRAME.registerComponent('scale-on-mouseenter', {
             schema: {
