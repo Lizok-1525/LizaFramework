@@ -32,23 +32,24 @@
         <a-entity position="0 3 -8" scale="1 1 1" animation__position="property: position; to: 0 5 -8; dur: 2000"
             animation__rotation="property: rotation; from: 0 60 0; to: 0 30 0; dur: 2500">
 
-            <!-- Pivot and position are used to set the "hinge" of each board to it's top edge. -->
-            <a-box mixin="board unhinge" color="#F16745" rotation="-20 0 0" animation="delay: 1000"> <a-entity
-                    position="0 0.6 0" link="href: ./index.html">
+            <!-- Pivot and position are used to set the "hinge" of each board to it's top edge. <a-entity
+                    position="0 0.6 0" >
                     <a-text value="Tunel Rojo" color="#000" width="4"></a-text>
-                </a-entity>
-                <a-box mixin="board unhinge" color="#FFC65D" rotation="-175 0 0" animation="delay: 250"
-                    link="href: ./galeria.html"><a-entity position="0 0.6 0">
-                        <a-text value="Tunel Amarillo" color="#000" width="4"></a-text>
-                    </a-entity>
-                    <a-box mixin="board unhinge" color="#7BC8A4" rotation="-180 0 0" animation="delay: 500"
-                        link="href: test.html"><a-entity position="0 0.6 0">
-                            <a-text value="Tunel Verde" color="#000" width="4"></a-text>
-                        </a-entity>
-                        <a-box mixin="board unhinge" color="#4CC3D9" rotation="-180 0 0" animation="delay: 500"
-                            link="href: ./new_test.html"><a-entity position="0 0.6 0">
-                                <a-text value="Tunel" color="#000" width="4"></a-text>
-                            </a-entity></a-box>
+                </a-entity>-->
+
+
+            <a-box mixin="board unhinge" color="#F16745" rotation="-20 0 0" animation="delay: 1000"> <a-link
+                    href="./index.html" title="Puerta 1" position="0 1 -0.5" image="#thumbJapan"
+                    scale="0.5 0.5 0.5"></a-link>
+                <a-box mixin="board unhinge" color="#FFC65D" rotation="-175 0 0" animation="delay: 250"><a-link
+                        href="./galeria.html" title="Puerta 1" position="0 1 -0.5" image="#thumbJapan"
+                        scale="0.5 0.5 0.5"></a-link>
+                    <a-box mixin="board unhinge" color="#7BC8A4" rotation="-180 0 0" animation="delay: 500"><a-link
+                            href="./test.html" title="Puerta 1" position="0 1 -0.5" image="#thumbJapan"
+                            scale="0.5 0.5 0.5"></a-link>
+                        <a-box mixin="board unhinge" color="#4CC3D9" rotation="-180 0 0" animation="delay: 500"><a-link
+                                href="./new_test.html" title="Puerta 1" position="0 1 -0.5" image="#thumbJapan"
+                                scale="0.5 0.5 0.5"></a-link></a-box>
                     </a-box>
                 </a-box>
             </a-box>
@@ -62,6 +63,13 @@
         <a-image position="0 -1 0" src="#shadow" rotation="-90 0 0" scale="6 6 6"></a-image>
         <a-light type="directional" color="#fff" intensity="0.628" position="-1 2 1"></a-light>
         <a-light type="ambient" color="#fff"></a-light>
+
+        <a-entity position="0 1.6 5">
+            <a-camera>
+                <!-- Cursor para interacción -->
+                <a-cursor></a-cursor>
+            </a-camera>
+        </a-entity>
 
         <a-entity id="leftHand" link-controls="hand: left"></a-entity>
         <a-entity id="rightHand" link-controls="hand: right"></a-entity>
