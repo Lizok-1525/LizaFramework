@@ -19,7 +19,14 @@
             schema: { type: 'string' },
             init: function () {
                 this.el.addEventListener('click', () => {
-                    window.location.href = this.data;
+                    this.el.sceneEl.exitVR();  // Salir de VR temporalmente
+                    setTimeout(() => {
+                        window.location.href = this.data;
+                        setTimeout(() => {
+                            const newScene = document.querySelector('a-scene');
+                            if (newScene) newScene.enterVR();
+                        }, 1000);
+                    }, 100);
                 });
             }
         });
