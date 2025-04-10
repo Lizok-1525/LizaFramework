@@ -4,6 +4,15 @@
     <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
     <script
         src="https://unpkg.com/aframe-environment-component@1.3.x/dist/aframe-environment-component.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Al hacer clic en el enlace
+            $("#loadPage").click(function (e) {
+                e.preventDefault(); // Evitar que se siga el enlace
+                $("#content").load("element.html"); // Cargar test.html en el div con id content
+            });
+        });
+    </script>
 </head>
 
 <body>
@@ -57,15 +66,7 @@
         });
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            // Al hacer clic en el enlace
-            $("#loadPage").click(function (e) {
-                e.preventDefault(); // Evitar que se siga el enlace
-                $("#content").load("element.html"); // Cargar test.html en el div con id content
-            });
-        });
-    </script>
+
 
     <a-scene>
         <!-- Botón que funciona tanto en VR como en desktop -->
