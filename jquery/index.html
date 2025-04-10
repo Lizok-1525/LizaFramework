@@ -34,12 +34,16 @@
                 $('#content').append($box);
                 count++;
             });
-
             // Al hacer clic en una caja, eliminarla
             $(document).on('click', '.clickable-box', function () {
                 $(this).remove();
             });
         });
+        function getRandomColor() {
+            const colors = ['tomato', 'orange', 'gold', 'deepskyblue', 'limegreen', 'violet'];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+
     </script>
 </head>
 
