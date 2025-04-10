@@ -2,10 +2,12 @@
 <html lang="en">
 
 <head>
-    <title>Animation</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Animation: Unfold - A-Frame">
+    <title>Animation</title>
+
+    <!-- Scripts -->
     <script src="https://aframe.io/aframe/dist/aframe-master.min.js"></script>
     <script
         src="https://aframe.io/aframe/examples/showcase/link-traversal/js/components/aframe-tooltip-component.js"></script>
@@ -13,7 +15,8 @@
     <script src="https://aframe.io/aframe/examples/showcase/link-traversal/js/components/link-controls.js"></script>
     <script
         src="https://unpkg.com/aframe-environment-component@1.5.0/dist/aframe-environment-component.min.js"></script>
-    <script src="https://aframe.io/aframe/dist/aframe-master.min.js"></script>
+
+    <!-- Componentes personalizados -->
     <script>
         AFRAME.registerComponent('link-on-click', {
             schema: { type: 'string' },
@@ -34,74 +37,90 @@
 </head>
 
 <body>
-
     <a-scene background="color: #ECECEC">
+        <!-- Assets -->
         <a-assets>
-
             <a-asset-item id="messageText" src="message.html"></a-asset-item>
-            <a-mixin id="board" geometry="depth: .05; height: 1; width: 6" material="shader: flat" pivot="0 0.5 0"
-                position="0 -1 0"></a-mixin>
-            <a-mixin id="unhinge" animation="property: rotation; to: 0 0 0; dur: 1000"></a-mixin>
             <img id="shadow" src="https://aframe.io/aframe/examples/assets/img/radial-shadow-2.png">
 
+            <!-- Mixins -->
+            <a-mixin id="board" geometry="depth: .05; height: 1; width: 6" material="shader: flat" pivot="0 0.5 0"
+                position="0 -1 0">
+            </a-mixin>
+            <a-mixin id="unhinge" animation="property: rotation; to: 0 0 0; dur: 1000">
+            </a-mixin>
         </a-assets>
 
-
-
+        <!-- Escena principal -->
         <a-entity position="0 3 -8" scale="1 1 1" animation__position="property: position; to: 0 5 -8; dur: 2000"
             animation__rotation="property: rotation; from: 0 60 0; to: 0 30 0; dur: 2500">
 
-            <!-- Pivot and position are used to set the "hinge" of each board to it's top edge. -->
-
-            <a-box mixin="board unhinge" color="#F16745" rotation="-20 0 0" animation="delay: 1000">
+            <!-- Primer panel -->
+            <a-box mixin="board unhinge" src="https://cdn.aframe.io/link-traversal/thumbs/forest.png" rotation="-20 0 0"
+                animation="delay: 1000">
                 <a-plane width="6" height="1" position="0 0 0.03" rotation="0 0 0"
                     material="color: #FFF; opacity: 0; transparent: true" link-on-click="./index.html">
                 </a-plane>
 
-                <a-box mixin="board unhinge" color="#FFC65D" rotation="-175 0 0" animation="delay: 250">
+                <!-- Segundo panel -->
+                <a-box mixin="board unhinge" src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/city.jpg"
+                    rotation="-175 0 0" animation="delay: 250">
                     <a-plane width="6" height="1" position="0 0 0.03" rotation="0 0 0"
                         material="color: #FFF; opacity: 0; transparent: true" link-on-click="./galeria.html">
                     </a-plane>
 
-                    <a-box mixin="board unhinge" color="#7BC8A4" rotation="-180 0 0" animation="delay: 500">
+                    <!-- Tercer panel -->
+                    <a-box mixin="board unhinge"
+                        src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/sechelt.jpg" rotation="-180 0 0"
+                        animation="delay: 500">
                         <a-plane width="6" height="1" position="0 0 0.03" rotation="0 0 0"
                             material="color: #FFF; opacity: 0; transparent: true" link-on-click="./test.html">
                         </a-plane>
 
-                        <a-box mixin="board unhinge" color="#4CC3D9" rotation="-180 0 0" animation="delay: 750">
+                        <!-- Cuarto panel -->
+                        <a-box mixin="board unhinge"
+                            src="https://stemkoski.github.io/A-Frame-Examples/images/hexagons.png" rotation="-180 0 0"
+                            animation="delay: 750">
                             <a-plane width="6" height="1" position="0 0 0.03" rotation="0 0 0"
                                 material="color: #FFF; opacity: 0; transparent: true" link-on-click="./new_test.html">
                             </a-plane>
-                            <a-box mixin="board unhinge" color="#93648D" rotation="-180 0 0" animation="delay: 750">
+
+                            <!-- Quinto panel -->
+                            <a-box mixin="board unhinge"
+                                src="https://stemkoski.github.io/A-Frame-Examples/images/stars.jpg" rotation="-180 0 0"
+                                animation="delay: 750">
                                 <a-plane width="6" height="1" position="0 0 0.03" rotation="0 0 0"
                                     material="color: #FFF; opacity: 0; transparent: true"
                                     link-on-click="./ar_js_new.php">
                                 </a-plane>
                             </a-box>
                         </a-box>
-
                     </a-box>
                 </a-box>
             </a-box>
         </a-entity>
 
+        <!-- Elementos adicionales de la escena -->
+        <a-image position="0 -1 0" src="#shadow" rotation="-90 0 0" scale="6 6 6">
+        </a-image>
 
+        <a-light type="directional" color="#fff" intensity="0.628" position="-1 2 1">
+        </a-light>
 
-        <a-image position="0 -1 0" src="#shadow" rotation="-90 0 0" scale="6 6 6"></a-image>
-        <a-light type="directional" color="#fff" intensity="0.628" position="-1 2 1"></a-light>
-        <a-light type="ambient" color="#fff"></a-light>
+        <a-light type="ambient" color="#fff">
+        </a-light>
 
+        <!-- Cámara y controles -->
         <a-camera>
             <a-cursor color="#000"></a-cursor>
         </a-camera>
 
-        <a-entity id="leftHand" link-controls="hand: left"></a-entity>
-        <a-entity id="rightHand" link-controls="hand: right"></a-entity>
+        <a-entity id="leftHand" link-controls="hand: left">
+        </a-entity>
+
+        <a-entity id="rightHand" link-controls="hand: right">
+        </a-entity>
     </a-scene>
-</body>
-
-</html>
-
 </body>
 
 </html>
