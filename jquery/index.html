@@ -15,6 +15,9 @@
                 $("#content").load("../aframe/element.html"); // Cargar "element.html" en el div con id content
             });
         });
+        box.on('click', function () {
+            $(this).remove(); // Elimina el elemento al hacer clic
+        });
     </script>
 </head>
 
