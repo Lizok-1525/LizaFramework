@@ -14,6 +14,16 @@
     <script
         src="https://unpkg.com/aframe-environment-component@1.5.0/dist/aframe-environment-component.min.js"></script>
     <script src="https://aframe.io/aframe/dist/aframe-master.min.js"></script>
+    <script>
+        AFRAME.registerComponent('link-on-click', {
+            schema: { type: 'string' },
+            init: function () {
+                this.el.addEventListener('click', () => {
+                    window.location.href = this.data;
+                });
+            }
+        });
+    </script>
 </head>
 
 <body>
@@ -38,18 +48,15 @@
                 </a-entity>-->
 
 
-            <a-box mixin="board unhinge" color="#F16745" rotation="-20 0 0" animation="delay: 1000"> <a-link
-                    href="./index.html" title="Puerta 1" position="0 1 -0.5" image="#thumbJapan"
-                    scale="0.5 0.5 0.5"></a-link>
-                <a-box mixin="board unhinge" color="#FFC65D" rotation="-175 0 0" animation="delay: 250"><a-link
-                        href="./galeria.html" title="Puerta 1" position="0 1 -0.5" image="#thumbJapan"
-                        scale="0.5 0.5 0.5"></a-link>
-                    <a-box mixin="board unhinge" color="#7BC8A4" rotation="-180 0 0" animation="delay: 500"><a-link
-                            href="./test.html" title="Puerta 1" position="0 1 -0.5" image="#thumbJapan"
-                            scale="0.5 0.5 0.5"></a-link>
-                        <a-box mixin="board unhinge" color="#4CC3D9" rotation="-180 0 0" animation="delay: 500"><a-link
-                                href="./new_test.html" title="Puerta 1" position="0 1 -0.5" image="#thumbJapan"
-                                scale="0.5 0.5 0.5"></a-link></a-box>
+            <a-box mixin="board unhinge" color="#F16745" rotation="-20 0 0" animation="delay: 1000"
+                link-on-click="./index.html">
+                <a-box mixin="board unhinge" color="#FFC65D" rotation="-175 0 0" animation="delay: 250"
+                    link-on-click="./galeria.html">
+                    <a-box mixin="board unhinge" color="#7BC8A4" rotation="-180 0 0" animation="delay: 500"
+                        link-on-click="./test.html">
+                        <a-box mixin="board unhinge" color="#4CC3D9" rotation="-180 0 0" animation="delay: 500"
+                            link-on-click="./new_test.html">
+                        </a-box>
                     </a-box>
                 </a-box>
             </a-box>
