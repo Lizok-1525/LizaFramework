@@ -20,22 +20,19 @@
     </style>
 
     <script>
+        let count = 0; // contador para posicionar las cajas
+
         $(document).ready(function () {
             $('#loadElements').click(function () {
-                const posiciones = [
-                    { x: -1, y: 1, z: -3 },
-                    { x: 0, y: 1, z: -3 },
-                    { x: 1, y: 1, z: -3 }
-                ];
+                const x = count * 1.5; // separa cada caja 1.5 unidades en X
 
-                posiciones.forEach((pos, index) => {
-                    const $box = $('<a-box>')
-                        .attr('position', `${pos.x} ${pos.y} ${pos.z}`)
-                        .attr('color', ['tomato', 'orange', 'gold'][index])
-                        .attr('class', 'clickable-box');
+                const $box = $('<a-box>')
+                    .attr('position', `${x} 1 -4`)
+                    .attr('color', getRandomColor())
+                    .attr('class', 'clickable-box');
 
-                    $('#content').append($box);
-                });
+                $('#content').append($box);
+                count++;
             });
 
             // Al hacer clic en una caja, eliminarla
