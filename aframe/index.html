@@ -18,7 +18,7 @@
                 e.preventDefault(); // Evitar la acción predeterminada del enlace
 
                 // Cargar el contenido de "element.html" y agregarlo a la escena A-Frame
-                $("#scene").load("element.html", function (response, status, xhr) {
+                $("#content").load("element.html", function (response, status, xhr) {
                     if (status === "success") {
                         console.log("Nuevo contenido cargado con éxito.");
                     } else {
