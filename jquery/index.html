@@ -38,19 +38,8 @@
 
         <a-box src="#boxTexture" position="0 2 -9" rotation="0 45 45" scale="1.5 1.5 1.5"></a-box>
 
-        <a-box id="myBox" position="0 1 -3" color="tomato"></a-box>
+        <a-box position="0 1 -3" color="tomato"></a-box>
 
-        <script>
-            AFRAME.registerComponent('hide-on-click', {
-                init: function () {
-                    this.el.addEventListener('click', () => {
-                        this.el.setAttribute('visible', 'false');
-                    });
-                }
-            });
-
-            document.querySelector('#myBox').setAttribute('hide-on-click', '');
-        </script>
 
         <a-sky src="#skyTexture"></a-sky>
         <a-entity environment="preset: forest; dressingAmount: 500"></a-entity>
