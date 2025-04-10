@@ -40,23 +40,16 @@
 
 
 
-
-
-
-        <!-- Series of nested boards that unfold one by one. -->
         <a-entity position="0 3 -8" scale="1 1 1" animation__position="property: position; to: 0 5 -8; dur: 2000"
             animation__rotation="property: rotation; from: 0 60 0; to: 0 30 0; dur: 2500">
 
-            <!-- Pivot and position are used to set the "hinge" of each board to it's top edge. <a-entity
-                    position="0 0.6 0" >
-                    <a-text value="Tunel Rojo" color="#000" width="4"></a-text>
-                </a-entity>-->
+            <!-- Pivot and position are used to set the "hinge" of each board to it's top edge. -->
+
             <a-box mixin="board unhinge" color="#F16745" rotation="-20 0 0" animation="delay: 1000">
                 <a-plane width="6" height="1" position="0 0 0.03" rotation="0 0 0"
                     material="color: #FFF; opacity: 0; transparent: true" link-on-click="./index.html">
                 </a-plane>
 
-                <!-- Caja hija -->
                 <a-box mixin="board unhinge" color="#FFC65D" rotation="-175 0 0" animation="delay: 250">
                     <a-plane width="6" height="1" position="0 0 0.03" rotation="0 0 0"
                         material="color: #FFF; opacity: 0; transparent: true" link-on-click="./galeria.html">
@@ -85,9 +78,6 @@
         </a-entity>
 
 
-        <!--  <a-link href="japan.html" position="-3.5 1.5 -1.0" image="#thumbJapan"></a-link>
-        <a-link href="egypt.html" position="0 1.5 -1.0" image="#thumbEgypt"></a-link>
-        <a-link href="forest.html" position="3.5 1.5 -1.0" image="#thumbForest"></a-link>-->
 
         <a-image position="0 -1 0" src="#shadow" rotation="-90 0 0" scale="6 6 6"></a-image>
         <a-light type="directional" color="#fff" intensity="0.628" position="-1 2 1"></a-light>
