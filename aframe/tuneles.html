@@ -90,10 +90,9 @@
         <a-light type="directional" color="#fff" intensity="0.628" position="-1 2 1"></a-light>
         <a-light type="ambient" color="#fff"></a-light>
 
-        <a-entity>
-            <!-- Cursor para interacción -->
-            <a-cursor></a-cursor>
-        </a-entity>
+        <a-camera>
+            <a-cursor color="#000"></a-cursor>
+        </a-camera>
 
         <a-entity id="leftHand" link-controls="hand: left"></a-entity>
         <a-entity id="rightHand" link-controls="hand: right"></a-entity>
