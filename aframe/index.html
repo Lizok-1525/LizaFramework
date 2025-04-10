@@ -17,6 +17,18 @@
         });
 
     </script>
+    <style>
+        #loadElements,
+        #loadPage {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 10px;
+            background-color: white;
+            z-index: 999;
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body>
@@ -98,6 +110,7 @@
     <a href="#" id="loadPage" style="position: absolute; top: 10px; left: 90px; padding: 10px; z-index: 10;">
         Cargar nuevo elemento
     </a>
+    <button id="loadElements">Crear cajas</button>
     <a-scene>
         <!-- Botón que funciona tanto en VR como en desktop -->
 
