@@ -12,21 +12,7 @@
                 $("#content").load("element.html"); // Cargar test.html en el div con id content
             });
         });
-        $(document).ready(function () {
-            // Al hacer clic en el botón, cargar y agregar contenido de "element.html" en la escena
-            $("#loadEntity").click(function (e) {
-                e.preventDefault(); // Evitar la acción predeterminada del enlace
 
-                // Cargar el contenido de "element.html" y agregarlo a la escena A-Frame
-                $("#content").load("element.html", function (response, status, xhr) {
-                    if (status === "success") {
-                        console.log("Nuevo contenido cargado con éxito.");
-                    } else {
-                        console.log("Error al cargar el contenido.");
-                    }
-                });
-            });
-        });
     </script>
 </head>
 
