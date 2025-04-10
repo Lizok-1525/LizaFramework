@@ -3,72 +3,61 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A-Frame y jQuery</title>
+    <title>A-Frame + jQuery</title>
     <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script>
         $(document).ready(function () {
-            // Al hacer clic en el enlace, cargar "element.html" en el div con id "content"
+            // Cargar elemento.html cuando se hace clic
             $("#loadPage").click(function (e) {
-                e.preventDefault(); // Evitar la acción predeterminada del enlace
-                $("#content").load("../aframe/element.html"); // Cargar "element.html" en el div con id content
+                e.preventDefault();
+                $.get("../aframe/element.html", function (data) {
+                    $("#content").append(data);
+                });
+            });
+
+            // Eliminar cualquier a-box con clase .clickable-box al hacer clic
+            $(document).on('click', '.clickable-box', function () {
+                $(this).remove();
             });
         });
-        box.on('click', function () {
-            $(this).remove(); // Elimina el elemento al hacer clic
-        });
     </script>
+
+    <style>
+        #loadPage {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 10px;
+            z-index: 9999;
+            background: white;
+        }
+    </style>
 </head>
 
 <body>
-    <!-- Botón para cargar contenido -->
-    <a href="#" id="loadPage" style="position: absolute; top: 10px; left: 90px; padding: 10px; z-index: 10;">
-        Cargar nuevo elemento
-    </a>
+    <!-- Botón para cargar el nuevo elemento -->
+    <a href="#" id="loadPage">Cargar nuevo elemento</a>
 
+    <!-- Escena -->
     <a-scene>
         <a-assets>
             <img id="boxTexture" src="https://i.imgur.com/mYmmbrp.jpg">
             <img id="skyTexture" src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/city.jpg">
         </a-assets>
 
-        <!-- Aquí se cargará el nuevo contenido -->
+        <!-- Contenedor donde se cargarán los nuevos elementos -->
         <a-entity id="content" position="0 1 -4"></a-entity>
 
-        <a-box src="#boxTexture" position="0 2 -9" rotation="0 45 45" scale="1.5 1.5 1.5"></a-box>
-
-        <a-box id="myBox3" position="0 1 -3" color="tomato"></a-box>
-
-
+        <!-- Elemento fijo que ya está en escena -->
+        <a-box class="clickable-box" position="0 1 -3" color="tomato"></a-box>
 
         <a-sky src="#skyTexture"></a-sky>
-        <a-entity environment="preset: forest; dressingAmount: 500"></a-entity>
-        <a-camera> <a-cursor color="#FAFAFA"></a-cursor></a-camera>
+        <a-camera>
+            <a-cursor color="white"></a-cursor>
+        </a-camera>
     </a-scene>
-    <script>
-        AFRAME.registerComponent('hide-on-click', {
-            init: function () {
-                this.el.addEventListener('click', () => {
-                    this.el.setAttribute('visible', 'false');
-                });
-            }
-        });
-
-        document.querySelector('#myBox').setAttribute('hide-on-click', '');
-    </script>
-    <script>
-        $(document).ready(function () {
-            $("#loadPage").click(function (e) {
-                e.preventDefault();
-                // Cargamos el contenido dentro de la entidad de A-Frame
-                $.get("../aframe/element.html", function (data) {
-                    $("#content").append(data);
-                });
-            });
-        });
-    </script>
 </body>
-
 
 </html>
