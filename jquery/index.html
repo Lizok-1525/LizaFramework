@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejemplo de carga con jQuery</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Al hacer clic en el enlace
+            $("#loadPage").click(function (e) {
+                e.preventDefault(); // Evitar que se siga el enlace
+                $("#content").load("test.html"); // Cargar test.html en el div con id content
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <a href="#" id="loadPage">Cargar página test.html</a>
+    <div id="content"></div>
+</body>
+
+</html>
