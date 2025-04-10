@@ -89,7 +89,8 @@
                 const $box = $('<a-box>')
                     .attr('position', `${x} 1 -4`)
                     .attr('color', getRandomColor())
-                    .attr('class', 'clickable-box');
+                    .attr('class', 'clickable-box')
+                    .attr('rotation', '0 45 45');
 
                 $('#content').append($box);
                 count++;
