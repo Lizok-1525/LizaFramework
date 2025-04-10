@@ -76,7 +76,7 @@
         </a-entity>
 
         <a-entity id="loadPage" geometry="primitive: plane; width: 1; height: 0.5" material="color: #333; opacity: 0.8"
-            position="1.5 3 -2" text="value: Cargar nuevo box; align: center; color: white; width: 5" class="clickable"
+            position="1.5 3 -2" text="value: Cargar nuevo box; align: center; color: white; width: 7" class="clickable"
             load-on-click="url: element.html; target: #content">
         </a-entity>
 
@@ -89,7 +89,7 @@
         </a-assets>
 
 
-        <div id="content"></div>
+        <a-entity id="content"></a-entity>
 
         <a-box src="#boxTexture" position="0 2 -9" rotation="0 45 45" scale="1.5 1.5 1.5"
             animation__position="property: object3D.position.y; to: 2.2; dir: alternate; dur: 2000; loop: true"
