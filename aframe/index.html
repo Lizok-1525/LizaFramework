@@ -68,7 +68,31 @@
         document.addEventListener('DOMContentLoaded', () => {
             document.querySelector('#car').setAttribute('car-controls', '');
         });
+        let count = 0; // contador para posicionar las cajas
+
+        $(document).ready(function () {
+            $('#loadElements').click(function () {
+                const x = count * 1.5; // separa cada caja 1.5 unidades en X
+
+                const $box = $('<a-box>')
+                    .attr('position', `${x} 1 -4`)
+                    .attr('color', getRandomColor())
+                    .attr('class', 'clickable-box');
+
+                $('#content').append($box);
+                count++;
+            });
+            // Al hacer clic en una caja, eliminarla
+            $(document).on('click', '.clickable-box', function () {
+                $(this).remove();
+            });
+        });
+        function getRandomColor() {
+            const colors = ['tomato', 'orange', 'gold', 'deepskyblue', 'limegreen', 'violet'];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
     </script>
+
 
 
     <a href="#" id="loadPage" style="position: absolute; top: 10px; left: 90px; padding: 10px; z-index: 10;">
