@@ -58,7 +58,33 @@
     </script>
 
     <a-scene>
+        <button style="display: block;" href="./tuneles.html">return<style>
+                button {
+                    position: fixed;
+                    top: .5em;
+                    left: .5em;
 
+                    cursor: pointer;
+                    color: white;
+                    box-shadow: 1px 1px 1px 1px #000000;
+                    background-color: transparent;
+                    border-radius: 5px;
+                    border: 2px solid white;
+
+                    font-family: Arial;
+                    font-size: 1em;
+                    font-weight: bold;
+                    text-shadow: 2px 2px 1px #000000;
+                    padding: 0.25em 0.5em;
+
+                    z-index: 20;
+                }
+
+                button:hover {
+                    color: lightgrey;
+                    border-color: lightgrey;
+                }
+            </style></button>
         <a-assets>
             <img id="boxTexture" src="https://i.imgur.com/mYmmbrp.jpg">
             <img id="skyTexture" src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/sechelt.jpg">
