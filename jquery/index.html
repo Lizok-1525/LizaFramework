@@ -4,22 +4,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ejemplo de carga con jQuery</title>
+    <title>A-Frame y jQuery</title>
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function () {
-            // Al hacer clic en el enlace
+            // Al hacer clic en el enlace, cargar "element.html" en el div con id "content"
             $("#loadPage").click(function (e) {
-                e.preventDefault(); // Evitar que se siga el enlace
-                $("#content").load("test.html"); // Cargar test.html en el div con id content
+                e.preventDefault(); // Evitar la acción predeterminada del enlace
+                $("#content").load("../aframe/element.html"); // Cargar "element.html" en el div con id content
             });
         });
     </script>
 </head>
 
 <body>
-    <a href="#" id="loadPage">Cargar página test.html</a>
-    <div id="content"></div>
+    <!-- Enlace para cargar el contenido -->
+    <a-entity id="loadPage" geometry="primitive: plane; width: 2; height: 0.5" material="color: #333; opacity: 0.8"
+        position="1.5 3 -2" text="value: Cargar nuevo box; align: center; color: white; width: 4">
+    </a-entity>
+
+    <!-- Contenedor para cargar el contenido -->
+    <div id="content"
+        style="position: absolute; top: 10px; left: 10px; background-color: rgba(0, 0, 0, 0.5); padding: 10px; color: white;">
+        <!-- El contenido de "element.html" se cargará aquí -->
+    </div>
+
+    <a-scene>
+        <!-- Escena A-Frame -->
+        <a-assets>
+            <img id="boxTexture" src="https://i.imgur.com/mYmmbrp.jpg">
+            <img id="skyTexture" src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/sechelt.jpg">
+        </a-assets>
+
+        <a-entity id="content"></a-entity>
+
+        <a-box src="#boxTexture" position="0 2 -9" rotation="0 45 45" scale="1.5 1.5 1.5"></a-box>
+        <a-sky src="#skyTexture"></a-sky>
+        <a-camera></a-camera>
+    </a-scene>
 </body>
 
 </html>
