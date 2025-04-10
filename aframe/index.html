@@ -75,10 +75,11 @@
             link-on-click="./tuneles.html">
         </a-entity>
 
-        <!-- También mantener el botón HTML para usuarios no-VR -->
-        <button id="htmlReturnButton" onclick="window.location.href='./tuneles.html'">Return</button>
+        <a-entity id="loadPage" geometry="primitive: plane; width: 1; height: 0.5" material="color: #333; opacity: 0.8"
+            position="1.5 3 -2" text="value: Cargar nuevo box; align: center; color: white; width: 5" class="clickable"
+            load-on-click="url: element.html; target: #content">
+        </a-entity>
 
-        <!-- Resto de tu escena... -->
         <a-assets>
             <img id="boxTexture" src="https://i.imgur.com/mYmmbrp.jpg">
             <img id="skyTexture" src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/sechelt.jpg">
@@ -88,17 +89,7 @@
         </a-assets>
 
 
-
-
-        <a-entity link="#; title: Nuevo cubo;" id="loadPage" color="#000"
-            geometry="primitive: plane; width: 1; height: 0.5" material="color: #333; opacity: 0.8" position="1.5 3 2"
-            text="value: Cargar nuevo box; align: center; color: white; width: 5" class="clickable"></a-entity>
-
-
-
         <div id="content"></div>
-
-
 
         <a-box src="#boxTexture" position="0 2 -9" rotation="0 45 45" scale="1.5 1.5 1.5"
             animation__position="property: object3D.position.y; to: 2.2; dir: alternate; dur: 2000; loop: true"
@@ -107,9 +98,6 @@
             animation__click="property: rotation; from: 0 45 45; to: 0 405 45; dur: 1000; startEvents: click"></a-box>
 
         <a-sky src="#skyTexture"></a-sky>
-        <!-- Out of the box environment! 
-    -->
-
 
         <a-entity id="rig" position="0 0 2">
             <a-entity id="camera" position="0 1.6 0" camera look-controls wasd-controls></a-entity>
@@ -139,6 +127,10 @@
         </a-camera>
         <a-entity camera look-controls position="0 2 5"></a-entity>
     </a-scene>
+
+    <button id="htmlReturnButton" onclick="window.location.href='./tuneles.html'">Return</button>
+
+
     <script>
         AFRAME.registerComponent('link-on-click', {
             schema: { type: 'string' },
