@@ -51,31 +51,28 @@
                     position="0 0.6 0" >
                     <a-text value="Tunel Rojo" color="#000" width="4"></a-text>
                 </a-entity>-->
-            <a-plane position="0 5 -8" rotation="0 0 0" width="6" height="1"
-                material="color: #FFF; opacity: 0; transparent: true" link-on-click="./index.html">
-            </a-plane>
+            <a-box mixin="board unhinge" color="#F16745" rotation="-20 0 0" animation="delay: 1000">
+                <a-plane position="0 0.5 0.03" rotation="0 0 0" width="6" height="1"
+                    material="color: #FFF; opacity: 0; transparent: true" link-on-click="./index.html">
+                </a-plane>
 
-            <a-plane position="0 4 -8" rotation="0 0 0" width="6" height="1"
-                material="color: #FFF; opacity: 0; transparent: true" link-on-click="./galeria.html">
-            </a-plane>
+                <!-- Caja hija -->
+                <a-box mixin="board unhinge" color="#FFC65D" rotation="-175 0 0" animation="delay: 250">
+                    <a-plane position="0 0.5 0.03" rotation="0 0 0" width="6" height="1"
+                        material="color: #FFF; opacity: 0; transparent: true" link-on-click="./galeria.html">
+                    </a-plane>
 
-            <a-plane position="0 3 -8" rotation="0 0 0" width="6" height="1"
-                material="color: #FFF; opacity: 0; transparent: true" link-on-click="./test.html">
-            </a-plane>
+                    <a-box mixin="board unhinge" color="#7BC8A4" rotation="-180 0 0" animation="delay: 500">
+                        <a-plane position="0 0.5 0.03" rotation="0 0 0" width="6" height="1"
+                            material="color: #FFF; opacity: 0; transparent: true" link-on-click="./test.html">
+                        </a-plane>
 
-            <a-plane position="0 2 -8" rotation="0 0 0" width="6" height="1"
-                material="color: #FFF; opacity: 0; transparent: true" link-on-click="./new_test.html">
-            </a-plane>
-
-            <a-box mixin="board unhinge" color="#F16745" rotation="-20 0 0" animation="delay: 1000"
-                link-on-click="./index.html">
-                <a-box mixin="board unhinge" color="#FFC65D" rotation="-175 0 0" animation="delay: 250"
-                    link-on-click="./galeria.html">
-                    <a-box mixin="board unhinge" color="#7BC8A4" rotation="-180 0 0" animation="delay: 500"
-                        link-on-click="./test.html">
-                        <a-box mixin="board unhinge" color="#4CC3D9" rotation="-180 0 0" animation="delay: 500"
-                            link-on-click="./new_test.html">
+                        <a-box mixin="board unhinge" color="#4CC3D9" rotation="-180 0 0" animation="delay: 750">
+                            <a-plane position="0 0.5 0.03" rotation="0 0 0" width="6" height="1"
+                                material="color: #FFF; opacity: 0; transparent: true" link-on-click="./new_test.html">
+                            </a-plane>
                         </a-box>
+
                     </a-box>
                 </a-box>
             </a-box>
