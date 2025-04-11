@@ -7,7 +7,7 @@ switch ($type) {
         break;
 
     case 'sphere':
-        echo '<a-sphere position="0 1 -4" radius="1" color="skyblue"></a-sphere>';
+        echo '<a-sphere position="0 2 4" radius="1" color="skyblue"></a-sphere>';
         break;
 
     case 'model':
