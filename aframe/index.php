@@ -251,7 +251,7 @@
                 const type = $(this).data('type');
 
                 $.ajax({
-                    url: 'documento.php',
+                    url: 'element.php',
                     type: 'GET',
                     data: {
                         type: type
