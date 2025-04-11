@@ -227,7 +227,7 @@
 
             // Configurar botón de retorno
             document.getElementById('htmlReturnButton').addEventListener('click', () => {
-                window.location.href = './tuneles.html';
+                window.location.href = './tuneles.php';
             });
 
             // Manejar visibilidad del botón en VR
@@ -244,7 +244,7 @@
             // Configurar botón de carga de elementos
             $('#loadPage').click(function(e) {
                 e.preventDefault();
-                $("#contenido").load("../aframe/element.html");
+                $("#contenido").load("../aframe/element.php");
             });
 
             $('.loadElement').click(function() {

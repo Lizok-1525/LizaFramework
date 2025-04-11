@@ -39,7 +39,7 @@
   <a-scene renderer="colorManagement: true;" model-viewer="gltfModel: #buho; title: The Birds" xr-mode-ui="XRMode: xr">
     <a-entity id="returnButton" geometry="primitive: plane; width: 1; height: 0.5" material="color: #333; opacity: 0.8"
       position="-1.5 1.5 -2" text="value: Return; align: center; color: white; width: 5" class="clickable"
-      link-on-click="./tuneles.html">
+      link-on-click="./tuneles.php">
     </a-entity>
 
     <!-- También mantener el botón HTML para usuarios no-VR -->
@@ -60,8 +60,10 @@
   </a-scene>
   <script>
     AFRAME.registerComponent('link-on-click', {
-      schema: { type: 'string' },
-      init: function () {
+      schema: {
+        type: 'string'
+      },
+      init: function() {
         this.el.addEventListener('click', () => {
           window.location.href = this.data;
         });
@@ -69,10 +71,10 @@
     });
 
     // Ocultar botón HTML en VR
-    document.querySelector('a-scene').addEventListener('enter-vr', function () {
+    document.querySelector('a-scene').addEventListener('enter-vr', function() {
       document.getElementById('htmlReturnButton').style.display = 'none';
     });
-    document.querySelector('a-scene').addEventListener('exit-vr', function () {
+    document.querySelector('a-scene').addEventListener('exit-vr', function() {
       document.getElementById('htmlReturnButton').style.display = 'block';
     });
   </script>

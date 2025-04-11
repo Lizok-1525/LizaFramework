@@ -19,13 +19,16 @@
     <script>
         AFRAME.registerComponent('scale-on-mouseenter', {
             schema: {
-                to: { default: '2.5 2.5 2.5', type: 'vec3' }
+                to: {
+                    default: '2.5 2.5 2.5',
+                    type: 'vec3'
+                }
             },
 
-            init: function () {
+            init: function() {
                 var data = this.data;
                 var el = this.el;
-                this.el.addEventListener('mouseenter', function () {
+                this.el.addEventListener('mouseenter', function() {
                     el.object3D.scale.copy(data.to);
                 });
             }
@@ -35,11 +38,11 @@
         <a-entity id="returnButton" geometry="primitive: plane; width: 1; height: 0.5"
             material="color: #333; opacity: 0.8" position="-1.5 1.5 -2"
             text="value: Return; align: center; color: white; width: 5" class="clickable"
-            link-on-click="./tuneles.html">
+            link-on-click="./tuneles.php">
         </a-entity>
 
         <!-- También mantener el botón HTML para usuarios no-VR -->
-        <button id="htmlReturnButton" onclick="window.location.href='./tuneles.html'">Return</button>
+        <button id="htmlReturnButton" onclick="window.location.href='./tuneles.php'">Return</button>
 
         <a-assets>
             <!-- Images. -->
@@ -74,14 +77,14 @@
         </a-entity>
         <script id="link" type="text/html">
             <a-entity class="link"
-              geometry="primitive: plane; height: 1; width: 1"
-              material="shader: flat; src: ${thumb}"
-              sound="on: click; src: #click-sound"
-              event-set__mouseenter="scale: 1.2 1.2 1"
-              event-set__mouseleave="scale: 1 1 1"
-              event-set__click="_target: #image-360; _delay: 300; material.src: ${src}"
-              proxy-event="event: click; to: #image-360; as: fade"></a-entity>
-          </script>
+                geometry="primitive: plane; height: 1; width: 1"
+                material="shader: flat; src: ${thumb}"
+                sound="on: click; src: #click-sound"
+                event-set__mouseenter="scale: 1.2 1.2 1"
+                event-set__mouseleave="scale: 1 1 1"
+                event-set__click="_target: #image-360; _delay: 300; material.src: ${src}"
+                proxy-event="event: click; to: #image-360; as: fade"></a-entity>
+        </script>
 
         <!-- Camera + Cursor. -->
         <a-camera>
@@ -94,8 +97,10 @@
     </a-scene>
     <script>
         AFRAME.registerComponent('link-on-click', {
-            schema: { type: 'string' },
-            init: function () {
+            schema: {
+                type: 'string'
+            },
+            init: function() {
                 this.el.addEventListener('click', () => {
                     window.location.href = this.data;
                 });
@@ -103,10 +108,10 @@
         });
 
         // Ocultar botón HTML en VR
-        document.querySelector('a-scene').addEventListener('enter-vr', function () {
+        document.querySelector('a-scene').addEventListener('enter-vr', function() {
             document.getElementById('htmlReturnButton').style.display = 'none';
         });
-        document.querySelector('a-scene').addEventListener('exit-vr', function () {
+        document.querySelector('a-scene').addEventListener('exit-vr', function() {
             document.getElementById('htmlReturnButton').style.display = 'block';
         });
     </script>

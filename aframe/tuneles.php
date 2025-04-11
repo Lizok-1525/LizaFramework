@@ -19,10 +19,12 @@
     <!-- Componentes personalizados -->
     <script>
         AFRAME.registerComponent('link-on-click', {
-            schema: { type: 'string' },
-            init: function () {
+            schema: {
+                type: 'string'
+            },
+            init: function() {
                 this.el.addEventListener('click', () => {
-                    this.el.sceneEl.exitVR();  // Salir de VR temporalmente
+                    this.el.sceneEl.exitVR(); // Salir de VR temporalmente
                     setTimeout(() => {
                         window.location.href = this.data + '?autoVR=true';
 
@@ -60,14 +62,14 @@
             <a-box mixin="board unhinge" src="https://cdn.aframe.io/link-traversal/thumbs/forest.png" rotation="-20 0 0"
                 animation="delay: 1000">
                 <a-plane width="6" height="1" position="0 0 0.03" rotation="0 0 0"
-                    material="color: #FFF; opacity: 0; transparent: true" link-on-click="./index.html">
+                    material="color: #FFF; opacity: 0; transparent: true" link-on-click="./index.php">
                 </a-plane>
 
                 <!-- Segundo panel -->
                 <a-box mixin="board unhinge" src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/city.jpg"
                     rotation="-175 0 0" animation="delay: 250">
                     <a-plane width="6" height="1" position="0 0 0.03" rotation="0 0 0"
-                        material="color: #FFF; opacity: 0; transparent: true" link-on-click="./galeria.html">
+                        material="color: #FFF; opacity: 0; transparent: true" link-on-click="./galeria.php">
                     </a-plane>
 
                     <!-- Tercer panel -->
@@ -75,7 +77,7 @@
                         src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/sechelt.jpg" rotation="-180 0 0"
                         animation="delay: 500">
                         <a-plane width="6" height="1" position="0 0 0.03" rotation="0 0 0"
-                            material="color: #FFF; opacity: 0; transparent: true" link-on-click="./test.html">
+                            material="color: #FFF; opacity: 0; transparent: true" link-on-click="./test.php">
                         </a-plane>
 
                         <!-- Cuarto panel -->
@@ -83,7 +85,7 @@
                             src="https://stemkoski.github.io/A-Frame-Examples/images/hexagons.png" rotation="-180 0 0"
                             animation="delay: 750">
                             <a-plane width="6" height="1" position="0 0 0.03" rotation="0 0 0"
-                                material="color: #FFF; opacity: 0; transparent: true" link-on-click="./new_test.html">
+                                material="color: #FFF; opacity: 0; transparent: true" link-on-click="./new_test.php">
                             </a-plane>
 
                             <!-- Quinto panel -->
