@@ -3,7 +3,7 @@ $type = $_GET['type'] ?? '';
 
 switch ($type) {
     case 'box':
-        echo '<a-box position="0 1 -4" color="tomato" depth="1" height="1" width="1"></a-box>';
+        echo '<a-box class="clickable-box" position="0 1 -4" color="tomato" depth="1" height="1" width="1"></a-box>';
         break;
 
     case 'sphere':
