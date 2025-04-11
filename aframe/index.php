@@ -26,11 +26,11 @@
             cursor: pointer;
         }
 
-        #htmlReturnButton {
+        #htmlReturnButton,
+        #loadNav {
             position: fixed;
-            top: .5em;
-            left: .5em;
-            cursor: pointer;
+            top: .5em auto;
+            left: .5em auto;
             color: white;
             box-shadow: 1px 1px 1px 1px #000000;
             background-color: transparent;
