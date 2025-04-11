@@ -58,9 +58,9 @@
     </button>
     <button id="loadElements">Crear cajas</button>
     <button id="htmlReturnButton">Return</button>
-    <button class="loadElement" data-type="box" style="position: absolute; top: 40px;">Cargar Caja</button>
-    <button class="loadElement" data-type="sphere" style="position: absolute; top: 40px;">Cargar Esfera</button>
-    <button class="loadElement" data-type="model" style="position: absolute; top: 40px;">Cargar Modelo</button>
+    <button class="loadElement" data-type="box" style="position: absolute; top: 40px; z-index: 20;">Cargar Caja</button>
+    <button class="loadElement" data-type="sphere" style="position: absolute; top: 40px; z-index: 20;">Cargar Esfera</button>
+    <button class="loadElement" data-type="model" style="position: absolute; top: 40px; z-index: 20">Cargar Modelo</button>
 
     <!-- Escena A-Frame -->
     <a-scene fog="black" physics="debug: true">
