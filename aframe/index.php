@@ -62,8 +62,17 @@
     <button class="loadElement" data-type="sphere" style="position: absolute; top: 60px; z-index: 20;">Cargar Esfera</button>
     <button class="loadElement" data-type="model" style="position: absolute; top: 80px; z-index: 20">Cargar Modelo</button>
 
+    <button id="loadNav">Abrir navegación</button>
+
+
     <!-- Escena A-Frame -->
     <a-scene fog="black" physics="debug: true">
+
+
+        <a-entity id="navigacion" position="0 1 -4"></a-entity>
+
+
+
         <!-- Assets -->
         <a-assets>
             <img id="boxTexture" src="https://i.imgur.com/mYmmbrp.jpg">
@@ -265,6 +274,10 @@
                 });
             });
 
+
+            $('#loadNav').click(function() {
+                $('#content').load('navigate.php');
+            });
 
             // Configurar botón de creación de cajas
             $('#loadElements').click(function() {
