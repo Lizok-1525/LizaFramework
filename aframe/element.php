@@ -7,7 +7,7 @@ switch ($type) {
         break;
 
     case 'sphere':
-        echo '<a-sphere position="0 2 4" radius="1" color="skyblue" animation="property: object3D.position.y; to: 2.2; dir: alternate; dur: 2000; loop: true" ></a-sphere>';
+        echo '<a-sphere class="clickable-box" position="0 2 4" radius="1" color="skyblue" animation="property: object3D.position.y; to: 2.2; dir: alternate; dur: 2000; loop: true" ></a-sphere>';
         break;
 
     case 'model':

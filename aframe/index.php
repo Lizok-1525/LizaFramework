@@ -53,16 +53,14 @@
 
 <body>
     <!-- Controles UI -->
-    <button id="loadPage" style="position: absolute; top: 10px; left: 90px; padding: 10px; z-index: 10;">
-        Cargar nuevo elemento
-    </button>
+
     <button id="loadElements">Crear cajas</button>
     <button id="htmlReturnButton">Return</button>
     <button class="loadElement" data-type="box" style="position: absolute; top: 40px; z-index: 20;">Cargar Caja</button>
     <button class="loadElement" data-type="sphere" style="position: absolute; top: 60px; z-index: 20;">Cargar Esfera</button>
     <button class="loadElement" data-type="model" style="position: absolute; top: 80px; z-index: 20">Cargar Modelo</button>
 
-    <button id="loadNav">Abrir navegación</button>
+    <button id="loadNav" style="left: 80px;">Abrir navegación</button>
 
 
     <!-- Escena A-Frame -->
