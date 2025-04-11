@@ -14,7 +14,6 @@
 
     <!-- Estilos -->
     <style>
-        #loadElements,
         #loadPage,
         #loadElement {
             position: absolute;
@@ -27,10 +26,13 @@
         }
 
         #htmlReturnButton,
-        #loadNav {
+        #loadNav,
+        .loadElements,
+        #loadPage,
+        #loadElement {
             position: fixed;
-            top: .5em auto;
-            left: .5em auto;
+            top: .5em;
+            left: .5em;
             color: white;
             box-shadow: 1px 1px 1px 1px #000000;
             background-color: transparent;
@@ -54,11 +56,11 @@
 <body>
     <!-- Controles UI -->
 
-    <button id="loadElements">Crear cajas</button>
+    <button id="loadElement" style="left: 240px;">Crear cajas</button>
     <button id="htmlReturnButton">Return</button>
-    <button class="loadElement" data-type="box" style="position: absolute; top: 40px; z-index: 20;">Cargar Caja</button>
-    <button class="loadElement" data-type="sphere" style="position: absolute; top: 60px; z-index: 20;">Cargar Esfera</button>
-    <button class="loadElement" data-type="model" style="position: absolute; top: 80px; z-index: 20">Cargar Modelo</button>
+    <button class="loadElements" data-type="box" style="top: 50px;">Cargar Caja</button>
+    <button class="loadElements" data-type="sphere" style="top: 50px;left: 260px;">Cargar Esfera</button>
+    <button class="loadElements" data-type="model" style="top: 50px;left: 120px;">Cargar Modelo</button>
 
     <button id="loadNav" style="left: 80px;">Abrir navegación</button>
 
@@ -157,34 +159,7 @@
             }
         });
 
-        AFRAME.registerComponent('car-controls', {
-            schema: {},
-            init: function() {
-                this.direction = new THREE.Vector3();
-                this.speed = 0.05;
-                window.addEventListener('keydown', (e) => {
-                    const car = this.el.object3D.position;
-                    switch (e.key) {
-                        case 'ArrowUp':
-                        case 'w':
-                            car.z -= this.speed;
-                            break;
-                        case 'ArrowDown':
-                        case 's':
-                            car.z += this.speed;
-                            break;
-                        case 'ArrowLeft':
-                        case 'a':
-                            car.x -= this.speed;
-                            break;
-                        case 'ArrowRight':
-                        case 'd':
-                            car.x += this.speed;
-                            break;
-                    }
-                });
-            }
-        });
+
 
         AFRAME.registerComponent('link-on-click', {
             schema: {
@@ -227,10 +202,6 @@
         // Inicialización
         document.addEventListener('DOMContentLoaded', () => {
             // Configurar controles del coche
-            const car = document.querySelector('#car');
-            if (car) {
-                car.setAttribute('car-controls', '');
-            }
 
             // Configurar botón de retorno
             document.getElementById('htmlReturnButton').addEventListener('click', () => {
@@ -254,7 +225,7 @@
                  $("#contenido").load("../aframe/element.php");
              });*/
 
-            $('.loadElement').click(function() {
+            $('.loadElements').click(function() {
                 const type = $(this).data('type');
 
                 $.ajax({
@@ -279,10 +250,10 @@
             });
 
             // Configurar botón de creación de cajas
-            $('#loadElements').click(function() {
+            $('.loadElements').click(function() {
                 const x = count * 1.5; // separa cada caja 1.5 unidades en X
                 const $box = $('<a-box>')
-                    .attr('position', `${x} 1 -4`)
+                    .attr('position', `${x} 1 -1`)
                     .attr('color', getRandomColor())
                     .attr('class', 'clickable-box')
 
@@ -290,6 +261,7 @@
                 $('#content').append($box);
                 count++;
             });
+
 
             // Eliminar cajas al hacer clic
             $(document).on('click', '.clickable-box', function() {
