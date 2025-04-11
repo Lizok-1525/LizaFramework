@@ -57,6 +57,9 @@
     </button>
     <button id="loadElements">Crear cajas</button>
     <button id="htmlReturnButton">Return</button>
+    <button class="loadElement" data-type="box">Cargar Caja</button>
+    <button class="loadElement" data-type="sphere">Cargar Esfera</button>
+    <button class="loadElement" data-type="model">Cargar Modelo</button>
 
     <!-- Escena A-Frame -->
     <a-scene fog="black" physics="debug: true">
@@ -112,7 +115,9 @@
                 if (scene.xrSession) return;
                 if (scene.renderer.xr) {
                     scene.renderer.xr.enabled = true;
-                    scene.renderer.xr.setSessionInit({ optionalFeatures: ['local-floor', 'bounded-floor'] });
+                    scene.renderer.xr.setSessionInit({
+                        optionalFeatures: ['local-floor', 'bounded-floor']
+                    });
 
                     navigator.xr.requestSession('immersive-vr', {
                         optionalFeatures: ['local-floor', 'bounded-floor']
@@ -130,12 +135,15 @@
         // Componentes de A-Frame
         AFRAME.registerComponent('scale-on-mouseenter', {
             schema: {
-                to: { default: '2.5 2.5 2.5', type: 'vec3' }
+                to: {
+                    default: '2.5 2.5 2.5',
+                    type: 'vec3'
+                }
             },
-            init: function () {
+            init: function() {
                 var data = this.data;
                 var el = this.el;
-                this.el.addEventListener('mouseenter', function () {
+                this.el.addEventListener('mouseenter', function() {
                     el.object3D.scale.copy(data.to);
                 });
             }
@@ -143,28 +151,38 @@
 
         AFRAME.registerComponent('car-controls', {
             schema: {},
-            init: function () {
+            init: function() {
                 this.direction = new THREE.Vector3();
                 this.speed = 0.05;
                 window.addEventListener('keydown', (e) => {
                     const car = this.el.object3D.position;
                     switch (e.key) {
                         case 'ArrowUp':
-                        case 'w': car.z -= this.speed; break;
+                        case 'w':
+                            car.z -= this.speed;
+                            break;
                         case 'ArrowDown':
-                        case 's': car.z += this.speed; break;
+                        case 's':
+                            car.z += this.speed;
+                            break;
                         case 'ArrowLeft':
-                        case 'a': car.x -= this.speed; break;
+                        case 'a':
+                            car.x -= this.speed;
+                            break;
                         case 'ArrowRight':
-                        case 'd': car.x += this.speed; break;
+                        case 'd':
+                            car.x += this.speed;
+                            break;
                     }
                 });
             }
         });
 
         AFRAME.registerComponent('link-on-click', {
-            schema: { type: 'string' },
-            init: function () {
+            schema: {
+                type: 'string'
+            },
+            init: function() {
                 this.el.addEventListener('click', () => {
                     window.location.href = this.data;
                 });
@@ -173,12 +191,15 @@
 
         AFRAME.registerComponent('show-on-distance', {
             schema: {
-                maxDistance: { type: 'number', default: 5 }
+                maxDistance: {
+                    type: 'number',
+                    default: 5
+                }
             },
-            init: function () {
+            init: function() {
                 this.camera = document.querySelector('[camera]');
             },
-            tick: function () {
+            tick: function() {
                 const objPosition = this.el.object3D.position;
                 const camPosition = this.camera.object3D.position;
                 const distance = objPosition.distanceTo(camPosition);
@@ -220,14 +241,32 @@
             }
 
             // Configurar botón de carga de elementos
-            $('#loadPage').click(function (e) {
+            $('#loadPage').click(function(e) {
                 e.preventDefault();
                 $("#contenido").load("../aframe/element.html");
             });
 
+            $('.loadElement').click(function() {
+                const type = $(this).data('type');
+
+                $.ajax({
+                    url: 'documento.php',
+                    type: 'GET',
+                    data: {
+                        type: type
+                    },
+                    success: function(data) {
+                        $('#content').append(data);
+                    },
+                    error: function() {
+                        alert('No se pudo cargar el elemento');
+                    }
+                });
+            });
+
 
             // Configurar botón de creación de cajas
-            $('#loadElements').click(function () {
+            $('#loadElements').click(function() {
                 const x = count * 1.5; // separa cada caja 1.5 unidades en X
                 const $box = $('<a-box>')
                     .attr('position', `${x} 1 -4`)
@@ -240,7 +279,7 @@
             });
 
             // Eliminar cajas al hacer clic
-            $(document).on('click', '.clickable-box', function () {
+            $(document).on('click', '.clickable-box', function() {
                 $(this).remove();
             });
         });
