@@ -251,10 +251,10 @@
             }
 
             // Configurar botón de carga de elementos
-            $('#loadPage').click(function(e) {
-                e.preventDefault();
-                $("#contenido").load("../aframe/element.php");
-            });
+            /* $('#loadPage').click(function(e) {
+                 e.preventDefault();
+                 $("#contenido").load("../aframe/element.php");
+             });*/
 
             $('.loadElement').click(function() {
                 const type = $(this).data('type');
