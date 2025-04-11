@@ -171,6 +171,21 @@
             }
         });
 
+        AFRAME.registerComponent('show-on-distance', {
+            schema: {
+                maxDistance: { type: 'number', default: 5 }
+            },
+            init: function () {
+                this.camera = document.querySelector('[camera]');
+            },
+            tick: function () {
+                const objPosition = this.el.object3D.position;
+                const camPosition = this.camera.object3D.position;
+                const distance = objPosition.distanceTo(camPosition);
+                this.el.setAttribute('visible', distance < this.data.maxDistance);
+            }
+        });
+
         // Variables globales
         let count = 0; // contador para posicionar las cajas
 
@@ -218,7 +233,8 @@
                     .attr('position', `${x} 1 -4`)
                     .attr('color', getRandomColor())
                     .attr('class', 'clickable-box')
-                    .attr('rotation', '0 45 45');
+                    .attr('rotation', '0 45 45')
+                    .attr('show-on-distance', 'maxDistance: 6');
                 $('#content').append($box);
                 count++;
             });
