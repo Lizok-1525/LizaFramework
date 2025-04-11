@@ -173,6 +173,39 @@
             }
         });
 
+        AFRAME.registerComponent('move-on-key', {
+            schema: {
+                speed: {
+                    type: 'number',
+                    default: 0.1
+                }
+            },
+            init: function() {
+                this.position = this.el.object3D.position;
+                this.keysPressed = {};
+
+                // Escuchar teclas presionadas
+                window.addEventListener('keydown', (e) => {
+                    this.keysPressed[e.key.toLowerCase()] = true;
+                });
+                window.addEventListener('keyup', (e) => {
+                    this.keysPressed[e.key.toLowerCase()] = false;
+                });
+            },
+            tick: function() {
+                const speed = this.data.speed;
+
+                // Movimiento básico con WASD
+                if (this.keysPressed['w']) this.position.z -= speed;
+                if (this.keysPressed['s']) this.position.z += speed;
+                if (this.keysPressed['a']) this.position.x -= speed;
+                if (this.keysPressed['d']) this.position.x += speed;
+                if (this.keysPressed['q']) this.position.y += speed;
+                if (this.keysPressed['e']) this.position.y -= speed;
+            }
+        });
+
+
         // Variables globales
         let count = 0; // contador para posicionar las cajas
 
