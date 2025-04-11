@@ -208,7 +208,7 @@
             $('#loadPage').click(function (e) {
                 e.preventDefault();
                 $.get("../aframe/element.html", function (data) {
-                    $("#contenido").append(data);
+                    $("#contenido").load(data);
                 });
             });
 
