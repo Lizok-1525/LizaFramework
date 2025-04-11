@@ -69,7 +69,7 @@
     <a-scene fog="black" physics="debug: true">
 
 
-        <a-entity id="navigacion" position="0 1 -4"></a-entity>
+        <a-entity id="navContainer" position="0 2 -4" visible="false" animation__scale="property: scale; to: 1 1 1; dur: 1000"></a-entity>
 
 
 
@@ -276,7 +276,8 @@
 
 
             $('#loadNav').click(function() {
-                $('#content').load('navigate.php');
+                // Activa la animación de unfold y hace visible el contenedor
+                $('#navContainer').attr('visible', 'true').get(0).emit('unfold');
             });
 
             // Configurar botón de creación de cajas
