@@ -14,19 +14,7 @@
 
     <!-- Estilos -->
     <style>
-        #loadPage,
-        #loadElement {
-            position: absolute;
-            top: 10px;
-            left: 250px;
-            padding: 10px;
-            background-color: white;
-            z-index: 999;
-            cursor: pointer;
-        }
-
         #htmlReturnButton,
-        #loadNav,
         .loadElements,
         #loadPage,
         #loadElement {
@@ -56,21 +44,16 @@
 <body>
     <!-- Controles UI -->
 
-    <button id="loadElement" style="left: 240px;">Crear cajas</button>
-    <button id="htmlReturnButton">Return</button>
-    <button class="loadElements" data-type="box" style="top: 50px;">Cargar Caja</button>
-    <button class="loadElements" data-type="sphere" style="top: 50px;left: 260px;">Cargar Esfera</button>
-    <button class="loadElements" data-type="model" style="top: 50px;left: 120px;">Cargar Modelo</button>
 
-    <button id="loadNav" style="left: 80px;">Abrir navegación</button>
+    <button id="htmlReturnButton">Return</button>
+    <button id="loadElement" style="left: 90px;">Crear cajas</button>
+    <button class="loadElements" data-type="box" style="top: 50px;">Cargar Caja</button>
+    <button class="loadElements" data-type="sphere" style="top: 50px;left: 270px;">Cargar Esfera</button>
+    <button class="loadElements" data-type="model" style="top: 50px;left: 130px;">Cargar Modelo</button>
 
 
     <!-- Escena A-Frame -->
     <a-scene fog="black" physics="debug: true">
-
-
-        <a-entity id="navContainer" position="0 2 -4" visible="false" animation__scale="property: scale; to: 1 1 1; dur: 1000"></a-entity>
-
 
 
         <!-- Assets -->
@@ -244,13 +227,9 @@
             });
 
 
-            $('#loadNav').click(function() {
-                // Activa la animación de unfold y hace visible el contenedor
-                $('#navContainer').attr('visible', 'true').get(0).emit('unfold');
-            });
 
             // Configurar botón de creación de cajas
-            $('.loadElements').click(function() {
+            $('#loadElement').click(function() {
                 const x = count * 1.5; // separa cada caja 1.5 unidades en X
                 const $box = $('<a-box>')
                     .attr('position', `${x} 1 -1`)

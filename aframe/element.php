@@ -11,7 +11,7 @@ switch ($type) {
         break;
 
     case 'model':
-        echo '<a-entity gltf-model="#testbed" position="0 0 -5" scale="0.5 0.5 0.5"></a-entity>';
+        echo '<a-entity gltf-model="#testbed" position="0 -1 -5" scale="1 1 1"></a-entity>';
         break;
 
     default:
