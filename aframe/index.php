@@ -15,7 +15,8 @@
     <!-- Estilos -->
     <style>
         #loadElements,
-        #loadPage {
+        #loadPage,
+        #loadElement {
             position: absolute;
             top: 10px;
             left: 250px;
@@ -57,9 +58,9 @@
     </button>
     <button id="loadElements">Crear cajas</button>
     <button id="htmlReturnButton">Return</button>
-    <button class="loadElement" data-type="box">Cargar Caja</button>
-    <button class="loadElement" data-type="sphere">Cargar Esfera</button>
-    <button class="loadElement" data-type="model">Cargar Modelo</button>
+    <button class="loadElement" data-type="box" style="position: absolute; top: 40px;">Cargar Caja</button>
+    <button class="loadElement" data-type="sphere" style="position: absolute; top: 40px;">Cargar Esfera</button>
+    <button class="loadElement" data-type="model" style="position: absolute; top: 40px;">Cargar Modelo</button>
 
     <!-- Escena A-Frame -->
     <a-scene fog="black" physics="debug: true">
