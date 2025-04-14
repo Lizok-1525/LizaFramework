@@ -196,12 +196,12 @@
                 const speed = this.data.speed;
 
                 // Movimiento básico con WASD
-                if (this.keysPressed['w']) this.position.z -= speed;
-                if (this.keysPressed['s']) this.position.z += speed;
-                if (this.keysPressed['a']) this.position.x -= speed;
-                if (this.keysPressed['d']) this.position.x += speed;
-                if (this.keysPressed['q']) this.position.y += speed;
-                if (this.keysPressed['e']) this.position.y -= speed;
+                if (this.keysPressed['l']) this.position.z -= speed;
+                if (this.keysPressed['o']) this.position.z += speed;
+                if (this.keysPressed['ñ']) this.position.x -= speed;
+                if (this.keysPressed['k']) this.position.x += speed;
+                if (this.keysPressed['i']) this.position.y += speed;
+                if (this.keysPressed['p']) this.position.y -= speed;
             }
         });
 
