@@ -56,6 +56,13 @@
     <a-scene fog="black" physics="debug: true">
 
 
+        <a-entity id="rig" position="0 0 0" wasd-controls>
+            <a-entity camera look-controls="pointerLockEnabled: true" position="0 1.6 0">
+                <a-cursor color="#FAFAFA"></a-cursor>
+            </a-entity>
+        </a-entity>
+
+
         <!-- Assets -->
         <a-assets>
             <img id="boxTexture" src="https://i.imgur.com/mYmmbrp.jpg">
@@ -79,20 +86,15 @@
         <a-sky src="#skyTexture"></a-sky>
 
         <!-- Sistema de cámara y controles -->
-        <a-entity id="rig" position="0 0 2">
-            <a-entity id="camera" position="0 1.6 0" camera look-controls wasd-controls></a-entity>
-            <a-entity id="lhand" effect-controls="hand: left;"></a-entity>
-            <a-entity id="rhand" effect-controls="hand: right;"></a-entity>
-        </a-entity>
+
+        <a-entity id="lhand" effect-controls="hand: left;"></a-entity>
+        <a-entity id="rhand" effect-controls="hand: right;"></a-entity>
+
 
         <!-- Entorno -->
         <a-entity environment="preset: forest; dressingAmount: 500"></a-entity>
 
-        <!-- Cámara secundaria -->
-        <a-camera>
-            <a-cursor color="#FAFAFA"></a-cursor>
-        </a-camera>
-        <a-entity camera look-controls position="0 2 5"></a-entity>
+
     </a-scene>
 
     <!-- Scripts -->
