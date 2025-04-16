@@ -43,7 +43,7 @@
     </a-entity>
 
     <!-- También mantener el botón HTML para usuarios no-VR -->
-    <button id="htmlReturnButton" onclick="window.location.href='./tuneles.html'">Return</button>
+    <button id="htmlReturnButton" onclick="window.location.href='./tuneles.php'">Return</button>
 
     <a-assets timeout="10000">
       <a-asset-item id="buho" src="../assets/images/gltf/Owl.gltf" response-type="arraybuffer"
