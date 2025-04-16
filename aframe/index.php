@@ -55,15 +55,10 @@
     <!-- Escena A-Frame -->
     <a-scene fog="black" physics="debug: true">
 
-        <a-entity id="cursor-message"
-            position="0 2 -3"
-            visible="false"
-            text="value: ; color: yellow; align: center; width: 4">
-        </a-entity>
 
         <a-entity id="rig" position="0 0 0" wasd-controls>
             <a-entity camera look-controls="pointerLockEnabled: true" position="0 1.6 0">
-                <a-cursor color="#FAFAFA" id="myCursor" raycaster="objects: .clickable"></a-cursor>
+                <a-cursor color="#FAFAFA"></a-cursor>
             </a-entity>
         </a-entity>
 
@@ -137,47 +132,6 @@
                 }
             });
         });
-
-        AFRAME.registerComponent('cursor-position-logger', {
-            init: function() {
-                const sceneEl = this.el.sceneEl;
-                const messageEl = document.querySelector('#cursor-message');
-                const cursorEl = document.querySelector('#myCursor');
-                let lastPosition = null;
-
-                // Mostrar mensaje con la posición del cursor al presionar "p"
-                window.addEventListener('keydown', (e) => {
-                    if (e.key === 'p' || e.key === 'P') {
-                        const intersection = cursorEl.components.raycaster.getIntersection(sceneEl);
-                        if (intersection) {
-                            const pos = intersection.point;
-                            const posStr = `Cursor Pos: x=${pos.x.toFixed(2)} y=${pos.y.toFixed(2)} z=${pos.z.toFixed(2)}`;
-                            console.log(posStr);
-
-                            messageEl.setAttribute('text', 'value', posStr);
-                            messageEl.setAttribute('visible', true);
-                            lastPosition = {
-                                x: pos.x,
-                                y: pos.y,
-                                z: pos.z
-                            };
-                        } else {
-                            console.log('No hay intersección con ningún objeto.');
-                        }
-                    }
-                });
-
-                // Ocultar mensaje si el cursor se mueve (raycaster cambia)
-                sceneEl.addEventListener('raycaster-intersection', () => {
-                    if (messageEl.getAttribute('visible')) {
-                        messageEl.setAttribute('visible', false);
-                    }
-                });
-            }
-        });
-
-        // Activa el componente en la escena
-        document.querySelector('a-scene').setAttribute('cursor-position-logger', '');
 
 
 
