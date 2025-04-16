@@ -154,16 +154,7 @@
 
 
 
-        AFRAME.registerComponent('link-on-click', {
-            schema: {
-                type: 'string'
-            },
-            init: function() {
-                this.el.addEventListener('click', () => {
-                    window.location.href = this.data;
-                });
-            }
-        });
+
 
         AFRAME.registerComponent('show-on-distance', {
             schema: {
@@ -214,6 +205,16 @@
                 if (this.keysPressed['p']) this.position.y -= speed;
             }
         });
+        /*AFRAME.registerComponent('link-on-click', {
+            schema: {
+                type: 'string'
+            },
+            init: function() {
+                this.el.addEventListener('click', () => {
+                    window.location.href = this.data;
+                });
+            }
+        });*/
 
         AFRAME.registerComponent('link-on-click', {
             schema: {
