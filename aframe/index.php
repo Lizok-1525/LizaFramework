@@ -64,9 +64,9 @@
 
 
         <a-plane width="6" height="1" position="0 0 0.03" rotation="0 0 0"
-            material="color: #FFF; opacity: 50; transparent: true" link-on-click="loadElements">
+            material="color: #FFF; opacity: 0.5; transparent: true"
+            link-on-click="tipo1">
         </a-plane>
-
 
 
 
