@@ -96,7 +96,7 @@
 
         <!-- Contenedor para elementos dinámicos -->
         <a-entity id="content" position="0 1 -4"></a-entity>
-        <a-entity id="contenido" position="0 2 -8"></a-entity>
+        <a-entity id="contenido" position="9 1 18"></a-entity>
 
         <!-- Elementos estáticos de la escena -->
         <a-box src="#boxTexture" position="-3 2 -9" rotation="0 45 45" scale="1.5 1.5 1.5"
@@ -267,7 +267,7 @@
                             type: type
                         },
                         success: function(data) {
-                            $('#content').append(data);
+                            $('#contenido').append(data);
                         },
                         error: function() {
                             alert('No se pudo cargar el elemento');
