@@ -222,25 +222,22 @@
             },
             init: function() {
                 this.el.addEventListener('click', () => {
-                    const type = tipo1; // Esto es lo que pongas en link-on-click="..."
+                    const type = this.data; // Esto es lo que pongas en link-on-click="..."
 
-                    $.ajax({
-                        url: 'element.php',
-                        type: 'GET',
-                        data: {
-                            type: type
-                        },
-                        success: function(data) {
-                            $('#content').append(data);
-                        },
-                        error: function() {
-                            alert('No se pudo cargar el elemento');
-                        }
+                    const x = count * 1.5; // separa cada caja 1.5 unidades en X
+                    const $box = $('<a-box>')
+                        .attr('position', `${x} 1 -1`)
+                        .attr('color', getRandomColor())
+                        .attr('class', 'clickable-box')
 
-                    });
-                }, )
+                        .attr('show-on-distance', 'maxDistance: 6');
+                    $('#content').append($box);
+                    count++;
+                });
             }
-        });
+        }, )
+
+
 
 
 
