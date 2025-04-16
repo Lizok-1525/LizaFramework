@@ -63,6 +63,14 @@
         </a-entity>
 
 
+        <a-plane width="6" height="1" position="0 0 0.03" rotation="0 0 0"
+            material="color: #FFF; opacity: 50; transparent: true" link-on-click="loadElements">
+        </a-plane>
+
+
+
+
+
         <!-- Assets -->
         <a-assets>
             <img id="boxTexture" src="https://i.imgur.com/mYmmbrp.jpg">
@@ -206,6 +214,36 @@
                 if (this.keysPressed['p']) this.position.y -= speed;
             }
         });
+
+        AFRAME.registerComponent('link-on-click', {
+            schema: {
+                type: 'string'
+            },
+            init: function() {
+                this.el.addEventListener('click', () => {
+                    const type = this.data; // Esto es lo que pongas en link-on-click="..."
+
+                    $.ajax({
+                        url: 'element.php',
+                        type: 'GET',
+                        data: {
+                            type: type
+                        },
+                        success: function(data) {
+                            $('#content').append(data);
+                        },
+                        error: function() {
+                            alert('No se pudo cargar el elemento');
+                        }
+
+                    });
+                }, )
+            }
+        });
+
+
+
+
 
 
         // Variables globales
