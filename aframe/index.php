@@ -325,7 +325,7 @@
                         type: type
                     },
                     success: function(data) {
-                        $('#content').append(data);
+                        $('#contenido').append(data);
                     },
                     error: function() {
                         alert('No se pudo cargar el elemento');
@@ -340,6 +340,7 @@
                 const x = count * 1.5; // separa cada caja 1.5 unidades en X
                 const $box = $('<a-box>')
                     .attr('position', `${x} 1 -1`)
+                    .attr('rotation', '15 45 30')
                     .attr('color', getRandomColor())
                     .attr('class', 'clickable-box')
 
