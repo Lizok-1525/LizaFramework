@@ -55,10 +55,15 @@
     <!-- Escena A-Frame -->
     <a-scene fog="black" physics="debug: true">
 
+        <a-entity id="cursor-message"
+            position="0 2 -3"
+            visible="false"
+            text="value: ; color: yellow; align: center; width: 4">
+        </a-entity>
 
         <a-entity id="rig" position="0 0 0" wasd-controls>
-            <a-entity camera look-controls="pointerLockEnabled: true" position="0 1.6 0">
-                <a-cursor color="#FAFAFA"></a-cursor>
+            <a-entity id="myCamera" camera look-controls="pointerLockEnabled: true" position="0 1.6 0">
+                <a-cursor color="#FAFAFA" id="myCursor" raycaster="objects: .clickable"></a-cursor>
             </a-entity>
         </a-entity>
 
@@ -148,6 +153,47 @@
             });
         });
 
+        // Componente para mostrar la posición del cursor al presionar "p"
+        AFRAME.registerComponent('show-camera-direction', {
+            init: function() {
+                const camera = document.querySelector('#myCamera');
+                const messageEl = document.querySelector('#cursor-message');
+                let shown = false;
+
+                // Cuando se presiona la tecla "p"
+                window.addEventListener('keydown', (e) => {
+                    if (e.key === 'v' || e.key === 'V') {
+                        // Obtener dirección a la que mira la cámara
+                        const cameraObj = camera.object3D;
+                        const direction = new THREE.Vector3();
+                        cameraObj.getWorldDirection(direction); // Vector unitario
+
+                        const position = new THREE.Vector3();
+                        cameraObj.getWorldPosition(position);
+
+                        // Calcular un punto lejano en esa dirección
+                        const point = position.clone().add(direction.multiplyScalar(10));
+
+                        const posStr = `Mira hacia: x=${point.x.toFixed(2)} y=${point.y.toFixed(2)} z=${point.z.toFixed(2)}`;
+                        console.log(posStr);
+
+                        messageEl.setAttribute('text', 'value', posStr);
+                        messageEl.setAttribute('visible', true);
+                        shown = true;
+                    }
+                });
+
+                // Si mueves el ratón, oculta el mensaje
+                window.addEventListener('mousemove', () => {
+                    if (shown) {
+                        messageEl.setAttribute('visible', false);
+                        shown = false;
+                    }
+                });
+            }
+        });
+
+        document.querySelector('a-scene').setAttribute('show-camera-direction', '');
 
 
         // Componentes de A-Frame
