@@ -65,7 +65,7 @@
 
         <a-plane width="6" height="1" position="0 0 0.03" rotation="0 0 0"
             material="color: #FFF; opacity: 0.5; transparent: true"
-            link-on-click="tipo1">
+            link-click="tipo1">
         </a-plane>
 
 
@@ -205,7 +205,7 @@
                 if (this.keysPressed['p']) this.position.y -= speed;
             }
         });
-        /*AFRAME.registerComponent('link-on-click', {
+        AFRAME.registerComponent('link-on-click', {
             schema: {
                 type: 'string'
             },
@@ -214,15 +214,15 @@
                     window.location.href = this.data;
                 });
             }
-        });*/
+        });
 
-        AFRAME.registerComponent('link-on-click', {
+        AFRAME.registerComponent('link-click', {
             schema: {
                 type: 'string'
             },
             init: function() {
                 this.el.addEventListener('click', () => {
-                    const type = this.data; // Esto es lo que pongas en link-on-click="..."
+                    const type = tipo1; // Esto es lo que pongas en link-on-click="..."
 
                     $.ajax({
                         url: 'element.php',
