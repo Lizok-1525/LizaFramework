@@ -63,11 +63,26 @@
         </a-entity>
 
 
-        <a-plane width="6" height="1" position="0 0 0.03" rotation="0 0 0"
+        <a-plane width="2" height="1" position="-7 1 -5" rotation="0 45 0"
             material="color: #FFF; opacity: 0.5; transparent: true"
-            link-click="tipo1">
+            link-click="crear"
+            text="value: Crear caja; align: center; color: white; width: 3">
         </a-plane>
-
+        <a-plane width="2" height="1" position="-7 2 -5" rotation="0 45 0"
+            material="color: #FFF; opacity: 0.5; transparent: true"
+            cargar-elemento="box"
+            text="value: Cargar caja; align: center; color: white; width: 3">
+        </a-plane>
+        <a-plane width="2" height="1" position="-8 2 -3" rotation="0 45 0"
+            material="color: #FFF; opacity: 0.5; transparent: true"
+            cargar-elemento="model"
+            text="value: Cargar modelo; align: center; color: white; width: 3">
+        </a-plane>
+        <a-plane width="2" height="1" position="-8 1 -3" rotation="0 45 0"
+            material="color: #FFF; opacity: 0.5; transparent: true"
+            cargar-elemento="sphere"
+            text="value: Cargar esfera; align: center; color: white; width: 3">
+        </a-plane>
 
 
 
@@ -216,30 +231,51 @@
             }
         });
 
+
+        // Componente para cargar cajas al hacer clic
         AFRAME.registerComponent('link-click', {
+            init: function() {
+                this.el.addEventListener('click', () => {
+                    const x = count * 1.5;
+                    const $box = $('<a-box>')
+                        .attr('position', `${x} 1 -1`)
+                        .attr('rotation', '15 45 30')
+                        .attr('color', getRandomColor())
+                        .attr('class', 'clickable-box')
+                        .attr('show-on-distance', 'maxDistance: 6');
+
+                    $('#content').append($box);
+                    count++;
+                });
+            }
+        });
+
+
+        // Componente para cargar elementos dinámicamente
+        AFRAME.registerComponent('cargar-elemento', {
             schema: {
                 type: 'string'
             },
             init: function() {
                 this.el.addEventListener('click', () => {
-                    const type = this.data; // Esto es lo que pongas en link-on-click="..."
+                    const type = this.data;
 
-                    const x = count * 1.5; // separa cada caja 1.5 unidades en X
-                    const $box = $('<a-box>')
-                        .attr('position', `${x} 1 -1`)
-                        .attr('color', getRandomColor())
-                        .attr('class', 'clickable-box')
-
-                        .attr('show-on-distance', 'maxDistance: 6');
-                    $('#content').append($box);
-                    count++;
+                    $.ajax({
+                        url: 'element.php',
+                        type: 'GET',
+                        data: {
+                            type: type
+                        },
+                        success: function(data) {
+                            $('#content').append(data);
+                        },
+                        error: function() {
+                            alert('No se pudo cargar el elemento');
+                        }
+                    });
                 });
             }
-        }, )
-
-
-
-
+        });
 
 
 
