@@ -160,7 +160,7 @@
                 const messageEl = document.querySelector('#cursor-message');
                 let shown = false;
 
-                // Cuando se presiona la tecla "p"
+                // Cuando se presiona la tecla "v", muestra la dirección de la cámara
                 window.addEventListener('keydown', (e) => {
                     if (e.key === 'v' || e.key === 'V') {
                         // Obtener dirección a la que mira la cámara
@@ -177,19 +177,19 @@
                         const posStr = `Mira hacia: x=${point.x.toFixed(2)} y=${point.y.toFixed(2)} z=${point.z.toFixed(2)}`;
                         console.log(posStr);
 
-                        messageEl.setAttribute('text', 'value', posStr);
-                        messageEl.setAttribute('visible', true);
+                        //messageEl.setAttribute('text', 'value', posStr);
+                        //messageEl.setAttribute('visible', true);
                         shown = true;
                     }
                 });
 
                 // Si mueves el ratón, oculta el mensaje
-                window.addEventListener('mousemove', () => {
-                    if (shown) {
-                        messageEl.setAttribute('visible', false);
-                        shown = false;
-                    }
-                });
+                /* window.addEventListener('mousemove', () => {
+                     if (shown) {
+                         messageEl.setAttribute('visible', false);
+                         shown = false;
+                     }
+                 });*/
             }
         });
 
@@ -389,7 +389,6 @@
                     .attr('rotation', '15 45 30')
                     .attr('color', getRandomColor())
                     .attr('class', 'clickable-box')
-
                     .attr('show-on-distance', 'maxDistance: 6');
                 $('#content').append($box);
                 count++;
