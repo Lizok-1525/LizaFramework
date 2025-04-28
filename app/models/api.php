@@ -23,6 +23,7 @@ if (!$encryption) {
 global $core;
 //$core->print_arr($_SERVER);
 
+//UUSRk/Kgw2NrXvwfaEMLlDlSeUZLSVlZaFl0THhxeE4yQmVMK0E9PQ==
 //ZjJPYALXxhPTFUQaxgZOI0ttdElJYWJCNjJIMXMyc3hkREZRRmc9PQ==
 
 $key = $_GET['key'];
@@ -139,8 +140,15 @@ switch ($segments[1]) {
         }
         break;
 
-    case "green":
-        echo "Your favorite color is green!";
+    case "chat":
+        $sql = "SELECT * FROM chat";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $jsonResult['content'][] = $row;
+            }
+        }
         break;
     default:
         //echo "Your favorite color is neither red, blue, nor green!";
