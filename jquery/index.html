@@ -14,8 +14,13 @@
         $(document).ready(function () {
             // Al hacer clic en el enlace
             $("#loadPage").click(function (e) {
-                e.preventDefault(); // Evitar que se siga el enlace
-                $("#content").load("test.html"); // Cargar test.html en el div con id content
+                //e.preventDefault(); // Evitar que se siga el enlace
+                $("#content").load("test.html", function (response, status, xhr) {
+                    if (status == "error") {
+                        var msg = "Sorry but there was an error: ";
+                        $("#error").html(msg + xhr.status + " " + xhr.statusText);
+                    }
+                }); // Cargar test.html en el div con id content
             });
         });
         $(document).ready(function () {
