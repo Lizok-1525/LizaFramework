@@ -3,67 +3,24 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>A-Frame + jQuery dinámico</title>
-    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+    <title>jQuery dinámico</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <style>
-        #loadElements {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            padding: 10px;
-            background-color: white;
-            z-index: 999;
-            cursor: pointer;
-        }
-    </style>
-
     <script>
-        let count = 0; // contador para posicionar las cajas
-
         $(document).ready(function () {
-            $('#loadElements').click(function () {
-                const x = count * 1.5; // separa cada caja 1.5 unidades en X
-
-                const $box = $('<a-box>')
-                    .attr('position', `${x} 1 -4`)
-                    .attr('color', getRandomColor())
-                    .attr('class', 'clickable-box');
-
-                $('#content').append($box);
-                count++;
-            });
-            // Al hacer clic en una caja, eliminarla
-            $(document).on('click', '.clickable-box', function () {
-                $(this).remove();
+            // Al hacer clic en el enlace
+            $("#loadPage").click(function (e) {
+                e.preventDefault(); // Evitar que se siga el enlace
+                $("#content").load("test.html"); // Cargar test.html en el div con id content
             });
         });
-        function getRandomColor() {
-            const colors = ['tomato', 'orange', 'gold', 'deepskyblue', 'limegreen', 'violet'];
-            return colors[Math.floor(Math.random() * colors.length)];
-        }
-
     </script>
 </head>
 
 <body>
-    <button id="loadElements">Crear cajas</button>
-
-    <a-scene>
-        <a-assets>
-            <img id="skyTexture" src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/city.jpg">
-        </a-assets>
-
-        <!-- Aquí se insertarán las cajas con jQuery -->
-        <a-entity id="content"></a-entity>
-
-        <a-sky src="#skyTexture"></a-sky>
-
-        <a-camera>
-            <a-cursor color="white"></a-cursor>
-        </a-camera>
-    </a-scene>
+    <a href="#" id="loadPage">Cargar página test.html</a>
+    <div id="content"></div>
 </body>
+
 
 </html>
