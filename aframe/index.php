@@ -381,6 +381,7 @@
 
 
 
+
             // Configurar botón de creación de cajas
             $('#loadElement').click(function() {
                 const x = count * 1.5; // separa cada caja 1.5 unidades en X

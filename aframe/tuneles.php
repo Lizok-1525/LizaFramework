@@ -40,22 +40,25 @@
 </head>
 
 <body>
-    <a-scene background="color: #ECECEC">
+    <a-scene background="color:rgb(185, 185, 185)">
         <!-- Assets -->
         <a-assets>
             <a-asset-item id="messageText" src="message.html"></a-asset-item>
             <img id="shadow" src="https://aframe.io/aframe/examples/assets/img/radial-shadow-2.png">
 
             <!-- Mixins -->
-            <a-mixin id="board" geometry="depth: .05; height: 1; width: 6" material="shader: flat" pivot="0 0.5 0"
-                position="0 -1 0">
+            <a-mixin id="board" geometry="depth: .05; height: 2; width: 6" material="shader: flat" pivot="0 0.5 0"
+                position="0 -1.9 0">
             </a-mixin>
             <a-mixin id="unhinge" animation="property: rotation; to: 0 0 0; dur: 1000">
             </a-mixin>
         </a-assets>
 
+        <a-curvedimage height="9" position="10 3 -9" radius="5.7" rotation="0 60 0" scale="1.2 1.2 1.2" src="https://rawgit.com/aframevr/aframe/master/examples/showcase/curved-mockups/ui-3.png" theta-length="180" shadow></a-curvedimage>
+
+
         <!-- Escena principal -->
-        <a-entity position="0 3 -8" scale="1 1 1" animation__position="property: position; to: 0 5 -8; dur: 2000"
+        <a-entity position="0 5 -8" scale="1 1 1" animation__position="property: position; to: 0 5 -8; dur: 2000"
             animation__rotation="property: rotation; from: 0 60 0; to: 0 30 0; dur: 2500">
 
             <!-- Primer panel -->
