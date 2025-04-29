@@ -16,10 +16,8 @@
 
     <div class="container">
 
-        <div class="row" id="mensajes">
-
+        <div class="row mh-80" id="mensajes" style="padding-bottom: 80px;">
         </div>
-
         <div class="input-group w-80  p-3 fixed-bottom">
 
             <input type="text" class="form-control" placeholder="Escribe tu mensaje..." name="mensaje" id="mensaje">
@@ -27,31 +25,30 @@
         </div>
 
     </div>
-    <script>
 
-    </script>
+
     <script>
+        function cargarMensajes() {
+            $("#mensajes").load("mensajes.php");
+        }
+
+        setInterval(cargarMensajes, 8000); // actualiza cada 8 segundos
+        cargarMensajes();
+
+
         $('#enviar').click(function() {
             var mensaje = $('#mensaje').val();
 
-            $.ajax({
-                url: 'mensajes.php',
-                type: 'POST',
-
-                data: {
-                    mensaje: mensaje
-                },
-                success: function(respuesta) {
-                    //console.log('Respuesta del servidor:', respuesta);
-                    $("#mensajes").load("mensajes.php"); // recarga los mensajes
-                    $('#mensaje').val('');
-                },
-                error: function(error) {
-                    console.error('Error:', error);
-                }
+            $.post("mensajes.php", {
+                mensaje: mensaje
+            }, function() {
+                cargarMensajes(); // recarga después de enviar
+                $('#mensaje').val('');
+            }).fail(function(error) {
+                console.error("Error al enviar mensaje:", error);
             });
-            $("#mensajes").load("mensajes.php");
         });
+
 
         $('#mensaje').keypress(function(event) {
             if (event.which === 13) { // 13 es el código de la tecla Enter
@@ -60,7 +57,33 @@
             }
         });
     </script>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import {
+            initializeApp
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import {
+            getAnalytics
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
 
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+            apiKey: "AIzaSyCis0PJOi20N8YcN87qY5KRUyWyFLjE9M4",
+            authDomain: "mi-pagina-web-46841.firebaseapp.com",
+            projectId: "mi-pagina-web-46841",
+            storageBucket: "mi-pagina-web-46841.firebasestorage.app",
+            messagingSenderId: "671932914524",
+            appId: "1:671932914524:web:d482e9700874d08ec2bf99",
+            measurementId: "G-LZ3Y55P7QD"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+    </script>
 </body>
 
 
