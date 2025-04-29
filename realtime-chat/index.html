@@ -37,7 +37,7 @@
         <div class="input-group mb-3">
 
             <input id="name" placeholder="Tu nombre" class="form-control" />
-            <input id="message" placeholder="Escribe un mensaje..." class="form-control w-50" />
+            <textarea id="message" placeholder="Escribe un mensaje..." class="form-control w-50" rows="4"></textarea>
             <button onclick="sendMessage()" class="btn btn-outline-secondary">Enviar</button>
         </div>
     </div>
@@ -76,7 +76,7 @@
             const msg = snapshot.val();
             const li = document.createElement('li');
             li.classList.add('list-group-item');
-            li.textContent = `${msg.name}: ${msg.text}`;
+            li.innerHTML = `<strong>${msg.name}:</strong><pre style="margin:0;">${msg.text}</pre>`;
             document.getElementById('messages').appendChild(li);
         });
 
