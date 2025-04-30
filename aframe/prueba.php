@@ -46,7 +46,7 @@
         <!-- Contenedor donde se añadirán modelos -->
         <a-entity id="model-container"></a-entity>
 
-        <a-entity environment="preset: forest; dressingAmount: 500"></a-entity>
+        <a-entity environment="preset: egypt; ground: hills; shadow: true"></a-entity>
     </a-scene>
 
 
