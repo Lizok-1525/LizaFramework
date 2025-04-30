@@ -1,3 +1,4 @@
 .vscode/
 firebase-key.json
 realtime-chat/index.html
+realtime-chat/server.js
