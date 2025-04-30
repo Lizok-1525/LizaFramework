@@ -5,6 +5,9 @@
     <script src="https://unpkg.com/aframe-extras@6.1.1/dist/aframe-extras.min.js"></script>
     <script src="https://unpkg.com/aframe-super-hands-component@4.0.5/dist/aframe-super-hands.min.js"></script>
     <script src="https://unpkg.com/aframe-physics-system@4.0.1/dist/aframe-physics-system.min.js"></script>
+    <script src="https://c-frame.github.io/aframe-physics-system/dist/aframe-physics-system.js"></script>
+    <script src="https://c-frame.github.io/aframe-physics-system/examples/components/force-pushable.js"></script>
+    <script src="https://c-frame.github.io/aframe-physics-system/examples/components/grab.js"></script>
 
 
 </head>
@@ -22,6 +25,9 @@
                 super-hands></a-entity>
         </a-entity>
 
+
+
+
         <!-- Palo central -->
         <a-cylinder id="palo" position="0 1 -4" radius="0.1" height="2" color="#333" static-body></a-cylinder>
 
@@ -31,6 +37,8 @@
             class="clickable"
             text="value: Añadir piezas; align: center; color: white; width: 4">
         </a-box>
+
+
 
         <!-- Cámara -->
 
@@ -62,11 +70,63 @@
                     torus.setAttribute('segments-tubular', 24);
                     torus.setAttribute('color', '#' + Math.floor(Math.random() * 16777215).toString(16));
                     torus.setAttribute('class', 'grabbable');
-                    torus.setAttribute('dynamic-body', 'mass: 0.5');
-                    torus.setAttribute('grabbable', '');
-
+                    torus.setAttribute('jump-on-click', '');
                     scene.appendChild(torus);
                     contador++;
+                }
+            });
+            AFRAME.registerComponent('jump-on-click', {
+                schema: {
+                    jumpHeight: {
+                        type: 'number',
+                        default: 2
+                    },
+                    duration: {
+                        type: 'number',
+                        default: 300
+                    } // ms (ida y vuelta: 600ms)
+                },
+
+                init: function() {
+                    const el = this.el;
+                    let jumping = false;
+                    let originalY = null;
+
+                    el.addEventListener('click', () => {
+                        /* if (jumping) return; // Evita múltiples saltos a la vez*/
+                        jumping = true;
+
+                        // Guarda la posición original
+                        const pos = el.getAttribute('position');
+                        originalY = pos.y;
+
+                        // Sube
+                        el.setAttribute('animation__up', {
+                            property: 'position',
+                            to: `${pos.x} ${originalY + this.data.jumpHeight} ${pos.z}`,
+                            dur: this.data.duration,
+                            easing: 'easeOutQuad'
+                        });
+
+                        posP = document.querySelector('#palo').getAttribute('position');
+                        nuevoY = posP.y - 1; // Nueva posición Y
+                        // Baja
+                        el.setAttribute('animation__down', {
+                            property: 'position',
+                            to: `${posP.x} ${nuevoY} ${posP.z}`,
+                            dur: this.data.duration,
+                            delay: this.data.duration,
+                            easing: 'easeInQuad'
+                            // Nueva posición Y
+                        });
+
+                        // Permitir nuevo salto después de que termine
+
+
+                    });
+                    setTimeout(() => {
+                        jumping = false;
+                    }, this.data.duration * 2);
                 }
             });
         </script>

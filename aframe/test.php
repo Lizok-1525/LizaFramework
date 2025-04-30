@@ -10,6 +10,7 @@
   <script src="https://aframe.io/aframe/examples/showcase/model-viewer/animation-mixer.js"></script>
   <script src="https://aframe.io/aframe/examples/showcase/model-viewer/ar-shadows.js"></script>
   <script src="https://aframe.io/aframe/examples/showcase/model-viewer/model-viewer.js"></script>
+
   <style>
     .buttons {
       position: absolute;
