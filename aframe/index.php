@@ -68,22 +68,22 @@
         </a-entity>
 
 
-        <a-plane width="2" height="1" position="-7 1 -5" rotation="0 45 0"
+        <a-plane class="clickable" width="2" height="1" position="-7 1 -5" rotation="0 45 0"
             material="color: #FFF; opacity: 0.5; transparent: true"
             link-click="crear"
             text="value: Crear caja; align: center; color: white; width: 3">
         </a-plane>
-        <a-plane width="2" height="1" position="-7 2 -5" rotation="0 45 0"
+        <a-plane class="clickable" width="2" height="1" position="-7 2 -5" rotation="0 45 0"
             material="color: #FFF; opacity: 0.5; transparent: true"
             cargar-elemento="box"
             text="value: Cargar caja; align: center; color: white; width: 3">
         </a-plane>
-        <a-plane width="2" height="1" position="-8 2 -3" rotation="0 45 0"
+        <a-plane class="clickable" width="2" height="1" position="-8 2 -3" rotation="0 45 0"
             material="color: #FFF; opacity: 0.5; transparent: true"
             cargar-elemento="model"
             text="value: Cargar modelo; align: center; color: white; width: 3">
         </a-plane>
-        <a-plane width="2" height="1" position="-8 1 -3" rotation="0 45 0"
+        <a-plane class="clickable" width="2" height="1" position="-8 1 -3" rotation="0 45 0"
             material="color: #FFF; opacity: 0.5; transparent: true"
             cargar-elemento="sphere"
             text="value: Cargar esfera; align: center; color: white; width: 3">
@@ -214,27 +214,6 @@
         });
 
 
-
-
-
-        AFRAME.registerComponent('show-on-distance', {
-            schema: {
-                maxDistance: {
-                    type: 'number',
-                    default: 5
-                }
-            },
-            init: function() {
-                this.camera = document.querySelector('[camera]');
-            },
-            tick: function() {
-                const objPosition = this.el.object3D.position;
-                const camPosition = this.camera.object3D.position;
-                const distance = objPosition.distanceTo(camPosition);
-                this.el.setAttribute('visible', distance < this.data.maxDistance);
-            }
-        });
-
         AFRAME.registerComponent('move-on-key', {
             schema: {
                 speed: {
@@ -266,6 +245,7 @@
                 if (this.keysPressed['p']) this.position.y -= speed;
             }
         });
+
         AFRAME.registerComponent('link-on-click', {
             schema: {
                 type: 'string'
@@ -323,8 +303,7 @@
             }
         });
 
-
-
+        //-----------------------------------------------
 
         // Variables globales
         let count = 0; // contador para posicionar las cajas
@@ -378,8 +357,6 @@
                     }
                 });
             });
-
-
 
 
             // Configurar botón de creación de cajas

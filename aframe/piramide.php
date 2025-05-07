@@ -8,11 +8,12 @@
     <script src="https://c-frame.github.io/aframe-physics-system/dist/aframe-physics-system.js"></script>
     <script src="https://c-frame.github.io/aframe-physics-system/examples/components/force-pushable.js"></script>
     <script src="https://c-frame.github.io/aframe-physics-system/examples/components/grab.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 </head>
 
 <body>
-    <a-scene mouse-grab physics="driver: ammo; gravity: -9.8; debug: false">
+    <a-scene mouse-grab physics="driver: ammo; gravity: -9.8; debug: false" score-detector puntos-de-altura="blockHeight: 0.5; tolerance: 0.2">
         <!-- Player -->
         <a-entity camera look-controls wasd-controls position="0 1.6 0">
             <a-entity id="mouseCursor"
@@ -22,67 +23,64 @@
                 geometry="primitive: ring; radiusInner: 0.01; radiusOuter: 0.02">
             </a-entity>
         </a-entity>
+        <a-assets>
+            <a-torus id="torus-template"
+                radius="0.7"
+                radius-tubular="0.1"
+                segments-radial="8"
+                segments-tubular="12"
+                visible="false"
+                ammo-body="type: dynamic; disableDeactivation: false; linearDamping: 0.9; angularDamping: 0.9"
+                ammo-shape="type: hacd"
+                class="grabbable"
+                force-pushable
+                shadow></a-torus>
+            <a-box id="bloque-template"
+                width="0.5"
+                height="0.5"
+                depth="0.5"
+                visible="false"
+                ammo-body="type: dynamic; disableDeactivation: false; linearDamping: 0.1; angularDamping: 0.1"
+                ammo-shape="type: box"
+                class="grabbable bloque"
+                force-pushable
+                shadow></a-box>
+        </a-assets>
 
-        <!--
-        <a-plane position="0 0 -4" rotation="-90 0 0" width="100" height="100" color="#7BC8A4" ammo-body="type: static" ammo-shape></a-plane>
 
-         Manos con controles -->
-        <a-entity id="left-hand" ammo-body="type: kinematic; emitCollisionEvents: true" ammo-shape="type: sphere; fit: manual; sphereRadius: 0.02;"
-            hand-controls="hand: left" grab></a-entity>
-        <a-entity id="right-hand" ammo-body="type: kinematic; emitCollisionEvents: true" ammo-shape="type: sphere; fit: manual; sphereRadius: 0.02;"
-            hand-controls="hand: right" grab></a-entity>
 
-        <!-- Palo central -->
-        <a-cylinder id="palo" position="0 1 -4" radius="0.1" height="2.5" color="#333" shadow
-            ammo-body="type: static;"
-            ammo-shape="type: cylinder;"></a-cylinder>
-        <a-cylinder id="palo" position="3 1 -7" radius="0.1" height="2.5" color="#333" shadow
-            ammo-body="type: static;"
-            ammo-shape="type: cylinder;"></a-cylinder>
-        <a-cylinder id="palo" position="-3 1 -7" radius="0.1" height="2.5" color="#333" shadow
-            ammo-body="type: static;"
-            ammo-shape="type: cylinder;"></a-cylinder>
-
-        <!-- Botón para añadir piezas-->
-        <a-box id="boton" position="0 0.2 -2" depth="0.2" height="0.2" width="1" color="#F00"
-            class="clickable" shadow
+        <a-box class="load-level clickable" id="boton1" position="-2 0.2 -2" rotation="0 30 0" depth="1" width="2" height="1" data-type="level_1"
+            material="color: #FFF; opacity: 0.7; transparent: true" shadow
             ammo-body="type: static;"
             ammo-shape="type: box;">
         </a-box>
 
-        <!-- Toro (donut) interactivo -->
-        <a-torus
-            position="1 0.5 -4"
-            rotation="90 0 0"
-            radius="0.5"
-            radius-tubular="0.1"
-            segments-radial="16"
-            segments-tubular="24"
-            color="blue"
-            class="grabbable"
-            ammo-body="type: dynamic;"
-            ammo-shape="type: hull;"
-            force-pushable
-            torus-respawn>
-        </a-torus>
+        <!-- Botón para subir el nivel-->
+        <a-box class="load-level clickable" id="boton2" position="-2 0.2 2" rotation="0 30 0" depth="1" width="2" height="1" visible="false"
+            material="color: #0F0; opacity: 0.7; transparent: true;" shadow
+            ammo-body="type: static;"
+            ammo-shape="type: box;"
+            data-type="level_2">
+        </a-box>
 
+        <a-text id="puntos" value="Para empezar el juego haz clic al botton gris" position="-1 2 -8" color="yellow" width="4"></a-text>
 
-        <!-- Luces -->
-
-        <a-entity light="type: ambient; color: #888"></a-entity>
-        <a-entity light="type: directional; intensity: 0.5" position="-1 1 0.5"></a-entity>
-        <a-entity environment="preset: forest; dressingAmount: 600"></a-entity>
+        <a-entity id="content" position="0 0 0"></a-entity>
 
         <a-box
-            position="0 -0.1 0"
+            position="0 0 0"
             width="200"
             depth="200"
-            height="0.2"
+            height="0.8"
             color="transparent"
             visible="false"
+
             ammo-body="type: static"
             ammo-shape="type: box">
         </a-box>
+
+        <a-entity environment="preset: arches; ground: hills; shadow: true"></a-entity>
+
     </a-scene>
     <script>
         AFRAME.registerComponent('mouse-grab', {
@@ -146,46 +144,237 @@
                 window.addEventListener('mousemove', onMouseMove);
             }
         });
-    </script>
-    <!--  Botón para añadir piezas   -->
-    <script>
-        let contador = 0;
 
-        document.querySelector('#boton').addEventListener('click', () => {
-            const scene = document.querySelector('a-scene');
-            const posiciones = [-2, 2]; // x: izquierda y derecha
+        //-----------------------------------------------------------
 
-            for (let i = 0; i < 2; i++) {
-                const torus = document.createElement('a-torus');
 
-                const x = posiciones[i]; // -1 o 1
-                const z = -4; // misma z que el palo
-                const y = 1;
+        $('.load-level').click(function() {
+            const type = $(this).data('type');
 
-                torus.setAttribute('position', `${x} ${y} ${z}`);
-                torus.setAttribute('rotation', '90 0 0'); // ahora está de pie
-                torus.setAttribute('radius', 0.7);
-                torus.setAttribute('radius-tubular', 0.1);
-                torus.setAttribute('segments-radial', 16);
-                torus.setAttribute('segments-tubular', 24);
+            $.ajax({
+                url: 'game.php',
+                type: 'GET',
+                data: {
+                    type: type
+                },
+                success: function(data) {
+                    $('#content').empty();
+                    // Limpia el contenido anterior
+                    document.querySelectorAll('.aro').forEach(el => {
+                        el.parentNode.removeChild(el);
+                    }); // Limpia todo el contenido anterior
+                    $('#content').append(data);
+                    document.querySelector('#puntos').setAttribute('value', `Puntos: 0`);
+                    document.querySelector('#boton1').setAttribute('visible', 'false');
 
-                torus.setAttribute('color', '#' + Math.floor(Math.random() * 16777215).toString(16));
-                torus.setAttribute('class', 'grabbable');
-                torus.setAttribute('ammo-body', 'type: dynamic; disableDeactivation: true; linearDamping: 0.9; angularDamping: 0.9');
-                torus.setAttribute('ammo-shape', 'type: hacd;');
-                torus.setAttribute('force-pushable', '');
-                torus.setAttribute('shadow', '');
-                scene.appendChild(torus);
-                contador++;
+                    if (type === 'level_1') {
+                        let contador = 0;
+                        document.querySelector('#puntos').setAttribute('value', `Puntos: 0`);
+                        document.querySelector('.spawn-rings').addEventListener('click', () => {
+                            const scene = document.querySelector('a-scene');
+                            const posiciones = [-1, 1]; // x: izquierda y derecha
+
+
+                            if (contador >= 20) return;
+                            for (let i = 0; i < 2; i++) {
+                                const torus = document.createElement('a-torus');
+
+                                const x = posiciones[i]; // -1 o 1
+                                const z = -4; // misma z que el palo
+                                const y = 1;
+
+                                const baseRadius = 1;
+
+                                const scaleFactor = 0.2; // cuánto se reduce por pieza añadida  
+                                // Math.max(radius, 0.3)
+
+                                const radius = baseRadius - scaleFactor * contador;
+
+                                torus.setAttribute('position', `${x} ${y} ${z}`);
+                                torus.setAttribute('rotation', '90 0 0'); // ahora está de pie
+                                torus.setAttribute('radius', '0.3'); // evita que sea negativo
+
+                                torus.setAttribute('radius-tubular', 0.05);
+                                torus.setAttribute('segments-radial', 8);
+                                torus.setAttribute('segments-tubular', 12);
+
+                                torus.setAttribute('color', '#' + Math.floor(Math.random() * 16777215).toString(16));
+                                torus.setAttribute('class', 'grabbable aro');
+                                torus.setAttribute('ammo-body', 'type: dynamic; disableDeactivation: false; linearDamping: 0.1; angularDamping: 0.1; ');
+                                torus.setAttribute('ammo-shape', 'type: hull');
+                                torus.setAttribute('force-pushable', '');
+                                torus.setAttribute('shadow', '');
+                                scene.appendChild(torus);
+                                contador++;
+                            }
+                        });
+                        AFRAME.registerComponent('torus-cleanup', {
+                            tick: function() {
+                                // Revisa cada frame todos los torus
+                                document.querySelectorAll('a-torus').forEach(torus => {
+                                    const pos = torus.object3D.position;
+                                    if (pos.y < -5) {
+                                        // Quita el cuerpo físico de Ammo.js si existe
+                                        if (torus.hasAttribute('ammo-body')) {
+                                            torus.removeAttribute('ammo-body'); // Destruye el cuerpo físico
+                                        }
+
+                                        // Elimina el torus de la escena
+                                        torus.parentNode.removeChild(torus);
+                                        contador--;
+                                    }
+                                });
+                            }
+                        });
+                    } else if (type === 'level_2') {
+                        let contadorBloques = 0;
+                        document.querySelector('#puntos').setAttribute('value', `Puntos: 0`);
+                        const generateBlockButton = document.querySelector('#boton-bloque');
+                        if (generateBlockButton) {
+                            generateBlockButton.addEventListener('click', () => {
+                                const scene = document.querySelector('a-scene');
+
+                                const bloque = document.createElement('a-box');
+
+                                const x = Math.random() * 2 - 1; // Posición x aleatoria
+                                const y = 0 + contadorBloques * 0.5; // Apilándose hacia arriba (ajusté la altura inicial)
+                                const z = -6; // Ajusté la posición Z para que esté cerca de la base
+
+                                bloque.setAttribute('position', `${x} ${y} ${z}`);
+                                console.log('posición', x, y, z);
+                                bloque.setAttribute('color', '#' + Math.floor(Math.random() * 16777215).toString(16));
+                                bloque.setAttribute('class', 'grabbable bloque');
+                                bloque.setAttribute('width', '0.5');
+                                bloque.setAttribute('height', '0.5');
+                                bloque.setAttribute('depth', '0.5');
+                                bloque.setAttribute('ammo-body', 'type: dynamic; disableDeactivation: false; linearDamping: 0.1; angularDamping: 0.1; ');
+                                bloque.setAttribute('ammo-shape', 'type: box');
+                                bloque.setAttribute('force-pushable', '');
+                                bloque.setAttribute('shadow', '');
+                                scene.appendChild(bloque);
+                                contadorBloques++;
+                            });
+                        }
+
+                    }
+                },
+                error: function() {
+                    alert('No se pudo cargar el elemento');
+                }
+            });
+            document.querySelector('a-scene').setAttribute('torus-cleanup', '');
+        });
+
+        // -----------------------------------------------------------
+
+        AFRAME.registerComponent('score-detector', {
+            schema: {
+                // Extremos de la caja en X, Z y la altura máxima para contar
+                minX: {
+                    type: 'number',
+                    default: -4
+                },
+                maxX: {
+                    type: 'number',
+                    default: 4
+                },
+                minZ: {
+                    type: 'number',
+                    default: -11
+                },
+                maxZ: {
+                    type: 'number',
+                    default: -7
+                },
+                maxY: {
+                    type: 'number',
+                    default: 1.8
+                } // por encima de aquí ya no cuentan
+            },
+
+            init: function() {
+                this.score = 0;
+            },
+
+            tick: function() {
+                const els = this.el.sceneEl.querySelectorAll('.aro');
+                els.forEach(el => {
+                    if (el.getAttribute('scored')) return; // ya puntuado
+                    // Obtén posición global
+                    const pos = new THREE.Vector3();
+                    el.object3D.getWorldPosition(pos);
+
+                    // Comprueba si está dentro de tus límites
+                    if (
+                        pos.x > this.data.minX && pos.x < this.data.maxX &&
+                        pos.z > this.data.minZ && pos.z < this.data.maxZ &&
+                        pos.y < this.data.maxY
+                    ) {
+                        el.setAttribute('scored', true);
+                        this.score++;
+                        document.querySelector('#puntos').setAttribute('value', `Puntos: ${this.score}`);
+                    }
+                });
+                if (this.score === 7) {
+                    const boton2 = document.querySelector('#boton2');
+                    if (boton2) {
+                        boton2.setAttribute('visible', 'true');
+                        document.querySelector('#puntos').setAttribute('value', `Empezamos nivel 2`);
+                    }
+                }
             }
         });
+        // -----------------------------------------------------------
+        AFRAME.registerComponent('puntos-de-altura', {
+            schema: {
+                blockHeight: {
+                    type: 'number',
+                    default: 1
+                },
+                tolerance: {
+                    type: 'number',
+                    default: 0.2
+                },
+                alignTolerance: {
+                    type: 'number',
+                    default: 0.3
+                } // nueva tolerancia para X y Z
+            },
 
+            init: function() {
+                this.score = 0;
+                this.baseY = this.data.blockHeight / 2;
+                this.previousPos = null; // para guardar la posición del último bloque válido
+            },
 
-        // Añade este componente a la escena para que funcione
-        document.addEventListener('DOMContentLoaded', () => {
-            document.querySelector('a-scene').setAttribute('torus-respawn', '');
+            tick: function() {
+                const bloques = this.el.sceneEl.querySelectorAll('.bloque');
+
+                bloques.forEach(bloque => {
+                    if (bloque.getAttribute('punteado')) return;
+
+                    const pos = new THREE.Vector3();
+                    bloque.object3D.getWorldPosition(pos);
+
+                    const expectedY = this.baseY + this.score * this.data.blockHeight;
+
+                    const yMatch = Math.abs(pos.y - expectedY) <= this.data.tolerance;
+                    const xzMatch = !this.previousPos || (
+                        Math.abs(pos.x - this.previousPos.x) <= this.data.alignTolerance &&
+                        Math.abs(pos.z - this.previousPos.z) <= this.data.alignTolerance
+                    );
+
+                    if (yMatch && xzMatch) {
+                        bloque.setAttribute('punteado', true);
+                        this.previousPos = pos.clone(); // guardamos como última buena posición
+                        this.score++;
+                        document.querySelector('#puntos').setAttribute('value', `Puntos: ${this.score}`);
+                    }
+                });
+            }
         });
     </script>
+
 </body>
 
 </html>

@@ -35,14 +35,6 @@
         });
     </script>
     <a-scene>
-        <a-entity id="returnButton" geometry="primitive: plane; width: 1; height: 0.5"
-            material="color: #333; opacity: 0.8" position="-1.5 1.5 -2"
-            text="value: Return; align: center; color: white; width: 5" class="clickable"
-            link-on-click="./tuneles.php">
-        </a-entity>
-
-        <!-- También mantener el botón HTML para usuarios no-VR -->
-        <button id="htmlReturnButton" onclick="window.location.href='./tuneles.php'">Return</button>
 
         <a-assets>
             <!-- Images. -->
