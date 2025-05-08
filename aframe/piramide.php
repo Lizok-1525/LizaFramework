@@ -13,7 +13,7 @@
 </head>
 
 <body>
-    <a-scene mouse-grab physics="driver: ammo; gravity: -9.8; debug: false" score-detector puntos-de-altura="blockHeight: 0.5; tolerance: 0.2">
+    <a-scene mouse-grab physics="driver: ammo; gravity: -9.8; debug: false" score-detector contador-bloques>
         <!-- Player -->
         <a-entity camera look-controls wasd-controls position="0 1.6 0">
             <a-entity id="mouseCursor"
@@ -23,6 +23,8 @@
                 geometry="primitive: ring; radiusInner: 0.01; radiusOuter: 0.02">
             </a-entity>
         </a-entity>
+
+
         <a-assets>
             <a-torus id="torus-template"
                 radius="0.7"
@@ -47,20 +49,26 @@
                 shadow></a-box>
         </a-assets>
 
-
-
-        <a-box class="load-level clickable" id="boton1" position="-2 0.2 -2" rotation="0 30 0" depth="1" width="2" height="1" data-type="level_1"
+        <a-box class="load-level clickable" id="boton1" position="-2 0.2 -2" rotation="0 30 0" depth="1" width="2" height="1"
             material="color: #FFF; opacity: 0.7; transparent: true" shadow
             ammo-body="type: static;"
-            ammo-shape="type: box;">
+            ammo-shape="type: box;"
+            data-type="level_1">
         </a-box>
 
         <!-- Botón para subir el nivel-->
-        <a-box class="load-level clickable" id="boton2" position="-2 0.2 2" rotation="0 30 0" depth="1" width="2" height="1" visible="false"
-            material="color: #0F0; opacity: 0.7; transparent: true;" shadow
+        <a-box class="load-level clickable" id="boton2" position="-3 0.2 0" rotation="0 30 0" depth="1" width="2" height="1" visible="false"
+            material="color: #0FC; opacity: 0.7; transparent: true;" shadow
             ammo-body="type: static;"
             ammo-shape="type: box;"
             data-type="level_2">
+        </a-box>
+
+        <a-box class="load-level clickable" id="boton3" position="-3 0.2 1.5" rotation="0 30 0" depth="1" width="2" height="1" visible="false"
+            material="color: #0F0; opacity: 0.7; transparent: true;" shadow
+            ammo-body="type: static;"
+            ammo-shape="type: box;"
+            data-type="level_3">
         </a-box>
 
         <a-text id="puntos" value="Para empezar el juego haz clic al botton gris" position="-1 2 -8" color="yellow" width="4"></a-text>
@@ -82,6 +90,7 @@
         <a-entity environment="preset: arches; ground: hills; shadow: true"></a-entity>
 
     </a-scene>
+
     <script>
         AFRAME.registerComponent('mouse-grab', {
             init: function() {
@@ -158,18 +167,23 @@
                     type: type
                 },
                 success: function(data) {
+
                     $('#content').empty();
                     // Limpia el contenido anterior
                     document.querySelectorAll('.aro').forEach(el => {
                         el.parentNode.removeChild(el);
                     }); // Limpia todo el contenido anterior
+                    document.querySelectorAll('.bloque').forEach(el => {
+                        el.parentNode.removeChild(el);
+                    });
                     $('#content').append(data);
                     document.querySelector('#puntos').setAttribute('value', `Puntos: 0`);
                     document.querySelector('#boton1').setAttribute('visible', 'false');
 
+
                     if (type === 'level_1') {
                         let contador = 0;
-                        document.querySelector('#puntos').setAttribute('value', `Puntos: 0`);
+                        /**/
                         document.querySelector('.spawn-rings').addEventListener('click', () => {
                             const scene = document.querySelector('a-scene');
                             const posiciones = [-1, 1]; // x: izquierda y derecha
@@ -208,6 +222,9 @@
                                 contador++;
                             }
                         });
+
+                        //------------------------------------------------------------
+
                         AFRAME.registerComponent('torus-cleanup', {
                             tick: function() {
                                 // Revisa cada frame todos los torus
@@ -226,9 +243,11 @@
                                 });
                             }
                         });
+
                     } else if (type === 'level_2') {
                         let contadorBloques = 0;
-                        document.querySelector('#puntos').setAttribute('value', `Puntos: 0`);
+                        document.querySelector('#puntos').setAttribute('value', `Empezamos nivel 2`);
+                        document.querySelector('#boton2').setAttribute('visible', 'false');
                         const generateBlockButton = document.querySelector('#boton-bloque');
                         if (generateBlockButton) {
                             generateBlockButton.addEventListener('click', () => {
@@ -256,6 +275,47 @@
                             });
                         }
 
+
+                    } else if (type === 'level_3') {
+
+                        let contadorFiguras = 0;
+                        document.querySelector('#puntos').setAttribute('value', `Empezamos nivel 3`);
+                        document.querySelector('#boton2').setAttribute('visible', 'false');
+                        const generateShapeButton = document.querySelector('#boton-figura');
+
+                        if (generateShapeButton) {
+                            generateShapeButton.addEventListener('click', () => {
+                                const scene = document.querySelector('a-scene');
+                                const tipos = ['box', 'cylinder', 'prisma'];
+                                const tipo = tipos[Math.floor(Math.random() * tipos.length)];
+                                const figura = document.createElement('a-entity');
+
+                                const x = (Math.random() - 0.5) * 4;
+                                const y = 1.5;
+                                const z = -8;
+
+                                figura.setAttribute('position', `${x} ${y} ${z}`);
+                                figura.setAttribute('class', 'grabbable figura');
+                                figura.setAttribute('color', '#' + Math.floor(Math.random() * 16777215).toString(16));
+                                figura.setAttribute('ammo-body', 'type: dynamic; disableDeactivation: false; linearDamping: 0.1; angularDamping: 0.1');
+                                figura.setAttribute('force-pushable', '');
+                                figura.setAttribute('shadow', '');
+
+                                if (tipo === 'box') {
+                                    figura.setAttribute('geometry', 'primitive: box; width: 1; height: 0.5; depth: 0.5');
+                                    figura.setAttribute('ammo-shape', 'type: box');
+                                } else if (tipo === 'cylinder') {
+                                    figura.setAttribute('geometry', 'primitive: cylinder; radius: 0.25; height: 1');
+                                    figura.setAttribute('ammo-shape', 'type: cylinder');
+                                } else if (tipo === 'prisma') {
+                                    figura.setAttribute('geometry', 'primitive: cone; radiusBottom: 0.3; radiusTop: 0.3; height: 1');
+                                    figura.setAttribute('ammo-shape', 'type: cone');
+                                }
+
+                                scene.appendChild(figura);
+                                contadorFiguras++;
+                            });
+                        }
                     }
                 },
                 error: function() {
@@ -319,58 +379,76 @@
                     const boton2 = document.querySelector('#boton2');
                     if (boton2) {
                         boton2.setAttribute('visible', 'true');
-                        document.querySelector('#puntos').setAttribute('value', `Empezamos nivel 2`);
+
                     }
                 }
             }
         });
+
         // -----------------------------------------------------------
-        AFRAME.registerComponent('puntos-de-altura', {
+        AFRAME.registerComponent('contador-bloques', {
             schema: {
-                blockHeight: {
+                minX: {
                     type: 'number',
-                    default: 1
+                    default: -1.5
                 },
-                tolerance: {
+                maxX: {
                     type: 'number',
-                    default: 0.2
+                    default: 1.5
                 },
-                alignTolerance: {
+                minZ: {
                     type: 'number',
-                    default: 0.3
-                } // nueva tolerancia para X y Z
+                    default: -9.5
+                },
+                maxZ: {
+                    type: 'number',
+                    default: -6.5
+                },
+                minY: {
+                    type: 'number',
+                    default: 0.5
+                }
             },
 
             init: function() {
-                this.score = 0;
-                this.baseY = this.data.blockHeight / 2;
-                this.previousPos = null; // para guardar la posición del último bloque válido
+                this.bloquesContados = new Set();
+                this.puntos = 0;
             },
 
             tick: function() {
-                const bloques = this.el.sceneEl.querySelectorAll('.bloque');
+                const bloques = document.querySelectorAll('.bloque');
+                let nuevosPuntos = 0;
 
                 bloques.forEach(bloque => {
-                    if (bloque.getAttribute('punteado')) return;
+                    if (bloque.getAttribute('scored')) return;
 
                     const pos = new THREE.Vector3();
                     bloque.object3D.getWorldPosition(pos);
 
-                    const expectedY = this.baseY + this.score * this.data.blockHeight;
-
-                    const yMatch = Math.abs(pos.y - expectedY) <= this.data.tolerance;
-                    const xzMatch = !this.previousPos || (
-                        Math.abs(pos.x - this.previousPos.x) <= this.data.alignTolerance &&
-                        Math.abs(pos.z - this.previousPos.z) <= this.data.alignTolerance
-                    );
-
-                    if (yMatch && xzMatch) {
-                        bloque.setAttribute('punteado', true);
-                        this.previousPos = pos.clone(); // guardamos como última buena posición
-                        this.score++;
-                        document.querySelector('#puntos').setAttribute('value', `Puntos: ${this.score}`);
+                    if (
+                        pos.x >= this.data.minX && pos.x <= this.data.maxX &&
+                        pos.z >= this.data.minZ && pos.z <= this.data.maxZ &&
+                        pos.y >= this.data.minY
+                    ) {
+                        bloque.setAttribute('scored', true);
+                        nuevosPuntos++;
+                        console.log(nuevosPuntos);
                     }
                 });
+
+                if (nuevosPuntos > 0) {
+                    this.puntos += nuevosPuntos;
+                    document.querySelector('#puntos').setAttribute('value', `Puntos: ${this.puntos}`);
+                    document.querySelector('#boton2').setAttribute('visible', 'false');
+                }
+
+                // Nivel superado con 10 bloques
+                if (this.puntos >= 8) {
+
+                    // Si quieres que el nivel 3 se muestre al final del nivel 2, descomenta la siguiente línea:
+                    document.querySelector('#boton3').setAttribute('visible', 'true');
+
+                }
             }
         });
     </script>

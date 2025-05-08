@@ -17,6 +17,8 @@ switch ($type) {
             ammo-body="type: static;"
             ammo-shape="type: box;">
         </a-box>  
+
+
   ';
         break;
 
@@ -34,7 +36,14 @@ switch ($type) {
         break;
 
     case 'level_3':
-        echo '';
+        echo '<!-- Base para construir -->
+    <a-box position="0 0 -8" width="6" height="0.2" depth="3" color="#888" ammo-body="type: static;" ammo-shape="type: box;"></a-box>
+
+    <!-- Botón para generar piezas -->
+    <a-box id="boton-figura" position="0 0.5 -2" width="1.5" height="0.3" depth="0.3" color="#0F0"
+        class="clickable" shadow
+        ammo-body="type: static;" ammo-shape="type: box;"></a-box>
+    ';
         break;
 
     default:
