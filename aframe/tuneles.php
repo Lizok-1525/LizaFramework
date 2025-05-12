@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -6,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Animation: Unfold - A-Frame">
     <title>Animation</title>
-
+    <?php include("../template/standard/metas.inc.php"); ?>
     <!-- Scripts -->
     <script src="https://aframe.io/aframe/dist/aframe-master.min.js"></script>
     <script
@@ -43,7 +42,7 @@
     <a-scene background="color:rgb(185, 185, 185)">
         <!-- Assets -->
         <a-assets>
-            <a-asset-item id="messageText" src="message.html"></a-asset-item>
+
             <img id="shadow" src="https://aframe.io/aframe/examples/assets/img/radial-shadow-2.png">
 
             <!-- Mixins -->

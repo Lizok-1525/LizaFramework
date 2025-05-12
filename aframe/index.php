@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>A-Frame Scene with Dynamic Elements</title>
-
+    <?php include("../template/standard/metas.inc.php"); ?>
     <!-- Scripts -->
     <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
     <script

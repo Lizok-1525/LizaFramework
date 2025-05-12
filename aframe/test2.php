@@ -1,7 +1,9 @@
 <html>
 
 <head>
+  <?php include("../template/standard/metas.inc.php"); ?>
 
+  <title>Pruebas para juego</title>
   <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
   <script src="https://unpkg.com/aframe-environment-component@1.5.0/dist/aframe-environment-component.min.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/MozillaReality/ammo.js@8bbc0ea/builds/ammo.wasm.js"></script>
@@ -36,7 +38,7 @@
         ammo-body="type: kinematic;" ammo-shape="type: box;">
       </a-box>
       <a-entity camera id="mainCamera" position="0 1.6 0.5" cursor="rayOrigin: mouse"
-        raycaster="objects: .grabbable, .clickable"></a-entity>
+        raycaster="objects: .grabbable, .clickable, force-pushable"></a-entity>
     </a-box>
 
     <a-box
@@ -121,15 +123,15 @@
     let currentRing = null;
 
     document.querySelector('.spawn-rings').addEventListener('click', () => {
+      if (currentRing) {
+        return;
+      }
       const crane = document.querySelector('#craneArm');
       const cranePos = new THREE.Vector3();
       crane.object3D.getWorldPosition(cranePos);
 
       // Si ya existe un aro, lo removemos primero (opcional)
-      if (currentRing) {
-        currentRing.parentNode.removeChild(currentRing);
-        currentRing = null;
-      }
+
 
       const ring = document.createElement('a-torus');
       ring.setAttribute('rotation', '90 0 0');
@@ -141,8 +143,7 @@
       ring.setAttribute('class', 'grabbable aro');
       ring.setAttribute('ammo-body', 'type: kinematic; isSleeping: true;');
       ring.setAttribute('ammo-shape', 'type: hull');
-      ring.setAttribute('aplicar-fuerza-tecla', '');
-      ring.setAttribute('force-pushable', '');
+      ring.setAttribute('force-pushable', 'force: 20');
       ring.setAttribute('shadow', '');
       ring.setAttribute('position', {
         x: 0,
@@ -156,57 +157,56 @@
 
     // -----------------------------------------------------------
 
+
     AFRAME.registerComponent('disparar-aro', {
+      schema: {
+        brazo: {
+          type: 'selector',
+          default: '#craneArm'
+        }
+      },
       init: function() {
-        window.addEventListener('keydown', (e) => {
-          if (e.code === 'Space' && currentRing) {
-            const ring = currentRing;
-            currentRing = null;
+        const el = this.el; // La entidad que tiene este componente
+        const brazoEl = this.data.brazo;
 
-            const craneArm = document.querySelector('#craneArm');
 
-            // Obtener dirección hacia donde apunta el craneArm
-            const direction = new THREE.Vector3(0, 0, -1);
-            craneArm.object3D.getWorldDirection(direction);
-            direction.normalize();
+        window.addEventListener('keydown', (event) => {
+          // Detecta la tecla ESPACIO.
+          if (event.code === 'Space' || event.keyCode === 32) {
+            if (currentRing) {
 
-            // Obtener posición global del craneArm
-            const origin = new THREE.Vector3();
-            craneArm.object3D.getWorldPosition(origin);
+              currentRing.object3D.updateMatrixWorld();
+              const worldPos = new THREE.Vector3();
+              currentRing.object3D.getWorldPosition(worldPos);
+              worldPos.y += 0.2;
 
-            // Mover el aro a esa posición (ya no lo dejamos hijo del brazo)
-            ring.parentNode.removeChild(ring);
-            document.querySelector('a-scene').appendChild(ring);
-            ring.setAttribute('ammo-body', 'type: dynamic;');
+              let ringRef = currentRing;
+              const sceneEl = document.querySelector('a-scene');
+              sceneEl.object3D.attach(ringRef.object3D);
+              ringRef.setAttribute('position', `${worldPos.x} ${worldPos.y} ${worldPos.z}`);
+              ringRef.setAttribute('ammo-body', {
+                type: 'dynamic',
+                mass: 1,
+                shape: 'hull'
+              });
+              currentRing = null;
+              ringRef.addEventListener('body-loaded', () => {
+                const direction = new THREE.Vector3(0, 0, -1); // Dirección inicial (hacia adelante local)
+                brazoEl.object3D.getWorldDirection(direction);
 
-            // Aplicar la fuerza al momento
-            ring.addEventListener('body-loaded', () => {
-              const force = direction.multiplyScalar(10); // Ajusta fuerza aquí
-              ring.components['ammo-body'].applyForce(force, new THREE.Vector3(0, 0, 0));
-            });
-          }
-        });
-      }
-    });
+                const fuerzaDisparo = 15;
+                const impulseVector = new Ammo.btVector3(
+                  direction.x * fuerzaDisparo,
+                  direction.y * fuerzaDisparo,
+                  direction.z * fuerzaDisparo
+                );
+                const relPos = new Ammo.btVector3(0, 0, 0);
+                ringRef.body.applyCentralImpulse(impulseVector);
 
-    //------------------------------------------------------------
-
-    AFRAME.registerComponent('torus-cleanup', {
-      tick: function() {
-        // Revisa cada frame todos los torus
-        document.querySelectorAll('a-torus').forEach(torus => {
-          const pos = torus.object3D.position;
-          if (pos.y < -5) {
-            // Quita el cuerpo físico de Ammo.js si existe
-            if (torus.hasAttribute('ammo-body')) {
-              torus.removeAttribute('ammo-body'); // Destruye el cuerpo físico
+              });
             }
-
-            // Elimina el torus de la escena
-            torus.parentNode.removeChild(torus);
-            contador--;
           }
-        });
+        })
       }
     });
 
