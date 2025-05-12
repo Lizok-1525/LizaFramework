@@ -13,17 +13,7 @@
 </head>
 
 <body>
-  <a-scene mouse-grab physics="driver: ammo; gravity: -9.8; debug: false" score-detector crane-rotation object-snapper>
-    <!-- Player -->
-    <a-entity camera look-controls wasd-controls position="0 1.6 0">
-      <a-entity id="mouseCursor"
-        cursor="rayOrigin: mouse"
-        raycaster="objects: .grabbable, .clickable"
-        material="color: red; shader: flat"
-        geometry="primitive: ring; radiusInner: 0.01; radiusOuter: 0.02">
-      </a-entity>
-    </a-entity>
-
+  <a-scene mouse-grab physics="driver: ammo; gravity: -9.8; debug: false" crane-rotation rotacion-crane disparar-aro>
 
     <a-box position="0 1 -11" width="4" height="2" depth="0.2" src="https://i.imgur.com/mYmmbrp.jpg" ammo-body="type: static;"
       ammo-shape="type: box;"></a-box>
@@ -34,20 +24,20 @@
     <a-box position="0 0.5 -7" width="4" height="1.5" depth="0.2" src="https://i.imgur.com/mYmmbrp.jpg" ammo-body="type: static;" ammo-shape="type: box;"></a-box>
 
     <!-- Botón para añadir piezas-->
-    <a-box id="boton" position="0 0.2 -2" depth="0.2" height="0.2" width="1" color="#F00"
+    <a-box id="boton" position="2 2 -2" depth="1" height="0.2" width="0.2" color="#F00"
       class="spawn-rings clickable" shadow
       ammo-body="type: static;"
       ammo-shape="type: box;">
     </a-box>
 
-    <a-box id="craneArm" color="yellow" position="0 1.6 -2" rotation="-30 0 0" depth="0.6" height="2" width="0.7" ammo-body="type: static;" ammo-shape="type: box;" wasd-controls></a-box>
-
-    <a-box id="movingBox" color="yellow" position="0 0 -1" depth="1.8" height="2" width="2" ammo-body="type: static;" ammo-shape="type: box;" wasd-controls></a-box>
-
-    <a-camera id="mainCamera" look-controls wasd-controls="false">
-      <a-entity position="0 0 0" camera-follow="target: #movingBox"></a-entity>
-    </a-camera>
-
+    <a-box id="movingBox" material=" opacity: 0.7; transparent: true" position="0 0 -1" rotation="0 0 0" depth="1.8" height="2" width="2"
+      ammo-body="type: kinematic;" ammo-shape="type: box;" wasd-controls>
+      <a-box id="craneArm" material=" opacity: 0.7; transparent: true" position="0 1.5 -1" rotation="-30 0 0" depth="0.6" height="1.5" width="0.7"
+        ammo-body="type: kinematic;" ammo-shape="type: box;">
+      </a-box>
+      <a-entity camera id="mainCamera" position="0 1.6 0.5" cursor="rayOrigin: mouse"
+        raycaster="objects: .grabbable, .clickable"></a-entity>
+    </a-box>
 
     <a-box
       position="0 0 0"
@@ -56,7 +46,6 @@
       height="0.8"
       color="transparent"
       visible="false"
-
       ammo-body="type: static"
       ammo-shape="type: box">
     </a-box>
@@ -66,32 +55,6 @@
   </a-scene>
 
   <script>
-    AFRAME.registerComponent('camera-follow', {
-      schema: {
-        target: {
-          type: 'selector'
-        }
-      },
-
-      init: function() {
-        this.targetPosition = new THREE.Vector3();
-        this.cameraPosition = new THREE.Vector3();
-      },
-
-      tick: function() {
-        const target = this.data.target.object3D;
-        const camera = this.el.object3D;
-
-        if (target) {
-          // Obtener la posición mundial del objetivo
-          target.getWorldPosition(this.targetPosition);
-
-          // Establecer la posición de la entidad de seguimiento para que coincida con el objetivo
-          this.el.setAttribute('position', this.targetPosition);
-        }
-      }
-    });
-
     AFRAME.registerComponent('mouse-grab', {
       init: function() {
         let grabbed = null;
@@ -154,34 +117,76 @@
       }
     });
 
-    //-----------------------------------------------------------
 
-    /**/
-    let contador = 0;
+    let currentRing = null;
+
     document.querySelector('.spawn-rings').addEventListener('click', () => {
-      const scene = document.querySelector('a-scene');
-      const spawnPosition = {
-        x: -3,
-        y: 2,
-        z: -5
-      }; // Posición inicial diferente
+      const crane = document.querySelector('#craneArm');
+      const cranePos = new THREE.Vector3();
+      crane.object3D.getWorldPosition(cranePos);
 
-      if (contador >= 20) return;
-      const torus = document.createElement('a-torus');
-      torus.setAttribute('position', spawnPosition);
-      torus.setAttribute('rotation', '90 0 0');
-      torus.setAttribute('radius', '0.3');
-      torus.setAttribute('radius-tubular', 0.05);
-      torus.setAttribute('segments-radial', 8);
-      torus.setAttribute('segments-tubular', 12);
-      torus.setAttribute('color', '#' + Math.floor(Math.random() * 16777215).toString(16));
-      torus.setAttribute('class', 'grabbable aro');
-      torus.setAttribute('ammo-body', 'type: dynamic; disableDeactivation: false; linearDamping: 0.1; angularDamping: 0.1; ');
-      torus.setAttribute('ammo-shape', 'type: hull');
-      torus.setAttribute('force-pushable', '');
-      torus.setAttribute('shadow', '');
-      scene.appendChild(torus);
-      contador++;
+      // Si ya existe un aro, lo removemos primero (opcional)
+      if (currentRing) {
+        currentRing.parentNode.removeChild(currentRing);
+        currentRing = null;
+      }
+
+      const ring = document.createElement('a-torus');
+      ring.setAttribute('rotation', '90 0 0');
+      ring.setAttribute('radius', '0.3');
+      ring.setAttribute('radius-tubular', 0.05);
+      ring.setAttribute('segments-radial', 8);
+      ring.setAttribute('segments-tubular', 12);
+      ring.setAttribute('color', '#' + Math.floor(Math.random() * 16777215).toString(16));
+      ring.setAttribute('class', 'grabbable aro');
+      ring.setAttribute('ammo-body', 'type: kinematic; isSleeping: true;');
+      ring.setAttribute('ammo-shape', 'type: hull');
+      ring.setAttribute('aplicar-fuerza-tecla', '');
+      ring.setAttribute('force-pushable', '');
+      ring.setAttribute('shadow', '');
+      ring.setAttribute('position', {
+        x: 0,
+        y: 0.8, // Un poco más alto para evitar la intersección, ajusta según sea necesario
+        z: 0
+      });
+
+      crane.appendChild(ring);
+      currentRing = ring;
+    });
+
+    // -----------------------------------------------------------
+
+    AFRAME.registerComponent('disparar-aro', {
+      init: function() {
+        window.addEventListener('keydown', (e) => {
+          if (e.code === 'Space' && currentRing) {
+            const ring = currentRing;
+            currentRing = null;
+
+            const craneArm = document.querySelector('#craneArm');
+
+            // Obtener dirección hacia donde apunta el craneArm
+            const direction = new THREE.Vector3(0, 0, -1);
+            craneArm.object3D.getWorldDirection(direction);
+            direction.normalize();
+
+            // Obtener posición global del craneArm
+            const origin = new THREE.Vector3();
+            craneArm.object3D.getWorldPosition(origin);
+
+            // Mover el aro a esa posición (ya no lo dejamos hijo del brazo)
+            ring.parentNode.removeChild(ring);
+            document.querySelector('a-scene').appendChild(ring);
+            ring.setAttribute('ammo-body', 'type: dynamic;');
+
+            // Aplicar la fuerza al momento
+            ring.addEventListener('body-loaded', () => {
+              const force = direction.multiplyScalar(10); // Ajusta fuerza aquí
+              ring.components['ammo-body'].applyForce(force, new THREE.Vector3(0, 0, 0));
+            });
+          }
+        });
+      }
     });
 
     //------------------------------------------------------------
@@ -202,66 +207,6 @@
             contador--;
           }
         });
-      }
-    });
-
-    // -----------------------------------------------------------
-
-    AFRAME.registerComponent('score-detector', {
-      schema: {
-        // Extremos de la caja en X, Z y la altura máxima para contar
-        minX: {
-          type: 'number',
-          default: -4
-        },
-        maxX: {
-          type: 'number',
-          default: 4
-        },
-        minZ: {
-          type: 'number',
-          default: -11
-        },
-        maxZ: {
-          type: 'number',
-          default: -7
-        },
-        maxY: {
-          type: 'number',
-          default: 1.8
-        } // por encima de aquí ya no cuentan
-      },
-
-      init: function() {
-        this.score = 0;
-      },
-
-      tick: function() {
-        const els = this.el.sceneEl.querySelectorAll('.aro');
-        els.forEach(el => {
-          if (el.getAttribute('scored')) return; // ya puntuado
-          // Obtén posición global
-          const pos = new THREE.Vector3();
-          el.object3D.getWorldPosition(pos);
-
-          // Comprueba si está dentro de tus límites
-          if (
-            pos.x > this.data.minX && pos.x < this.data.maxX &&
-            pos.z > this.data.minZ && pos.z < this.data.maxZ &&
-            pos.y < this.data.maxY
-          ) {
-            el.setAttribute('scored', true);
-            this.score++;
-            document.querySelector('#puntos').setAttribute('value', `Puntos: ${this.score}`);
-          }
-        });
-        if (this.score === 7) {
-          const boton2 = document.querySelector('#boton2');
-          if (boton2) {
-            boton2.setAttribute('visible', 'true');
-
-          }
-        }
       }
     });
 
@@ -288,27 +233,24 @@
       }
     });
 
-    AFRAME.registerComponent('object-snapper', {
+    AFRAME.registerComponent('rotacion-crane', {
       init: function() {
+        this.rotationSpeed = 5; // Grados por evento
         window.addEventListener('keydown', this.onKeyDown.bind(this));
       },
 
       onKeyDown: function(event) {
-        if (event.code === 'Space') {
-          const snappedRing = document.querySelector('.aro[is-snapped]');
-          const craneArm = document.querySelector('#craneArm');
+        const movingBox = document.querySelector('#movingBox');
+        if (!movingBox) return;
 
-          if (snappedRing && snappedRing.parentNode === craneArm) {
-            // Despegar del brazo
-            snappedRing.removeAttribute('parent');
-            snappedRing.removeAttribute('is-snapped');
-            snappedRing.setAttribute('ammo-body', 'type: dynamic');
+        let currentRotation = movingBox.getAttribute('rotation');
 
-            // Aplicar una fuerza para que salte
-            const impulse = new CANNON.Vec3(0, 5, 0); // Fuerza hacia arriba
-            const worldPoint = new CANNON.Vec3();
-            snappedRing.components['ammo-body'].body.applyImpulse(impulse, worldPoint);
-          }
+        if (event.key.toUpperCase() === 'Q') {
+          currentRotation.y += this.rotationSpeed;
+          movingBox.setAttribute('rotation', currentRotation);
+        } else if (event.key.toUpperCase() === 'E') {
+          currentRotation.y -= this.rotationSpeed;
+          movingBox.setAttribute('rotation', currentRotation);
         }
       }
     });
