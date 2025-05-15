@@ -33,7 +33,7 @@
     </a-box>-->
 
     <a-torus id="donut" rotation="90 0 0" radius="0.3" radius-tubular="0.05"
-      segments-radial="8" segments-tubular="12"
+      segments-radial="8" segments-tubular="12" ammo-body="type: dynamic; disableDeactivation: false; linearDamping: 0.1; angularDamping: 0.1; mass: 1;" ammo-shape="type: hull"
       color="red" force-pushable>
     </a-torus>
 
@@ -44,6 +44,7 @@
       <a-entity camera id="mainCamera" position="0 1.6 0.8" cursor="rayOrigin: mouse"
         raycaster="objects: .grabbable, .clickable, force-pushable"></a-entity>
     </a-box>
+
 
     <a-box
       position="0 0 0"
@@ -61,6 +62,220 @@
   </a-scene>
 
   <script>
+    AFRAME.registerComponent('rotacion-crane', {
+      init: function() {
+        this.rotationSpeed = 5; // Grados por evento
+        this.followMouse = false;
+        window.addEventListener('keydown', this.onKeyDown.bind(this));
+
+        window.addEventListener('mousedown', this.onMouseDown.bind(this));
+        window.addEventListener("mousemove", this.onMouseMove.bind(this));
+      },
+
+      onMouseDown: function(event) {
+        this.followMouse = true;
+      },
+
+      onMouseMove: function(event) {
+
+        if (!this.followMouse) return;
+        const movingBox = document.querySelector('#movingBox');
+        if (!movingBox) return;
+        let currentRotation = movingBox.getAttribute('rotation');
+
+        // Cambia la rotación en función de la posición del mouse
+        currentRotation.y = (event.clientX / window.innerWidth) * -720; // Normaliza a 0-360 grados
+        movingBox.setAttribute('rotation', currentRotation);
+      },
+
+
+      onKeyDown: function(event) {
+        if (event.key === "Escape") {
+          this.followMouse = false;
+          return;
+        }
+
+        //-----------
+        const craneArm = document.querySelector('#craneArm');
+        if (!craneArm) return;
+
+        let currentRotations = craneArm.getAttribute('rotation');
+
+        if (event.key.toUpperCase() === 'O') {
+          currentRotations.x += this.rotationSpeed;
+          craneArm.setAttribute('rotation', currentRotations);
+        } else if (event.key.toUpperCase() === 'L') {
+          currentRotations.x -= this.rotationSpeed;
+          craneArm.setAttribute('rotation', currentRotations);
+        }
+
+        //-----------
+        const movingBox = document.querySelector('#movingBox');
+        if (!movingBox) return;
+
+        let currentRotation = movingBox.getAttribute('rotation');
+
+        if (event.key.toUpperCase() === 'Q') {
+          currentRotation.y += this.rotationSpeed;
+          movingBox.setAttribute('rotation', currentRotation);
+        } else if (event.key.toUpperCase() === 'E') {
+          currentRotation.y -= this.rotationSpeed;
+          movingBox.setAttribute('rotation', currentRotation);
+        }
+      }
+    });
+
+    // -----------------------------------------------------------
+
+    function pegarDonutADraga() {
+      const donut = document.querySelector('#donut');
+
+      if (!donut) return;
+
+      donut.setAttribute('ammo-constraint', 'type: lock; target: #craneArm; pivot: 0 0 0; axis: 0 1 0');
+
+    }
+
+    function soltar() {
+      document.querySelector('#donut').removeAttribute('ammo-constraint');
+    }
+    // -----------------------------------------------------------
+
+
+    window.addEventListener('load', () => {
+      const donut = document.getElementById('donut');
+
+      // Establecer la posición del donut
+      donut.setAttribute('position', {
+        x: 0,
+        y: 2.4,
+        z: -2.3
+      });
+
+      pegarDonutADraga(); // ahora sí, seguro
+
+      jumpDonut(donut); // Llama a la función de salto aquí
+
+    });
+
+    function jumpDonut(donut) {
+      window.addEventListener('keydown', function(event) {
+        if (event.code === 'Space') {
+          if (donut.getAttribute('ammo-constraint')) {
+            soltar();
+            console.log('separado!!!!');
+          }
+          const el = donut;
+
+          const physicsComponent = el.components['ammo-body'];
+          const body = physicsComponent.body;
+
+          body.activate();
+
+          const craneArm = document.querySelector('#craneArm');
+          const direction = new THREE.Vector3();
+          craneArm.object3D.getWorldDirection(direction);
+          direction.normalize();
+
+          // Aplica impulso vertical hacia arriba
+          // const randomX = (Math.random() - 0.5) * 10; // Valor aleatorio entre -5 y 5 
+          // console.log(randomX, randomZ);
+          //const randomZ = (Math.random() - 0.5) * -10; // Valor aleatorio entre -5 y 5
+          // const impulse = new Ammo.btVector3(0, 10, direction.z);
+
+          const forwardForce = -5;
+          const upwardForce = 10;
+
+          const impulse = new Ammo.btVector3(0, upwardForce, direction.z * forwardForce);
+          const relPos = new Ammo.btVector3(0, 0, 0);
+          body.applyImpulse(impulse, relPos);
+
+          // Limpia memoria temporal
+          Ammo.destroy(impulse);
+          Ammo.destroy(relPos);
+        }
+      });
+    }
+    /*
+        window.addEventListener('keydown', function(event) {
+          if (event.code === 'KeyV') {
+            console.log('V presionado');
+
+            const donut = document.querySelector('#donut');
+            const craneArm = document.querySelector('#craneArm');
+
+            if (!donut || !craneArm) return;
+
+            // Coloca el donut en la posición deseada primero
+            const cranePos = craneArm.object3D.position;
+            donut.object3D.position.set('position', {
+              x: cranePos.x,
+              y: cranePos.y + 0.9, // sube el donut sobre el brazo
+              z: cranePos.z // delante del brazo
+            });
+
+            // Espera un frame para asegurarte de que se ha aplicado la posición
+            setTimeout(() => {
+              const physicsComponent = donut.components['ammo-body'];
+              if (physicsComponent) {
+                physicsComponent.body.activate();
+              }
+
+              pegarDonutADraga();
+              console.log('Donut unido al brazo en posición (offset vertical global):', donut.getAttribute('position'));
+            }, 50);
+          }
+        });
+    */
+    window.addEventListener('keydown', function(event) {
+      if (event.key.toLowerCase() === 'v') {
+        const el = document.querySelector('#donut');
+        const craneArm = document.querySelector('#craneArm');
+        const offset = new THREE.Vector3(0, 1, 0); // 1.5 unidades arriba del centro
+        const worldOffset = craneArm.object3D.localToWorld(offset);
+        const newPos = {
+          x: worldOffset.x,
+          y: worldOffset.y,
+          z: worldOffset.z
+        };
+
+
+        // Mover visualmente
+        el.setAttribute('position', newPos);
+
+        el.setAttribute('rotation', '90 0 0');
+
+
+        // Si tiene física con Ammo.js
+        if (el.body) {
+          el.body.setLinearVelocity(new Ammo.btVector3(0, 0, 0));
+          el.body.setAngularVelocity(new Ammo.btVector3(0, 0, 0));
+
+          const transform = new Ammo.btTransform();
+          transform.setIdentity();
+          transform.setOrigin(new Ammo.btVector3(newPos.x, newPos.y, newPos.z));
+
+          const euler = new THREE.Euler(THREE.MathUtils.degToRad(90), 0, 0);
+          const quat = new THREE.Quaternion().setFromEuler(euler);
+          transform.setRotation(new Ammo.btQuaternion(quat.x, quat.y, quat.z, quat.w));
+
+
+          el.body.setWorldTransform(transform);
+          el.body.getMotionState().setWorldTransform(transform);
+        }
+        setTimeout(() => {
+          const physicsComponent = donut.components['ammo-body'];
+          if (physicsComponent) {
+            physicsComponent.body.activate();
+          }
+
+          pegarDonutADraga();
+          console.log('Donut unido al brazo en posición (offset vertical global):', donut.getAttribute('position'));
+        }, 50);
+      }
+    });
+    // -----------------------------------------------------------
+
     /*
     AFRAME.registerComponent('mouse-grab', {
       init: function() {
@@ -122,8 +337,8 @@
         window.addEventListener('mouseup', onMouseUp);
         window.addEventListener('mousemove', onMouseMove);
       }
-    });
-*/
+    });*/
+
 
     // -----------------------------------------------------------
     /*
@@ -151,107 +366,42 @@
 
           scene.appendChild(ring);
           currentRing = ring;
+        });*/
+
+    // -----------------------------------------------------------
+    /*    AFRAME.registerComponent('jump-on-space', {
+          init: function() {
+            const el = this.el;
+
+            el.addEventListener('body-loaded', () => {
+              //console.log('[jump-on-space] Body loaded, ready to jump');
+
+              window.addEventListener('keydown', function(event) {
+                
+                if (event.code === 'Space') {
+                  const physicsComponent = el.components['ammo-body'];
+
+
+                  const body = physicsComponent.body;
+
+                  // IMPORTANTE: desactiva la desactivación si no lo has hecho
+                  body.activate();
+
+                  // Aplica impulso vertical hacia arriba
+                  const impulse = new Ammo.btVector3(0, 5, 0);
+                  const relPos = new Ammo.btVector3(0, 0, 0);
+                  body.applyImpulse(impulse, relPos);
+
+                  // Limpia memoria temporal
+                  Ammo.destroy(impulse);
+                  Ammo.destroy(relPos);
+                }
+              });
+            });
+          }
         });
     */
-
     // -----------------------------------------------------------
-    AFRAME.registerComponent('jump-on-space', {
-      init: function() {
-        const el = this.el;
-
-        el.addEventListener('body-loaded', () => {
-          //console.log('[jump-on-space] Body loaded, ready to jump');
-
-          window.addEventListener('keydown', function(event) {
-            /*
-            if (event.code === 'Space') {
-              const physicsComponent = el.components['ammo-body'];
-
-
-              const body = physicsComponent.body;
-
-              // IMPORTANTE: desactiva la desactivación si no lo has hecho
-              body.activate();
-
-              // Aplica impulso vertical hacia arriba
-              const impulse = new Ammo.btVector3(0, 5, 0);
-              const relPos = new Ammo.btVector3(0, 0, 0);
-              body.applyImpulse(impulse, relPos);
-
-              // Limpia memoria temporal
-              Ammo.destroy(impulse);
-              Ammo.destroy(relPos);
-            }*/
-          });
-        });
-      }
-    });
-
-    // -----------------------------------------------------------
-
-    AFRAME.registerComponent('rotacion-crane', {
-      init: function() {
-        this.rotationSpeed = 5; // Grados por evento
-        this.followMouse = false;
-        window.addEventListener('keydown', this.onKeyDown.bind(this));
-
-        window.addEventListener('mousedown', this.onMouseDown.bind(this));
-        window.addEventListener("mousemove", this.onMouseMove.bind(this));
-      },
-
-      onMouseDown: function(event) {
-        this.followMouse = true;
-      },
-
-      onMouseMove: function(event) {
-
-        if (!this.followMouse) return;
-        const movingBox = document.querySelector('#movingBox');
-        if (!movingBox) return;
-        let currentRotation = movingBox.getAttribute('rotation');
-
-        // Cambia la rotación en función de la posición del mouse
-        currentRotation.y = (event.clientX / window.innerWidth) * -720; // Normaliza a 0-360 grados
-        movingBox.setAttribute('rotation', currentRotation);
-      },
-
-
-      onKeyDown: function(event) {
-        if (event.key === "Escape") {
-          this.followMouse = false;
-          return;
-        }
-        //-----------
-        const craneArm = document.querySelector('#craneArm');
-        if (!craneArm) return;
-
-        let currentRotations = craneArm.getAttribute('rotation');
-
-        if (event.key.toUpperCase() === 'O') {
-          currentRotations.x += this.rotationSpeed;
-          craneArm.setAttribute('rotation', currentRotations);
-        } else if (event.key.toUpperCase() === 'L') {
-          currentRotations.x -= this.rotationSpeed;
-          craneArm.setAttribute('rotation', currentRotations);
-        }
-        //-----------
-        const movingBox = document.querySelector('#movingBox');
-        if (!movingBox) return;
-
-        let currentRotation = movingBox.getAttribute('rotation');
-
-        if (event.key.toUpperCase() === 'Q') {
-          currentRotation.y += this.rotationSpeed;
-          movingBox.setAttribute('rotation', currentRotation);
-        } else if (event.key.toUpperCase() === 'E') {
-          currentRotation.y -= this.rotationSpeed;
-          movingBox.setAttribute('rotation', currentRotation);
-        }
-      }
-    });
-
-    // -----------------------------------------------------------
-
     /*
     AFRAME.registerComponent('random-position-on-load', {
       init: function() {
@@ -272,69 +422,7 @@
         }
 
       }
-    });
-
-*/
-
-    /*
-        const posX = Math.random() * 10 - 5;
-        const posY = Math.random() * 5 + 1;
-        const posZ = Math.random() * 10 - 5;
-         x: 1,
-            y: 0.5, // Un poco más alto para evitar la intersección, ajusta según sea necesario
-            z: 1
-    */
-
-    const posX = Math.random() * 10 - 5;
-    const posY = Math.random() * 5 + 1;
-    const posZ = Math.random() * 10 - 5;
-
-    console.log(posX, posY, posZ);
-
-    window.addEventListener('load', () => {
-      const donut = document.getElementById('donut');
-
-      // Establecer la posición del donut
-      donut.setAttribute('position', {
-        x: posX,
-        y: posY,
-        z: posZ
-      });
-
-      // Establecer el cuerpo después de la forma
-      donut.setAttribute('ammo-body', 'type: dynamic; disableDeactivation: false; linearDamping: 0.1; angularDamping: 0.1; mass: 1;');
-      //donut.setAttribute('ammo-body', 'type: kinematic; mass: 0;');
-
-      // Asegúrate de agregar la forma antes de establecer el cuerpo
-      donut.setAttribute('ammo-shape', 'type: hull');
-      jumpDonut(donut); // Llama a la función de salto aquí
-
-    });
-
-    function jumpDonut(donut) {
-      window.addEventListener('keydown', function(event) {
-        if (event.code === 'Space') {
-          const el = donut;
-
-          const physicsComponent = el.components['ammo-body'];
-          const body = physicsComponent.body;
-
-          body.activate();
-
-          // Aplica impulso vertical hacia arriba
-          const randomX = (Math.random() - 0.5) * 10; // Valor aleatorio entre -5 y 5
-          const randomZ = (Math.random() - 0.5) * 10; // Valor aleatorio entre -5 y 5
-          const impulse = new Ammo.btVector3(randomX, 6, randomZ);
-          const relPos = new Ammo.btVector3(0, 0, 0);
-          body.applyImpulse(impulse, relPos);
-
-          // Limpia memoria temporal
-          Ammo.destroy(impulse);
-          Ammo.destroy(relPos);
-
-        }
-      });
-    }
+    });*/
   </script>
 
 </body>
