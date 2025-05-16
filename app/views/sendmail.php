@@ -22,7 +22,7 @@
 
       $message = "te ha escrito " . $_POST['name'] . " " . $_POST['email'] . " " . $_POST['mensaje'];
 
-      mail('liza@ma-no.org', 'My Subject', $message);
+      mail('krasnolutska.lizok18.25@gmail.com', 'My Subject', $message);
       ?>
     </div>
 

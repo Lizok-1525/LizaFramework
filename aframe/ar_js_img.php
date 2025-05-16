@@ -1,73 +1,147 @@
+<!DOCTYPE html>
 <html>
 
 <head>
-    <?php include("../template/standard/metas.inc.php"); ?>
+    <meta charset="utf-8" />
+    <title>Basic Example — Networked-Aframe</title>
+    <meta name="description" content="Basic Example — Networked-Aframe" />
+
     <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
-    <script src="https://unpkg.com/aframe-environment-component@1.5.0/dist/aframe-environment-component.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/MozillaReality/ammo.js@8bbc0ea/builds/ammo.wasm.js"></script>
-    <script src="https://c-frame.github.io/aframe-physics-system/dist/aframe-physics-system.js"></script>
-    <script src="https://c-frame.github.io/aframe-physics-system/examples/components/force-pushable.js"></script>
-    <script src="https://c-frame.github.io/aframe-physics-system/examples/components/grab.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!--   NAF basic requirements   -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.min.js"></script>
+    <script src="https://naf-examples.glitch.me/easyrtc/easyrtc.js"></script>
+    <script src="https://naf-examples.glitch.me/dist/networked-aframe.js"></script>
+
+    <!--    used for flying in this demo  -->
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.5.4/dist/aframe-extras.controls.min.js"></script>
+
+    <!--   used for the pretty environment   -->
+    <script src="https://cdn.jsdelivr.net/npm/aframe-environment-component@1.5.0/dist/aframe-environment-component.min.js"></script>
+
+    <!--   used to prevent players from spawning on top of each other so much  -->
+    <script src="https://naf-examples.glitch.me/js/spawn-in-circle.component.js"></script>
 
     <script>
-        AFRAME.registerComponent('proyectil-lanzable', {
-            schema: {
-                force: {
-                    type: 'number',
-                    default: 10
-                }
-            },
+        // Called by Networked-Aframe when connected to server (optional)
+        // (this api will change in future versions)
+        function onConnect() {
+            console.log('onConnect', new Date());
+        }
 
-            init: function() {
-                const el = this.el;
-                this.lanzado = false;
+        // Note the way we're establishing the NAF schema here; this is a bit awkward
+        // because of a recent bug found in the original handling. This mitigates that bug for now,
+        // until a refactor in the future that should fix the issue more cleanly.
+        // see issue https://github.com/networked-aframe/networked-aframe/issues/267
 
-                window.addEventListener('keydown', (e) => {
-                    if (e.code === 'Space' && !this.lanzado) {
-                        this.lanzado = true;
+        // This one is necessary, because tracking the .head child component's material's color
+        // won't happen unless we tell NAF to keep it in sync, like here.
+        NAF.schemas.getComponentsOriginal = NAF.schemas.getComponents;
+        NAF.schemas.getComponents = (template) => {
+            if (!NAF.schemas.hasTemplate('#avatar-template')) {
+                NAF.schemas.add({
+                    template: '#avatar-template',
+                    components: [
+                        // position and rotation are added by default if we don't include a template, but since
+                        // we also want to sync the color, we need to specify a custom template; if we didn't
+                        // include position and rotation in this custom template, they'd not be synced.
+                        {
+                            component: 'position',
+                            requiresNetworkUpdate: NAF.utils.vectorRequiresUpdate(0.001)
+                        },
+                        {
+                            component: 'rotation',
+                            requiresNetworkUpdate: NAF.utils.vectorRequiresUpdate(0.5)
+                        },
 
-                        el.setAttribute('ammo-body', {
-                            type: 'dynamic',
-                            mass: 1,
-                            disableDeactivation: false
-                        });
-
-                        el.addEventListener('body-loaded', () => {
-                            const direction = new THREE.Vector3(0, 0.2, -1); // dirección hacia adelante y un poco hacia arriba
-                            direction.normalize().multiplyScalar(this.data.force);
-
-                            const impulse = new Ammo.btVector3(direction.x, direction.y, direction.z);
-                            const rel_pos = new Ammo.btVector3(0, 0, 0);
-
-                            el.body.setLinearVelocity(impulse); // prueba usar velocidad directa
-                            el.body.applyImpulse(impulse, rel_pos);
-                        });
-                    }
+                        // this is how we sync a particular property of a particular component for a particular
+                        // child element of template instances.
+                        {
+                            selector: '.head',
+                            component: 'material',
+                            property: 'color' // property is optional; if excluded, syncs everything in the component schema
+                        }
+                    ]
                 });
             }
-        });
+
+            if (!NAF.schemas.hasTemplate('#rig-template')) {
+                NAF.schemas.add({
+                    template: '#rig-template',
+                    components: [{
+                            component: 'position',
+                            requiresNetworkUpdate: NAF.utils.vectorRequiresUpdate(0.001)
+                        },
+                        {
+                            component: 'rotation',
+                            requiresNetworkUpdate: NAF.utils.vectorRequiresUpdate(0.5)
+                        }
+                    ]
+                });
+            }
+
+            const components = NAF.schemas.getComponentsOriginal(template);
+            return components;
+        };
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/aframe-randomizer-components@3.0.2/dist/aframe-randomizer-components.min.js"></script>
 </head>
 
 <body>
-    <a-scene physics="driver: ammo; debug: true; gravity: -9.8">
-        <!-- Suelo (plano estático) -->
-        <a-box position="0 -1 0" width="10" height="0.2" depth="10" ammo-body="type: static" ammo-shape="type: box;" color="#7BC8A4"></a-box>
+    <a-scene
+        networked-scene="
+      room: basic;
+      debug: true;
+      adapter: wseasyrtc;
+    ">
+        <a-assets>
+            <!-- Templates -->
+            <!-- Camera Rig / Player -->
+            <template id="rig-template">
+                <a-entity></a-entity>
+            </template>
 
-        <!-- Caja (dinámica) -->
-        <a-entity id="torus"
-            geometry="primitive: torus; radius: 0.3; radiusTubular: 0.05"
-            material="color: red"
-            position="0 1.5 -2"
-            scale="1 1 1"
-            proyectil-lanzable="force: 20"
-            ammo-shape="type: hull">
+            <!-- Head / Avatar -->
+            <!--      a few spheres make a head + eyes + pupils    -->
+            <template id="avatar-template">
+                <a-entity class="avatar">
+                    <!-- notice this child sphere, with class .head, has the random-color component; this modifies the material component's color property -->
+                    <a-sphere class="head" scale="0.2 0.22 0.2" random-color></a-sphere>
+                    <a-entity class="face" position="0 0.05 0">
+                        <a-sphere class="eye" color="white" position="0.06 0.05 -0.16" scale="0.04 0.04 0.04">
+                            <a-sphere class="pupil" color="black" position="0 0 -1" scale="0.2 0.2 0.2"></a-sphere>
+                        </a-sphere>
+                        <a-sphere class="eye" color="white" position="-0.06 0.05 -0.16" scale="0.04 0.04 0.04">
+                            <a-sphere class="pupil" color="black" position="0 0 -1" scale="0.2 0.2 0.2"></a-sphere>
+                        </a-sphere>
+                    </a-entity>
+                </a-entity>
+            </template>
+            <!-- /Templates -->
+        </a-assets>
+
+        <a-entity environment="preset:starry;groundColor:#000000;"></a-entity>
+
+        <a-entity id="rig" movement-controls="fly:true;" spawn-in-circle="radius:3" networked="template:#rig-template;">
+
+            <a-entity
+                id="player"
+                camera
+                position="0 1.6 0"
+                look-controls
+                networked="template:#avatar-template;"
+                visible="false">
+            </a-entity>
         </a-entity>
-
-        <!-- Cámara -->
-        <a-entity camera look-controls wasd-controls position="0 2 5"></a-entity>
     </a-scene>
+
+    <script>
+        // Called by Networked-Aframe when connected to server
+        // Optional to use; this API will change in the future
+        function onConnect() {
+            console.log('onConnect', new Date());
+        }
+    </script>
 </body>
 
 </html>
