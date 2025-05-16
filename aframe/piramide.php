@@ -451,6 +451,154 @@
                 }
             }
         });
+
+
+
+        /*      window.addEventListener('load', () => {
+             const donut = document.querySelector('.donut');
+
+             // Establecer la posición del donut
+             donut.setAttribute('position', {
+               x: 0,
+               y: 2.4,
+               z: -2.3
+             });
+
+             pegarDonutADraga(); // ahora sí, seguro
+
+             jumpDonut(donut); // Llama a la función de salto aquí
+
+           });*/
+        /*
+        AFRAME.registerComponent('mouse-grab', {
+          init: function() {
+            let grabbed = null;
+            let offset = new THREE.Vector3();
+
+            const scene = this.el.sceneEl;
+            const camera = scene.camera;
+            const raycaster = new THREE.Raycaster();
+
+            const onMouseDown = (e) => {
+              const mouse = new THREE.Vector2(
+                (e.clientX / window.innerWidth) * 2 - 1,
+                -(e.clientY / window.innerHeight) * 2 + 1
+              );
+              raycaster.setFromCamera(mouse, camera);
+
+              const intersects = raycaster.intersectObjects(
+                Array.from(document.querySelectorAll('.grabbable')).map(el => el.object3D),
+                true
+              );
+
+              if (intersects.length > 0) {
+                const intersected = intersects[0].object.el;
+                grabbed = intersected;
+
+                // Convert to kinematic while holding
+                grabbed.setAttribute('ammo-body', 'type: kinematic');
+
+                const pos = new THREE.Vector3().copy(intersects[0].point);
+                offset.copy(pos).sub(grabbed.object3D.getWorldPosition(new THREE.Vector3()));
+              }
+            };
+
+            const onMouseUp = () => {
+              if (grabbed) {
+                grabbed.setAttribute('ammo-body', 'type: dynamic');
+                grabbed = null;
+              }
+            };
+
+            const onMouseMove = (e) => {
+              if (!grabbed) return;
+
+              const mouse = new THREE.Vector2(
+                (e.clientX / window.innerWidth) * 2 - 1,
+                -(e.clientY / window.innerHeight) * 2 + 1
+              );
+              raycaster.setFromCamera(mouse, camera);
+              const direction = new THREE.Vector3();
+              raycaster.ray.direction.normalize();
+              direction.copy(raycaster.ray.direction).multiplyScalar(2); // 2 units away
+              const targetPos = raycaster.ray.origin.clone().add(direction).sub(offset);
+
+              grabbed.object3D.position.copy(targetPos);
+            };
+
+            window.addEventListener('mousedown', onMouseDown);
+            window.addEventListener('mouseup', onMouseUp);
+            window.addEventListener('mousemove', onMouseMove);
+          }
+        });*/
+
+        // -----------------------------------------------------------
+        /*
+        document.querySelector('.spawn-rings').addEventListener('click', () => {
+
+          const scene = document.querySelector('a-scene');
+          if (!document.querySelector('#donut')) {
+            const donut = document.createElement('a-torus');
+            donut.setAttribute('id', 'donut');
+            donut.setAttribute('rotation', '90 0 0');
+            donut.setAttribute('radius', '0.3');
+            donut.setAttribute('radius-tubular', 0.05);
+            donut.setAttribute('segments-radial', 8);
+            donut.setAttribute('segments-tubular', 12);
+            donut.setAttribute('color', '#' + Math.floor(Math.random() * 16777215).toString(16));
+            donut.setAttribute('class', 'grabbable aro');
+            donut.setAttribute('ammo-body', 'type: dynamic; disableDeactivation: false; linearDamping: 0.1; angularDamping: 0.1; mass: 1;');
+            donut.setAttribute('ammo-shape', 'type: hull');
+            donut.setAttribute('position', {
+              x: 0,
+              y: 2.4,
+              z: -2.3
+            });
+
+            // Llama a la función de salto aquí
+
+          }
+          scene.appendChild(donut);
+
+          pegarDonutADraga(); // ahora sí, seguro
+
+          jumpDonut(donut);
+        });*/
+
+        // -----------------------------------------------------------
+        /*    AFRAME.registerComponent('jump-on-space', {
+              init: function() {
+                const el = this.el;
+
+                el.addEventListener('body-loaded', () => {
+                  //console.log('[jump-on-space] Body loaded, ready to jump');
+
+                  window.addEventListener('keydown', function(event) {
+                    
+                    if (event.code === 'Space') {
+                      const physicsComponent = el.components['ammo-body'];
+
+
+                      const body = physicsComponent.body;
+
+                      // IMPORTANTE: desactiva la desactivación si no lo has hecho
+                      body.activate();
+
+                      // Aplica impulso vertical hacia arriba
+                      const impulse = new Ammo.btVector3(0, 5, 0);
+                      const relPos = new Ammo.btVector3(0, 0, 0);
+                      body.applyImpulse(impulse, relPos);
+
+                      // Limpia memoria temporal
+                      Ammo.destroy(impulse);
+                      Ammo.destroy(relPos);
+                    }
+                  });
+                });
+              }
+            });
+        */
+        // -----------------------------------------------------------
     </script>
 
 </body>

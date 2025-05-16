@@ -68,18 +68,13 @@
 </head>
 
 <body>
-  <a-scene networked-scene="
-      room: basic;
-      debug: true;
-      adapter: wseasyrtc;
-    " mouse-grab physics="driver: ammo; gravity: -10; debug: false" rotacion-crane stick-checker>
+  <a-scene networked-scene="room: basic; debug: true; adapter: wseasyrtc;" mouse-grab physics="driver: ammo; gravity: -10; debug: false" rotacion-crane stick-checker>
 
     <a-assets>
-
-      <!-- Head / Avatar -->
-      <!--      a few spheres make a head + eyes + pupils    -->
       <template id="avatar-template">
-
+        <a-entity>
+          <a-box class="head" color="#FFF" depth="0.3" height="0.3" width="0.3"></a-box>
+        </a-entity>
       </template>
       <template id="donut-template">
         <a-torus class="donut grabbable aro"
@@ -144,46 +139,26 @@
       ammo-body="type: static;"
       ammo-shape="type: box;">
     </a-box>
+
     <a-entity line="start: 50 1 40; end: -50 1 40; color: red"
       line__2="start: 50 1 -40; end: -50 1 -40; color: red"></a-entity>
 
-
-    <a-entity
-      id="player"
-      camera
-      position="0 0.5 0"
-      look-controls
-      networked="template:#avatar-template;"
-      visible="true">
+    <!--   -->
+    <a-entity id="player" networked="template:#avatar-template;" spawn-in-circle="radius:3" visible="true" ammo-body="type: kinematic; mass: 1;" ammo-constraint="type: lock; target: #mainCamera; pivot: 0 0 0; axis: 0 1 0">
       <a-box id="movingBox" material=" opacity: 0.7; transparent: true" position="0 0 -1" rotation="0 0 0" depth="1.8" height="2" width="2"
         ammo-body="type: kinematic;" ammo-shape="type: box;" wasd-controls>
         <a-box id="craneArm" material=" opacity: 0.7; transparent: true" position="0 1.5 -1" rotation="-30 0 0" depth="0.6" height="1.5" width="0.7"
           ammo-body="type: kinematic;" ammo-shape="type: box;" rotacion-crane></a-box>
-        <a-entity camera id="mainCamera" position="0 1.6 0.8" cursor="rayOrigin: mouse"
+        <a-entity camera id="mainCamera" networked="template:#avatar-template;" position="0 1.6 0.8" cursor="rayOrigin: mouse"
           raycaster="objects: .grabbable, .clickable"></a-entity>
       </a-box>
     </a-entity>
 
-    <a-box
-      position="0 -1 0"
-      width="100"
-      depth="100"
-      height="1"
-      color="yellow"
-      material=" opacity: 0.7; transparent: true"
-      visible="false"
-      ammo-body="type: static; restitution: 0.8"
-      ammo-shape="type: box">
-    </a-box>
+    <a-box position="0 -1 0" width="100" depth="100" height="1" color="yellow" material=" opacity: 0.7; transparent: true" visible="false" ammo-body="type: static; restitution: 0.8" ammo-shape="type: box"> </a-box>
 
     <a-entity environment position="0 -0.5 0"></a-entity>
 
   </a-scene>
-  <!-- <script>
-    function onConnect() {
-      console.log('onConnect', new Date());
-    }
-  </script>-->
   <script>
     AFRAME.registerComponent('rotacion-crane', {
       init: function() {
@@ -249,7 +224,6 @@
     });
 
     // -----------------------------------------------------------
-
     function pegarDonutADraga() {
       const donut = document.querySelector('.donut');
 
@@ -263,9 +237,6 @@
       document.querySelector('.donut').removeAttribute('ammo-constraint');
     }
     // -----------------------------------------------------------
-
-
-
     function jumpDonut(donut) {
       window.addEventListener('keydown', function(event) {
         if (event.code === 'Space') {
@@ -298,6 +269,7 @@
         }
       });
     }
+
     // -----------------------------------------------------------
     window.addEventListener('keydown', function(event) {
       if (event.key.toLowerCase() === 'v') {
@@ -352,16 +324,22 @@
       init: function() {
         this.el.addEventListener('click', () => {
           const scene = document.querySelector('a-scene');
+
+          const craneArm = document.querySelector('#craneArm');
+          const offset = new THREE.Vector3(0, 1, 0);
+          const worldOffset = craneArm.object3D.localToWorld(offset);
+          const newPos = {
+            x: worldOffset.x,
+            y: worldOffset.y,
+            z: worldOffset.z
+          };
+
           if (!document.querySelector('.donut')) {
             const donut = document.createElement('a-torus');
 
             donut.setAttribute('networked', 'template:#donut-template');
             donut.setAttribute('class', 'donut grabbable aro');
-            donut.setAttribute('position', {
-              x: 0,
-              y: 2.4,
-              z: -2.3
-            });
+            donut.setAttribute('position', newPos);
             donut.setAttribute('rotation', '90 0 0');
 
             // Color aleatorio
@@ -379,183 +357,7 @@
       }
     });
 
-    /*   AFRAME.registerComponent('spawn-on-click', {
-  init: function () {
-    this.el.addEventListener('click', () => {
-      // Creamos un nuevo donut sin verificar si ya existe otro
-      const donut = document.createElement('a-torus');
-
-      donut.setAttribute('networked', 'template:#donut-template');
-      donut.setAttribute('class', 'donut grabbable aro');
-      donut.setAttribute('position', {
-        x: 0,
-        y: 2.4,
-        z: -2.3
-      });
-      donut.setAttribute('rotation', '90 0 0');
-
-      // Color aleatorio
-      donut.setAttribute('material', 'color: #' + Math.floor(Math.random() * 16777215).toString(16));
-
-      // Físicas
-      donut.setAttribute('ammo-body', 'type: dynamic; restitution: 0.7; disableDeactivation: false; linearDamping: 0.1; angularDamping: 0.1; mass: 1;');
-      donut.setAttribute('ammo-shape', 'type: hull');
-
-      document.querySelector('a-scene').appendChild(donut);
-
-      donut.addEventListener('body-loaded', () => {
-        pegarDonutADraga();
-        jumpDonut(donut);
-      });
-    });
-  }
-});
-    
-       window.addEventListener('load', () => {
-         const donut = document.querySelector('.donut');
-
-         // Establecer la posición del donut
-         donut.setAttribute('position', {
-           x: 0,
-           y: 2.4,
-           z: -2.3
-         });
-
-         pegarDonutADraga(); // ahora sí, seguro
-
-         jumpDonut(donut); // Llama a la función de salto aquí
-
-       });*/
-    /*
-    AFRAME.registerComponent('mouse-grab', {
-      init: function() {
-        let grabbed = null;
-        let offset = new THREE.Vector3();
-
-        const scene = this.el.sceneEl;
-        const camera = scene.camera;
-        const raycaster = new THREE.Raycaster();
-
-        const onMouseDown = (e) => {
-          const mouse = new THREE.Vector2(
-            (e.clientX / window.innerWidth) * 2 - 1,
-            -(e.clientY / window.innerHeight) * 2 + 1
-          );
-          raycaster.setFromCamera(mouse, camera);
-
-          const intersects = raycaster.intersectObjects(
-            Array.from(document.querySelectorAll('.grabbable')).map(el => el.object3D),
-            true
-          );
-
-          if (intersects.length > 0) {
-            const intersected = intersects[0].object.el;
-            grabbed = intersected;
-
-            // Convert to kinematic while holding
-            grabbed.setAttribute('ammo-body', 'type: kinematic');
-
-            const pos = new THREE.Vector3().copy(intersects[0].point);
-            offset.copy(pos).sub(grabbed.object3D.getWorldPosition(new THREE.Vector3()));
-          }
-        };
-
-        const onMouseUp = () => {
-          if (grabbed) {
-            grabbed.setAttribute('ammo-body', 'type: dynamic');
-            grabbed = null;
-          }
-        };
-
-        const onMouseMove = (e) => {
-          if (!grabbed) return;
-
-          const mouse = new THREE.Vector2(
-            (e.clientX / window.innerWidth) * 2 - 1,
-            -(e.clientY / window.innerHeight) * 2 + 1
-          );
-          raycaster.setFromCamera(mouse, camera);
-          const direction = new THREE.Vector3();
-          raycaster.ray.direction.normalize();
-          direction.copy(raycaster.ray.direction).multiplyScalar(2); // 2 units away
-          const targetPos = raycaster.ray.origin.clone().add(direction).sub(offset);
-
-          grabbed.object3D.position.copy(targetPos);
-        };
-
-        window.addEventListener('mousedown', onMouseDown);
-        window.addEventListener('mouseup', onMouseUp);
-        window.addEventListener('mousemove', onMouseMove);
-      }
-    });*/
-
-    // -----------------------------------------------------------
-    /*
-    document.querySelector('.spawn-rings').addEventListener('click', () => {
-
-      const scene = document.querySelector('a-scene');
-      if (!document.querySelector('#donut')) {
-        const donut = document.createElement('a-torus');
-        donut.setAttribute('id', 'donut');
-        donut.setAttribute('rotation', '90 0 0');
-        donut.setAttribute('radius', '0.3');
-        donut.setAttribute('radius-tubular', 0.05);
-        donut.setAttribute('segments-radial', 8);
-        donut.setAttribute('segments-tubular', 12);
-        donut.setAttribute('color', '#' + Math.floor(Math.random() * 16777215).toString(16));
-        donut.setAttribute('class', 'grabbable aro');
-        donut.setAttribute('ammo-body', 'type: dynamic; disableDeactivation: false; linearDamping: 0.1; angularDamping: 0.1; mass: 1;');
-        donut.setAttribute('ammo-shape', 'type: hull');
-        donut.setAttribute('position', {
-          x: 0,
-          y: 2.4,
-          z: -2.3
-        });
-
-        // Llama a la función de salto aquí
-
-      }
-      scene.appendChild(donut);
-
-      pegarDonutADraga(); // ahora sí, seguro
-
-      jumpDonut(donut);
-    });*/
-
-    // -----------------------------------------------------------
-    /*    AFRAME.registerComponent('jump-on-space', {
-          init: function() {
-            const el = this.el;
-
-            el.addEventListener('body-loaded', () => {
-              //console.log('[jump-on-space] Body loaded, ready to jump');
-
-              window.addEventListener('keydown', function(event) {
-                
-                if (event.code === 'Space') {
-                  const physicsComponent = el.components['ammo-body'];
-
-
-                  const body = physicsComponent.body;
-
-                  // IMPORTANTE: desactiva la desactivación si no lo has hecho
-                  body.activate();
-
-                  // Aplica impulso vertical hacia arriba
-                  const impulse = new Ammo.btVector3(0, 5, 0);
-                  const relPos = new Ammo.btVector3(0, 0, 0);
-                  body.applyImpulse(impulse, relPos);
-
-                  // Limpia memoria temporal
-                  Ammo.destroy(impulse);
-                  Ammo.destroy(relPos);
-                }
-              });
-            });
-          }
-        });
-    */
-    // -----------------------------------------------------------
+    NAF.connection.onConnect(onConnect);
   </script>
 
 </body>
