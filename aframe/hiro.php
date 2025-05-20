@@ -17,9 +17,6 @@
             link-on-click="./tuneles.php">
         </a-entity>
 
-        <!-- También mantener el botón HTML para usuarios no-VR -->
-        <button id="htmlReturnButton" onclick="window.location.href='./tuneles.php'">Return</button>
-
         <a-assets>
             <!-- Puedes reemplazar esta URL con la tuya -->
             <a-asset-item id="crowModel" src="../assets/images/gltf/Rise of the Guardianse.glb"></a-asset-item>

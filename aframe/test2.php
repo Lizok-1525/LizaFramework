@@ -1,96 +1,72 @@
-<html>
-
 <head>
-  <?php include("../template/standard/metas.inc.php"); ?>
-
-  <title>Pruebas para juego</title>
+  <meta charset="utf-8">
+  <title>NAF con Firebase</title>
   <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
   <script src="https://unpkg.com/aframe-environment-component@1.5.0/dist/aframe-environment-component.min.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/MozillaReality/ammo.js@8bbc0ea/builds/ammo.wasm.js"></script>
   <script src="https://c-frame.github.io/aframe-physics-system/dist/aframe-physics-system.js"></script>
   <script src="https://c-frame.github.io/aframe-physics-system/examples/components/force-pushable.js"></script>
   <script src="https://c-frame.github.io/aframe-physics-system/examples/components/grab.js"></script>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.min.js"></script>
-  <script src="https://naf-examples.glitch.me/easyrtc/easyrtc.js"></script>
-  <script src="https://naf-examples.glitch.me/dist/networked-aframe.js"></script>
-  <script src="https://naf-examples.glitch.me/js/spawn-in-circle.component.js"></script>
+  <script src="https://unpkg.com/networked-aframe@0.8.0/dist/networked-aframe.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
   <script>
-    function onConnect() {
-      console.log('onConnect', new Date());
-    }
-    NAF.schemas.getComponentsOriginal = NAF.schemas.getComponents;
-    NAF.schemas.getComponents = (template) => {
-      if (!NAF.schemas.hasTemplate('#avatar-template')) {
-        NAF.schemas.add({
-          template: '#avatar-template',
-          components: [{
-              component: 'position',
-              requiresNetworkUpdate: NAF.utils.vectorRequiresUpdate(0.001)
-            },
-            {
-              component: 'rotation',
-              requiresNetworkUpdate: NAF.utils.vectorRequiresUpdate(0.5)
-            },
-            {
-              selector: '.head',
-              component: 'material',
-              property: 'color'
-            }
-          ]
-        });
-      }
-
-      if (!NAF.schemas.hasTemplate('#donut-template')) {
-        NAF.schemas.add({
-          template: '#donut-template',
-          components: [{
-              component: 'position',
-              requiresNetworkUpdate: NAF.utils.vectorRequiresUpdate(0.01)
-            },
-            {
-              component: 'rotation',
-              requiresNetworkUpdate: NAF.utils.vectorRequiresUpdate(0.1)
-            },
-            {
-              component: 'material',
-              property: 'color'
-            }
-          ]
-        });
-      }
-
-      const components = NAF.schemas.getComponentsOriginal(template);
-      return components;
+    const firebaseConfig = {
+      apiKey: "AIzaSyBJ-N2uReWcU07zx7Fla61qCHyQElIuMB4",
+      authDomain: "naf-firebase.firebaseapp.com",
+      databaseURL: "https://naf-firebase-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "naf-firebase",
+      storageBucket: "naf-firebase.firebasestorage.app",
+      messagingSenderId: "303321259755",
+      appId: "1:303321259755:web:2c41c5700a087421dee8ae",
+      measurementId: "G-61P6R8Q44Y"
     };
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
   </script>
-  <script src="https://cdn.jsdelivr.net/npm/aframe-randomizer-components@3.0.2/dist/aframe-randomizer-components.min.js"></script>
+
+  <!-- Luego, cargar el adaptador de Firebase para networked-aframe -->
+  <script src="https://unpkg.com/networked-aframe/dist/adapters/firebase-adapter.js"></script>
+  <script>
+    // Aquí, FirebaseAdapter ya está definido
+    NAF.adapters.register('firebase', firebaseConfig);
+  </script>
+
+  <!-- Finalmente, cargar networked-aframe -->
+  <script src="https://unpkg.com/networked-aframe@0.8.0/dist/networked-aframe.min.js"></script>
+
+
 </head>
 
 <body>
-  <a-scene networked-scene="room: basic; debug: true; adapter: wseasyrtc;" mouse-grab physics="driver: ammo; gravity: -10; debug: false" rotacion-crane stick-checker>
+
+  <a-scene networked-scene="
+    room: nombre-de-tu-sala;
+    debug: true;
+    connectOnLoad: true;
+    adapter: firebase;
+    firebase: {
+      databaseURL: 'https://naf-firebase-default-rtdb.asia-southeast1.firebasedatabase.app/
+'
+    }" mouse-grab physics="driver: ammo; gravity: -10; debug: false" rotacion-crane stick-checker>
 
     <a-assets>
       <template id="avatar-template">
-        <a-entity>
-          <a-box class="head" color="#FFF" depth="0.3" height="0.3" width="0.3"></a-box>
-        </a-entity>
-      </template>
-      <template id="donut-template">
-        <a-torus class="donut grabbable aro"
-          rotation="90 0 0"
-          radius="0.3"
-          radius-tubular="0.05"
-          segments-radial="8"
-          segments-tubular="12"
-          ammo-body="type: dynamic; restitution: 0.7; disableDeactivation: false; linearDamping: 0.1; angularDamping: 0.1; mass: 1;"
-          ammo-shape="type: hull"
-          networked="template:#donut-template">
-        </a-torus>
+        <a-box color="blue" height="1.6" width="0.5" depth="0.5" networked="networkId: avatar"></a-box>
       </template>
 
-      <!-- /Templates -->
+      <template id="donut-template">
+        <a-torus
+          class="donut grabbable aro"
+          ammo-body="type: dynamic; restitution: 0.7; mass: 1"
+          ammo-shape="type: hull"
+          networked="networkId: donut; owner: #mainCamera"
+          rotation="90 0 0" radius="0.3" radius-tubular="0.05" segments-radial="8" segments-tubular="12">
+        </a-torus>
+      </template>
     </a-assets>
+
 
 
     <a-box position="0 4.5 -50"
@@ -143,16 +119,15 @@
     <a-entity line="start: 50 1 40; end: -50 1 40; color: red"
       line__2="start: 50 1 -40; end: -50 1 -40; color: red"></a-entity>
 
-    <!--   -->
-    <a-entity id="player" networked="template:#avatar-template;" spawn-in-circle="radius:3" visible="true" ammo-body="type: kinematic; mass: 1;" ammo-constraint="type: lock; target: #mainCamera; pivot: 0 0 0; axis: 0 1 0">
-      <a-box id="movingBox" material=" opacity: 0.7; transparent: true" position="0 0 -1" rotation="0 0 0" depth="1.8" height="2" width="2"
-        ammo-body="type: kinematic;" ammo-shape="type: box;" wasd-controls>
-        <a-box id="craneArm" material=" opacity: 0.7; transparent: true" position="0 1.5 -1" rotation="-30 0 0" depth="0.6" height="1.5" width="0.7"
-          ammo-body="type: kinematic;" ammo-shape="type: box;" rotacion-crane></a-box>
-        <a-entity camera id="mainCamera" networked="template:#avatar-template;" position="0 1.6 0.8" cursor="rayOrigin: mouse"
-          raycaster="objects: .grabbable, .clickable"></a-entity>
-      </a-box>
-    </a-entity>
+
+    <a-box id="movingBox" networked="template:#avatar-template" material=" opacity: 0.7; transparent: true" position="0 0 -1" rotation="0 0 0" depth="1.8" height="2" width="2"
+      ammo-body="type: kinematic;" ammo-shape="type: box;" wasd-controls>
+      <a-box id="craneArm" networked="template:#avatar-template" material=" opacity: 0.7; transparent: true" position="0 1.5 -1" rotation="-30 0 0" depth="0.6" height="1.5" width="0.7"
+        ammo-body="type: kinematic;" ammo-shape="type: box;" rotacion-crane></a-box>
+      <a-entity camera id="mainCamera" networked="template:#avatar-template;" position="0 1.6 0.8" cursor="rayOrigin: mouse"
+        raycaster="objects: .grabbable, .clickable"></a-entity>
+    </a-box>
+
 
     <a-box position="0 -1 0" width="100" depth="100" height="1" color="yellow" material=" opacity: 0.7; transparent: true" visible="false" ammo-body="type: static; restitution: 0.8" ammo-shape="type: box"> </a-box>
 
@@ -320,7 +295,39 @@
     });
 
     // -----------------------------------------------------------
+
+
     AFRAME.registerComponent('spawn-on-click', {
+      init: function() {
+        this.el.addEventListener('click', () => {
+          const scene = document.querySelector('a-scene');
+          const craneArm = document.querySelector('#craneArm');
+          const offset = new THREE.Vector3(0, 1, 0);
+          const worldOffset = craneArm.object3D.localToWorld(offset);
+          const newPos = {
+            x: worldOffset.x,
+            y: worldOffset.y,
+            z: worldOffset.z
+          };
+
+          if (!document.querySelector('.donut')) {
+            // ⛏️ CLONAR DESDE TEMPLATE DE FORMA CORRECTA
+            const donut = NAF.utils.getNetworkedTemplate('#donut-template');
+            donut.setAttribute('position', newPos);
+            donut.setAttribute('material', 'color: #' + Math.floor(Math.random() * 16777215).toString(16));
+
+            scene.appendChild(donut);
+
+            // Espera a que esté cargado en el DOM y tenga física
+            donut.addEventListener('body-loaded', () => {
+              pegarDonutADraga();
+              jumpDonut(donut);
+            });
+          }
+        });
+      }
+    });
+    /* AFRAME.registerComponent('spawn-on-click', {
       init: function() {
         this.el.addEventListener('click', () => {
           const scene = document.querySelector('a-scene');
@@ -336,28 +343,23 @@
 
           if (!document.querySelector('.donut')) {
             const donut = document.createElement('a-torus');
-
             donut.setAttribute('networked', 'template:#donut-template');
             donut.setAttribute('class', 'donut grabbable aro');
             donut.setAttribute('position', newPos);
-            donut.setAttribute('rotation', '90 0 0');
-
-            // Color aleatorio
             donut.setAttribute('material', 'color: #' + Math.floor(Math.random() * 16777215).toString(16));
-
-            // Físicas
-            donut.setAttribute('ammo-body', 'type: dynamic; restitution: 0.7; disableDeactivation: false; linearDamping: 0.1; angularDamping: 0.1; mass: 1;');
-            donut.setAttribute('ammo-shape', 'type: hull');
-
+            donut.setAttribute('rotation', '90 0 0');
+            // No necesitas configurar física manual aquí, ya está en la plantilla
             scene.appendChild(donut);
+
+
+
             pegarDonutADraga();
             jumpDonut(donut);
           }
         });
       }
     });
-
-    NAF.connection.onConnect(onConnect);
+  */
   </script>
 
 </body>

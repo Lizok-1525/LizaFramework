@@ -11,7 +11,8 @@
   <script src="https://aframe.io/aframe/examples/showcase/model-viewer/ar-shadows.js"></script>
   <script src="https://aframe.io/aframe/examples/showcase/model-viewer/model-viewer.js"></script>
   <style>
-    #htmlReturnButton {
+    #htmlReturnButton,
+    button {
       position: fixed;
       top: .5em;
       left: .5em;
@@ -39,6 +40,7 @@
       top: 20px;
       left: 20px;
       z-index: 999;
+
     }
 
     button {
@@ -53,21 +55,20 @@
 <body>
   <div class="buttons">
     <button onclick="changeModel('#buho', 'Buho')">Búho</button>
-    <button onclick="changeModel('#aguila', 'Águila')">Aguila</button>
-    <button onclick="changeModel('#halcón', 'Halcón')">Halcón</button>
-    <button onclick="changeModel('#cuervo', 'Cuervo')">Cuervo</button>
+    <button onclick="changeModel('#aguila', 'Águila')" style="top: 50px; left:90px">Aguila</button>
+    <button onclick="changeModel('#halcón', 'Halcón')" style="top: 50px; ">Halcón</button>
+    <button onclick="changeModel('#cuervo', 'Cuervo')" style="left:80px">Cuervo</button>
   </div>
 
 
 
-  <a-scene renderer="colorManagement: true;" model-viewer="gltfModel: #buho; title: The Birds" xr-mode-ui="XRMode: xr">
+  <a-scene renderer="colorManagement: true;" model-viewer="gltfModel: #buho; title: The Birds; uploadUIEnabled: false" xr-mode-ui="XRMode: xr">
     <a-entity id="returnButton" geometry="primitive: plane; width: 1; height: 0.5" material="color: #333; opacity: 0.8"
       position="-2 2.5 -2" text="value: Return; align: center; color: white; width: 5" class="clickable"
       onclick="window.location.href='./tuneles.php'">
     </a-entity>
 
-    <!-- También mantener el botón HTML para usuarios no-VR 
-    <button id="htmlReturnButton" onclick="window.location.href='./tuneles.php'">Return</button>-->
+
 
     <a-assets timeout="10000">
       <a-asset-item id="buho" src="../assets/images/gltf/Owl.gltf" response-type="arraybuffer"

@@ -13,7 +13,7 @@
 </head>
 
 <body>
-    <a-scene mouse-grab physics="driver: ammo; gravity: -9.8; debug: false" score-detector contador-bloques>
+    <a-scene mouse-grab physics="driver: ammo; gravity: -9.8; debug: false" score-detector contador-bloques rotacion-crane>
         <!-- Player -->
         <a-entity camera look-controls wasd-controls position="0 1.6 0">
             <a-entity id="mouseCursor"
@@ -170,12 +170,11 @@
 
                     $('#content').empty();
                     // Limpia el contenido anterior
-                    document.querySelectorAll('.aro').forEach(el => {
-                        el.parentNode.removeChild(el);
-                    }); // Limpia todo el contenido anterior
-                    document.querySelectorAll('.bloque').forEach(el => {
-                        el.parentNode.removeChild(el);
+                    ['.aro', '.bloque', '.figura'].forEach(clase => {
+                        document.querySelectorAll(clase).forEach(el => el.remove());
                     });
+                    document.querySelectorAll('#craneArm').forEach(el => el.remove());
+
                     $('#content').append(data);
                     document.querySelector('#puntos').setAttribute('value', `Puntos: 0`);
                     document.querySelector('#boton1').setAttribute('visible', 'false');
@@ -190,38 +189,40 @@
 
 
                             if (contador >= 20) return;
-                            for (let i = 0; i < 2; i++) {
-                                const torus = document.createElement('a-torus');
 
-                                const x = posiciones[i]; // -1 o 1
-                                const z = -4; // misma z que el palo
-                                const y = 1;
+                            const torus = document.createElement('a-torus');
 
-                                const baseRadius = 1;
+                            const x = posiciones[i]; // -1 o 1
+                            const z = -4; // misma z que el palo
+                            const y = 1;
 
-                                const scaleFactor = 0.2; // cuánto se reduce por pieza añadida  
-                                // Math.max(radius, 0.3)
+                            const baseRadius = 1;
 
-                                const radius = baseRadius - scaleFactor * contador;
+                            const scaleFactor = 0.2; // cuánto se reduce por pieza añadida  
+                            // Math.max(radius, 0.3)
 
-                                torus.setAttribute('position', `${x} ${y} ${z}`);
-                                torus.setAttribute('rotation', '90 0 0'); // ahora está de pie
-                                torus.setAttribute('radius', '0.3'); // evita que sea negativo
+                            const radius = baseRadius - scaleFactor * contador;
 
-                                torus.setAttribute('radius-tubular', 0.05);
-                                torus.setAttribute('segments-radial', 8);
-                                torus.setAttribute('segments-tubular', 12);
+                            torus.setAttribute('position', `${x} ${y} ${z}`);
+                            torus.setAttribute('rotation', '90 0 0'); // ahora está de pie
+                            torus.setAttribute('radius', '0.3'); // evita que sea negativo
 
-                                torus.setAttribute('color', '#' + Math.floor(Math.random() * 16777215).toString(16));
-                                torus.setAttribute('class', 'grabbable aro');
-                                torus.setAttribute('ammo-body', 'type: dynamic; disableDeactivation: false; linearDamping: 0.1; angularDamping: 0.1; ');
-                                torus.setAttribute('ammo-shape', 'type: hull');
-                                torus.setAttribute('force-pushable', '');
-                                torus.setAttribute('shadow', '');
-                                scene.appendChild(torus);
-                                contador++;
-                            }
+                            torus.setAttribute('radius-tubular', 0.05);
+                            torus.setAttribute('segments-radial', 8);
+                            torus.setAttribute('segments-tubular', 12);
+
+                            torus.setAttribute('color', '#' + Math.floor(Math.random() * 16777215).toString(16));
+                            torus.setAttribute('class', 'donut grabbable aro');
+                            torus.setAttribute('ammo-body', 'type: dynamic; disableDeactivation: false; linearDamping: 0.1; angularDamping: 0.1; ');
+                            torus.setAttribute('ammo-shape', 'type: hull');
+                            torus.setAttribute('shadow', '');
+                            scene.appendChild(torus);
+                            contador++;
+
                         });
+                        $('#content').append(data);
+
+
 
                         //------------------------------------------------------------
 
@@ -323,6 +324,36 @@
                 }
             });
             document.querySelector('a-scene').setAttribute('torus-cleanup', '');
+        });
+
+        AFRAME.registerComponent('rotacion-crane', {
+            init: function() {
+                this.rotationSpeed = 5; // Grados por evento
+                window.addEventListener('keydown', this.onKeyDown.bind(this));
+            },
+
+
+            onKeyDown: function(event) {
+
+                const craneArm = document.querySelector('#craneArm');
+                if (!craneArm) return;
+
+                let currentRotations = craneArm.getAttribute('rotation');
+
+                if (event.key.toUpperCase() === 'O') {
+                    currentRotations.x += this.rotationSpeed;
+                    craneArm.setAttribute('rotation', currentRotations);
+                } else if (event.key.toUpperCase() === 'L') {
+                    currentRotations.x -= this.rotationSpeed;
+                    craneArm.setAttribute('rotation', currentRotations);
+                } else if (event.key.toUpperCase() === 'K') {
+                    currentRotations.y += this.rotationSpeed;
+                    craneArm.setAttribute('rotation', currentRotations);
+                } else if (event.key.toUpperCase() === 'Ñ') {
+                    currentRotations.y += this.rotationSpeed;
+                    craneArm.setAttribute('rotation', currentRotations);
+                }
+            }
         });
 
         // -----------------------------------------------------------
@@ -453,7 +484,6 @@
         });
 
 
-
         /*      window.addEventListener('load', () => {
              const donut = document.querySelector('.donut');
 
@@ -469,68 +499,7 @@
              jumpDonut(donut); // Llama a la función de salto aquí
 
            });*/
-        /*
-        AFRAME.registerComponent('mouse-grab', {
-          init: function() {
-            let grabbed = null;
-            let offset = new THREE.Vector3();
 
-            const scene = this.el.sceneEl;
-            const camera = scene.camera;
-            const raycaster = new THREE.Raycaster();
-
-            const onMouseDown = (e) => {
-              const mouse = new THREE.Vector2(
-                (e.clientX / window.innerWidth) * 2 - 1,
-                -(e.clientY / window.innerHeight) * 2 + 1
-              );
-              raycaster.setFromCamera(mouse, camera);
-
-              const intersects = raycaster.intersectObjects(
-                Array.from(document.querySelectorAll('.grabbable')).map(el => el.object3D),
-                true
-              );
-
-              if (intersects.length > 0) {
-                const intersected = intersects[0].object.el;
-                grabbed = intersected;
-
-                // Convert to kinematic while holding
-                grabbed.setAttribute('ammo-body', 'type: kinematic');
-
-                const pos = new THREE.Vector3().copy(intersects[0].point);
-                offset.copy(pos).sub(grabbed.object3D.getWorldPosition(new THREE.Vector3()));
-              }
-            };
-
-            const onMouseUp = () => {
-              if (grabbed) {
-                grabbed.setAttribute('ammo-body', 'type: dynamic');
-                grabbed = null;
-              }
-            };
-
-            const onMouseMove = (e) => {
-              if (!grabbed) return;
-
-              const mouse = new THREE.Vector2(
-                (e.clientX / window.innerWidth) * 2 - 1,
-                -(e.clientY / window.innerHeight) * 2 + 1
-              );
-              raycaster.setFromCamera(mouse, camera);
-              const direction = new THREE.Vector3();
-              raycaster.ray.direction.normalize();
-              direction.copy(raycaster.ray.direction).multiplyScalar(2); // 2 units away
-              const targetPos = raycaster.ray.origin.clone().add(direction).sub(offset);
-
-              grabbed.object3D.position.copy(targetPos);
-            };
-
-            window.addEventListener('mousedown', onMouseDown);
-            window.addEventListener('mouseup', onMouseUp);
-            window.addEventListener('mousemove', onMouseMove);
-          }
-        });*/
 
         // -----------------------------------------------------------
         /*

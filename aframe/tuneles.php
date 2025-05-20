@@ -109,8 +109,6 @@
         <a-image position="0 -5 0" src="#shadow" rotation="-90 0 0" scale="6 6 6">
         </a-image>
 
-
-
         <!-- Cámara y controles -->
         <a-entity camera look-controls position="0 -3 0">
             <a-camera>

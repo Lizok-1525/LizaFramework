@@ -12,12 +12,17 @@ switch ($type) {
         <a-box position="0 0.5 -7" width="4" height="1.5" depth="0.2" src="https://i.imgur.com/mYmmbrp.jpg" ammo-body="type: static;" ammo-shape="type: box;"></a-box>
 
         <!-- Botón para añadir piezas-->
-        <a-box id="boton" position="0 0.2 -2" depth="0.2" height="0.2" width="1" color="#F00"
+        <a-box id="boton" position="0 0.2 -2.5" depth="0.2" height="0.2" width="1" color="#F00"
             class="spawn-rings clickable" shadow
             ammo-body="type: static;"
             ammo-shape="type: box;">
-        </a-box>  
-
+        </a-box> 
+        <a-box id="movingBox" material=" opacity: 0.7; transparent: true" position="0 0 -1" rotation="0 0 0" depth="1.8" height="2" width="2"
+        ammo-body="type: kinematic;" ammo-shape="type: box;"> </a-box>
+         <a-box id="craneArm" material=" opacity: 0.7; transparent: true" position="0 1.5 -2" rotation="-30 0 0" depth="0.6" height="1.5" width="0.7"
+          ammo-body="type: kinematic;" ammo-shape="type: box;" rotacion-crane>
+         
+        </a-box>
 
   ';
         break;
