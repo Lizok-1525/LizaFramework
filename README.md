@@ -74,6 +74,33 @@ Dado mi conocimiento en seguridad informática y bases de datos, he implementado
 
 - Gestión de sesiones segura para autenticación de usuarios.
 
+
+## Realidad Virtual y Electrónica
+
+Además del desarrollo web, también experimento con tecnologías emergentes como la realidad virtual y el control de hardware.
+
+### A-Frame
+
+He integrado proyectos desarrollados con A-Frame, un framework basado en WebXR para crear experiencias de realidad virtual directamente en el navegador.
+
+- Desarrollo de juegos y simulaciones 3D.
+
+- Soporte para modo VR nativo.
+
+- Integración con físicas usando ammo.js y componentes personalizados.
+
+- Implementación de interfaces interactivas como grúas, catapultas y escenarios dinámicos.
+
+### Arduino
+
+También he trabajado con placas Arduino para crear proyectos interactivos con sensores y actuadores.
+
+- Comunicación entre Arduino y el navegador a través de Web Serial o Node.js.
+
+- Proyectos de visualización en tiempo real de datos desde sensores.
+
+- Control de hardware físico desde entornos virtuales desarrollados en A-Frame.
+
 ## Objetivo
 
 Este proyecto no solo es una presentación profesional, sino también una demostración de mis habilidades en **desarrollo web y seguridad en bases de datos**.
