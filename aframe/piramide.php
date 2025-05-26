@@ -173,7 +173,6 @@
                     ['.aro', '.bloque', '.figura'].forEach(clase => {
                         document.querySelectorAll(clase).forEach(el => el.remove());
                     });
-                    document.querySelectorAll('#craneArm').forEach(el => el.remove());
 
                     $('#content').append(data);
                     document.querySelector('#puntos').setAttribute('value', `Puntos: 0`);
@@ -192,7 +191,8 @@
 
                             const torus = document.createElement('a-torus');
 
-                            const x = posiciones[i]; // -1 o 1
+                            const x = posiciones[Math.floor(Math.random() * posiciones.length)];
+
                             const z = -4; // misma z que el palo
                             const y = 1;
 
@@ -218,32 +218,61 @@
                             torus.setAttribute('shadow', '');
                             scene.appendChild(torus);
                             contador++;
-
+                            torus.addEventListener('body-loaded', () => {
+                                pegarDonutADraga();
+                                jumpDonut(torus);
+                            });
                         });
-                        $('#content').append(data);
 
 
+                        window.addEventListener('keydown', function(event) {
+                            if (event.key.toLowerCase() === 'v') {
+                                const el = document.querySelector('.donut');
+                                const craneArm = document.querySelector('#craneArm');
+                                const offset = new THREE.Vector3(0, 1, 0);
+                                const worldOffset = craneArm.object3D.localToWorld(offset);
+                                const newPos = {
+                                    x: worldOffset.x,
+                                    y: worldOffset.y,
+                                    z: worldOffset.z
+                                };
 
-                        //------------------------------------------------------------
 
-                        AFRAME.registerComponent('torus-cleanup', {
-                            tick: function() {
-                                // Revisa cada frame todos los torus
-                                document.querySelectorAll('a-torus').forEach(torus => {
-                                    const pos = torus.object3D.position;
-                                    if (pos.y < -5) {
-                                        // Quita el cuerpo físico de Ammo.js si existe
-                                        if (torus.hasAttribute('ammo-body')) {
-                                            torus.removeAttribute('ammo-body'); // Destruye el cuerpo físico
-                                        }
+                                // Mover visualmente
+                                el.setAttribute('position', newPos);
 
-                                        // Elimina el torus de la escena
-                                        torus.parentNode.removeChild(torus);
-                                        contador--;
+                                el.setAttribute('rotation', '90 0 0');
+
+
+                                // Si tiene física con Ammo.js
+                                if (el.body) {
+                                    el.body.setLinearVelocity(new Ammo.btVector3(0, 0, 0));
+                                    el.body.setAngularVelocity(new Ammo.btVector3(0, 0, 0));
+
+                                    const transform = new Ammo.btTransform();
+                                    transform.setIdentity();
+                                    transform.setOrigin(new Ammo.btVector3(newPos.x, newPos.y, newPos.z));
+
+                                    const euler = new THREE.Euler(THREE.MathUtils.degToRad(90), 0, 0);
+                                    const quat = new THREE.Quaternion().setFromEuler(euler);
+                                    transform.setRotation(new Ammo.btQuaternion(quat.x, quat.y, quat.z, quat.w));
+
+
+                                    el.body.setWorldTransform(transform);
+                                    el.body.getMotionState().setWorldTransform(transform);
+                                }
+                                setTimeout(() => {
+                                    const physicsComponent = el.components['ammo-body'];
+                                    if (physicsComponent) {
+                                        physicsComponent.body.activate();
                                     }
-                                });
+
+                                    pegarDonutADraga();
+                                    console.log('Donut unido al brazo');
+                                }, 50);
                             }
                         });
+
 
                     } else if (type === 'level_2') {
                         let contadorBloques = 0;
@@ -323,8 +352,57 @@
                     alert('No se pudo cargar el elemento');
                 }
             });
-            document.querySelector('a-scene').setAttribute('torus-cleanup', '');
+
         });
+
+
+        function pegarDonutADraga() {
+            const donut = document.querySelector('.donut');
+
+            if (!donut) return;
+
+            donut.setAttribute('ammo-constraint', 'type: lock; target: #craneArm; pivot: 0 0 0; axis: 0 1 0');
+        }
+
+
+        function soltar() {
+            document.querySelector('.donut').removeAttribute('ammo-constraint');
+        }
+
+        function jumpDonut(donut) {
+            window.addEventListener('keydown', function(event) {
+                if (event.code === 'Space') {
+                    if (donut.getAttribute('ammo-constraint')) {
+                        soltar();
+                        console.log('separado!!!!');
+                    }
+                    const el = donut;
+
+                    const physicsComponent = el.components['ammo-body'];
+                    const body = physicsComponent.body;
+
+                    body.activate();
+
+                    const craneArm = document.querySelector('#craneArm');
+                    const direction = new THREE.Vector3();
+                    craneArm.object3D.getWorldDirection(direction);
+                    direction.normalize();
+
+                    const forwardForce = -5;
+                    const upwardForce = 10;
+
+                    const impulse = new Ammo.btVector3(0, upwardForce, direction.z * forwardForce);
+                    const relPos = new Ammo.btVector3(0, 0, 0);
+                    body.applyImpulse(impulse, relPos);
+
+                    // Limpia memoria temporal
+                    Ammo.destroy(impulse);
+                    Ammo.destroy(relPos);
+                }
+            });
+        }
+
+
 
         AFRAME.registerComponent('rotacion-crane', {
             init: function() {
@@ -347,7 +425,7 @@
                     currentRotations.x -= this.rotationSpeed;
                     craneArm.setAttribute('rotation', currentRotations);
                 } else if (event.key.toUpperCase() === 'K') {
-                    currentRotations.y += this.rotationSpeed;
+                    currentRotations.y -= this.rotationSpeed;
                     craneArm.setAttribute('rotation', currentRotations);
                 } else if (event.key.toUpperCase() === 'Ñ') {
                     currentRotations.y += this.rotationSpeed;

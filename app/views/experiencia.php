@@ -6,7 +6,7 @@
       <ul>
         <li>
           <h3 class="fs-4">KFC – Pizza Hut, Ibiza</h3>
-          <p>Trabajaba en cocina, también como cajera y algunos días estaba como limpieza en restaurante. Tengo carta de recomendación </p>
+          <p>Trabajaba en cocina, también como cajera y algunos días estaba como limpieza en restaurante. Tengo carta de recomendación. </p>
         </li>
         <li>
           <h3 class="fs-4">KFC – Palma, Son Malferit</h3>
@@ -18,13 +18,18 @@
         </li>
         <li>
           <h3 class="fs-4">AMAR Ucraïna, Palma</h3>
-          <p>Estaba trabajando como traductor, en oficina estaba ayudando con documentos, en días de festivales, fiestas y conciertos estaba ayudando con preparación de celebración</p>
+          <p>Estaba trabajando como traductor, en oficina estaba ayudando con documentos, en días de festivales, fiestas y conciertos estaba ayudando con preparación de celebración.</p>
         </li>
         <li>
           <h3 class="fs-4">KFC – Inca </h3>
-          <p>Trabajaba como cajera y algunos días estaba como limpieza</p>
+          <p>Trabajaba como cajera y algunos días estaba como limpieza.</p>
+        </li>
+        <li>
+          <h3 class="fs-4">MA-NO WEB – Palma </h3>
+          <p>Estaba en esta empresa en las practicas, aprendi la programacion en php y muchas cosas mas.</p>
         </li>
       </ul>
+
     </div>
   </div>
 

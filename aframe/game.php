@@ -18,10 +18,10 @@ switch ($type) {
             ammo-shape="type: box;">
         </a-box> 
         <a-box id="movingBox" material=" opacity: 0.7; transparent: true" position="0 0 -1" rotation="0 0 0" depth="1.8" height="2" width="2"
-        ammo-body="type: kinematic;" ammo-shape="type: box;"> </a-box>
-         <a-box id="craneArm" material=" opacity: 0.7; transparent: true" position="0 1.5 -2" rotation="-30 0 0" depth="0.6" height="1.5" width="0.7"
+        ammo-body="type: kinematic;" ammo-shape="type: box;"> 
+         <a-box id="craneArm" material=" opacity: 0.7; transparent: true" position="0 1.5 -1" rotation="-30 0 0" depth="0.6" height="1.5" width="0.7"
           ammo-body="type: kinematic;" ammo-shape="type: box;" rotacion-crane>
-         
+         </a-box>
         </a-box>
 
   ';
