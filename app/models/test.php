@@ -6,8 +6,13 @@
         border: 1px solid #ccc;
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        background-color: #f9f9f9;
+        background-color: rgb(211, 211, 211);
     }
+
+    #btn {
+        margin-bottom: 3px;
+    }
+
 
     #display {
 

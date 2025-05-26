@@ -1,7 +1,4 @@
-body {
-  height: 100vh;
-}
-
+/* ========== GLOBAL ========== */
 html,
 body {
   height: 100%;
@@ -10,204 +7,16 @@ body {
   flex-direction: column;
 }
 
-.custom-bg-1 {
-  background-image: url('../images/avatar.webp');
-  /* Imagen de fondo */
-  background-position: center;
-  /* Centra la imagen */
-  background-repeat: no-repeat;
-  /* No repetir la imagen */
-  background-size: cover;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 250px;
+body {
+  height: 100vh;
 }
 
-
-.custom-bg-1::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  /* Capa semi-transparente */
-  pointer-events: none;
-  /* Hace que no bloquee el enlace */
+.content {
+  flex: 1;
+  /* Hace que el contenido principal ocupe el espacio disponible */
 }
 
-.custom-bg-1 a {
-  position: relative;
-  /* Para que esté encima de la capa */
-  color: white;
-  /* Color del enlace */
-  font-size: 24px;
-  text-decoration: none;
-}
-
-.custom-bg-2 {
-  background-image: url('../images/experiens.webp');
-  /* Imagen de fondo */
-  background-position: center;
-  /* Centra la imagen */
-  background-repeat: no-repeat;
-  /* No repetir la imagen */
-  background-size: cover;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 250px;
-}
-
-.custom-bg-2::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  /* Capa semi-transparente */
-  pointer-events: none;
-  /* Hace que no bloquee el enlace */
-}
-
-.custom-bg-2 a {
-  position: relative;
-  /* Para que esté encima de la capa */
-  color: white;
-  /* Color del enlace */
-  font-size: 24px;
-  text-decoration: none;
-}
-
-
-.custom-bg-3 {
-  background-image: url('../images/contact.webp');
-  /* Imagen de fondo */
-  background-position: center;
-  /* Centra la imagen */
-  background-repeat: no-repeat;
-  /* No repetir la imagen */
-  background-size: cover;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 250px;
-}
-
-.custom-bg-3::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  /* Capa semi-transparente */
-  pointer-events: none;
-  /* Hace que no bloquee el enlace */
-}
-
-.custom-bg-3 a {
-  position: relative;
-  /* Para que esté encima de la capa */
-  font-size: 24px;
-  text-decoration: none;
-}
-
-
-.custom-bg-4 {
-  background-image: url('../images/Inicio-min.webp');
-  /* Imagen de fondo */
-  background-position: center;
-  /* Centra la imagen */
-  background-repeat: no-repeat;
-  /* No repetir la imagen */
-  background-size: cover;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  ;
-  height: 100%;
-  min-height: 560px;
-
-}
-
-.custom-bg-4::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.3);
-  /* Capa semi-transparente */
-}
-
-.custom-bg-5 {
-  background-image: url('../images/sobre_mi-min.webp');
-  /* Imagen de fondo */
-  background-position: center;
-  /* Centra la imagen */
-  background-repeat: no-repeat;
-  /* No repetir la imagen */
-  background-size: cover;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  ;
-  height: 100%;
-  min-height: 540px;
-
-}
-
-.custom-bg-5::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.3);
-  /* Capa semi-transparente */
-}
-
-.custom-link {
-  color: white;
-  /* Color inicial */
-  text-decoration: none;
-  transition: color 0.5s ease-in-out;
-  /* Transición suave */
-}
-
-.custom-link:hover {
-  color: #48ff00;
-  /* Cambia el color al pasar el mouse */
-  transform: scale(1.1);
-}
-
-.logo {
-  max-width: 12rem;
-  height: 12rem;
-  display: block;
-  margin: 0 auto;
-  transition: all 0.3s ease-in-out;
-}
-
-.logo:hover {
-  transform: scale(1.1);
-}
-
+/* ========== TIPOGRAFÍA ========== */
 h1,
 h2,
 h3,
@@ -217,11 +26,22 @@ label {
   font-family: 'Times New Roman', Times, serif;
 }
 
-
 p {
   font-size: 13pt;
 }
 
+.intro p {
+  font-size: 18px;
+  color: #555;
+}
+
+.intro h2,
+h3 {
+  font-weight: 600;
+  color: #333;
+}
+
+/* ========== NAVBAR ========== */
 .navbar {
   justify-content: center;
 }
@@ -240,30 +60,39 @@ p {
   transform: scale(1.1);
 }
 
-.content {
-  flex: 1;
-  /* Hace que el contenido principal ocupe el espacio disponible */
+/* ========== ENLACES PERSONALIZADOS ========== */
+.custom-link {
+  color: white;
+  text-decoration: none;
+  transition: color 0.5s ease-in-out;
 }
 
+.custom-link:hover {
+  color: #48ff00;
+  transform: scale(1.1);
+}
+
+/* ========== LOGO ========== */
+.logo {
+  max-width: 12rem;
+  height: 12rem;
+  display: block;
+  margin: 0 auto;
+  transition: all 0.3s ease-in-out;
+}
+
+.logo:hover {
+  transform: scale(1.1);
+}
+
+/* ========== INTRO (Bloque con fondo claro) ========== */
 .intro {
   background: linear-gradient(to right, #f9f9f9, #ffffff);
   padding: 50px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.intro h2,
-h3 {
-  font-weight: 600;
-  color: #333;
-}
-
-
-
-.intro p {
-  font-size: 18px;
-  color: #555;
-}
-
+/* ========== FOOTER ========== */
 footer {
   text-align: center;
 }
@@ -271,4 +100,148 @@ footer {
 footer p {
   font-size: 14px;
   opacity: 0.8;
+}
+
+/* ========== SECCIONES CON FONDO IMAGEN Y CAPA OSCURA ========== */
+
+/* === Sección 1 === */
+.custom-bg-1 {
+  background-image: url('../images/avatar.webp');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 250px;
+}
+
+.custom-bg-1::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+}
+
+.custom-bg-1 a {
+  position: relative;
+  color: white;
+  font-size: 24px;
+  text-decoration: none;
+}
+
+/* === Sección 2 === */
+.custom-bg-2 {
+  background-image: url('../images/experiens.webp');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 250px;
+}
+
+.custom-bg-2::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+}
+
+.custom-bg-2 a {
+  position: relative;
+  color: white;
+  font-size: 24px;
+  text-decoration: none;
+}
+
+/* === Sección 3 === */
+.custom-bg-3 {
+  background-image: url('../images/contact.webp');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 250px;
+}
+
+.custom-bg-3::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+}
+
+.custom-bg-3 a {
+  position: relative;
+  font-size: 24px;
+  text-decoration: none;
+}
+
+/* === Sección 4 === */
+.custom-bg-4 {
+  background-image: url('../images/Inicio-min.webp');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  min-height: 560px;
+}
+
+.custom-bg-4::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* === Sección 5 === */
+.custom-bg-5 {
+  background-image: url('../images/sobre_mi-min.webp');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  min-height: 540px;
+}
+
+.custom-bg-5::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
 }
