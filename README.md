@@ -95,8 +95,6 @@ He integrado proyectos desarrollados con A-Frame, un framework basado en WebXR p
 
 También he trabajado con placas Arduino para crear proyectos interactivos con sensores y actuadores.
 
-- Comunicación entre Arduino y el navegador a través de Web Serial o Node.js.
-
 - Proyectos de visualización en tiempo real de datos desde sensores.
 
 - Control de hardware físico desde entornos virtuales desarrollados en A-Frame.
