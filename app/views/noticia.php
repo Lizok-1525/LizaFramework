@@ -13,4 +13,4 @@
         </div>
     </div>
 </div>
-<?php include(BASE_PATH . "/inc/navegacion.inc.php"); ?>
+<?php include(BASE_PATH . "/template/standard/navegacion.inc.php"); ?>

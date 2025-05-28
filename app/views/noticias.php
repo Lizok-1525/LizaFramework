@@ -43,5 +43,5 @@
     <div class="col-2">
     </div>
   </div> <!-- Cierra el div.row -->
-  <?php include(BASE_PATH . "/inc/navegacion.inc.php"); ?>
+  <?php include(BASE_PATH . "/template/standard/navegacion.inc.php"); ?>
 </div> <!-- Cierra el div.container -->

@@ -6,18 +6,18 @@
 # RewriteRule ^noticias noticias.php [L,QSA]
 
 
-RewriteEngine On
-RewriteBase /
+#RewriteEngine On
+#RewriteBase /
 
 # Evita que las solicitudes a archivos y directorios reales sean redirigidas
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
+#RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteCond %{REQUEST_FILENAME} !-d
 
 # Redirige todas las solicitudes a index.php
-RewriteRule ^(.*)$ index.php?route=$1 [QSA,L]
+#RewriteRule ^(.*)$ index.php?route=$1 [QSA,L]
 
 # Evitar el acceso directo a .htaccess
-<Files .htaccess>
-    Order Allow,Deny
-    Deny from all
-</Files>
+#<Files .htaccess>
+ #   Order Allow,Deny
+ #   Deny from all
+#</Files>
