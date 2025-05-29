@@ -1,14 +1,12 @@
 <?php
-//header("Access-Control-Allow-Origin: http://localhost"); // o solo 
-$contenido = file_get_contents("php://input");
-
-// Solo permitir "0" o "1"
-if ($contenido !== "1" && $contenido !== "0") {
-    http_response_code(400);
-    echo "Entrada no válida";
-    exit;
+if (isset($_GET['estado'])) {
+    $estado = $_GET['estado'];
+    if ($estado === "1" || $estado === "0") {
+        file_put_contents('orden.txt', $estado);
+        echo "OK";
+    } else {
+        echo "Valor inválido";
+    }
+} else {
+    echo "No se recibió estado";
 }
-
-// Escribir en orden.txt
-file_put_contents("orden.txt", $contenido);
-echo "OK";

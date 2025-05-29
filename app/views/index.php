@@ -16,6 +16,7 @@
 
         <p class="text-muted m-2 fst-italic">Haz clic en el botón y di "Alan" para activar la interfaz de voz y comenzar a interactuar con Alan.</p>
       </div>
+      <div id="div1"></div>
       <select class="form-select text-bg-secondary">
         <option selected>Opciones de comandos para Alan</option>
         <option value="1">abre YouTube</option>
@@ -123,32 +124,38 @@
         }
       },
       {
-        indexes: ["enciende luz", "enciende rapido la luz"],
+        indexes: ["enciende luz", "enciende la luz", "enciende rapido la luz"],
         action: function() {
           if (!escuchandoComandos) return;
           responder("Encendiendo la luz ahora.");
 
-          fetch("https://192.168.1.136/actualizar_orden.php", {
-            method: "POST",
-            headers: {
-              "Content-Type": "text/plain"
+          $.ajax({
+            url: "http://192.168.1.136/actualizar_orden.php?estado=1",
+            method: "GET",
+            success: function() {
+              console.log("Orden de encender enviada");
             },
-            body: "1"
+            error: function() {
+              console.log("Error al enviar orden");
+            }
           });
         }
       },
       {
-        indexes: ["apaga luz", "apaga rapido la luz"],
+        indexes: ["apaga luz", "apaga la luz", "apaga rapido la luz"],
         action: function() {
           if (!escuchandoComandos) return;
           responder("Luz apagada.");
 
-          fetch("https://liza.ma-no.es/actualizar_orden.php", {
-            method: "POST",
-            headers: {
-              "Content-Type": "text/plain"
+          $.ajax({
+            url: "http://192.168.1.136/actualizar_orden.php?estado=0",
+            method: "GET",
+            success: function() {
+              console.log("Orden de encender enviada");
             },
-            body: "0"
+            error: function() {
+              console.log("Error al enviar orden");
+            }
           });
         }
       },
