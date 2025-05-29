@@ -13,7 +13,18 @@
       ?>
       <div>
         <button class="btn btn-outline-secondary btn-lg" id="btn">Activar interfaz de voz</button>
+
+        <p class="text-muted m-2 fst-italic">Haz clic en el botón y di "Alan" para activar la interfaz de voz y comenzar a interactuar con Alan.</p>
       </div>
+      <select class="form-select text-bg-secondary">
+        <option selected>Opciones de comandos para Alan</option>
+        <option value="1">abre YouTube</option>
+        <option value="2">todo sobre Liza o Elizabeth</option>
+        <option value="3">contactar con Liza o Elizabeth</option>
+        <option value="4">repite lo que has dicho</option>
+        <option value="5">cuéntame un chiste</option>
+        <option value="6">noticias</option>
+      </select>
     </div>
   </div>
   <?php include(BASE_PATH . "/template/standard/navegacion.inc.php"); ?>
@@ -23,184 +34,192 @@
 
 <script>
   let ultimaFrase = "";
+  let artyom = null;
+  let escuchandoComandos = false;
+  let tiempoEscucha = 10000; // tiempo en ms que escucha después de decir "Alan"
 
   function cargarScript(url, callback) {
-    var script = document.createElement("script");
+    const script = document.createElement("script");
     script.type = "text/javascript";
     script.src = url;
-
-    // Agregar el evento load para ejecutar la función de callback
-    script.onload = function() {
-      callback();
-    };
-
+    script.onload = callback;
     document.head.appendChild(script);
   }
 
-  function miFuncion() {
-    console.log("El script externo ha sido cargado y esta función se ha ejecutado.");
-    speechSynthesis.getVoices().forEach(voice => console.log(voice.name, voice.lang));
-
+  function reiniciarArtyom() {
+    artyom.initialize({
+      lang: "es-ES",
+      continuous: true,
+      listen: true,
+      debug: true,
+      speed: 1
+    });
   }
 
-  // Esperar a que el DOM esté completamente cargado
-  document.addEventListener("DOMContentLoaded", function() {
-    // Cargar el script externo y ejecutar miFuncion después de que se haya cargado
-    cargarScript("https://cdn.jsdelivr.net/npm/artyom.js@1.0.6/build/artyom.window.min.js", miFuncion);
+  function activarEscuchaTemporal() {
+    escuchandoComandos = true;
+    console.log("✅ Modo escucha ACTIVADO");
+    setTimeout(() => {
+      escuchandoComandos = false;
+      console.log("❌ Modo escucha DESACTIVADO");
+    }, tiempoEscucha);
+  }
 
+  function responder(frase) {
+    artyom.fatality();
+    ultimaFrase = frase;
+    artyom.say(frase, {
+      onEnd: reiniciarArtyom
+    });
+  }
 
-  });
-
-  document.getElementById("btn").addEventListener("click", function() {
-    navigator.mediaDevices.getUserMedia({
-      audio: true
-    })
-    executeAtenea();
-  }, false);
-
-  function executeAtenea() {
-    var artyom = new Artyom();
-    artyom.say("Hola, soy Alan, tu asistente virtual. ¿En qué puedo ayudarte hoy?");
-    artyom.fatality(); // use this to stop any of
-    setTimeout(function() { // if you use artyom.fatality , wait 250 ms to initialize again.
-      artyom.initialize({
-        lang: "es-ES", // A lot of languages are supported. Read the docs !
-        continuous: true, // Artyom will listen forever
-        listen: true, // Start recognizing
-        debug: true, // Show everything in the console
-        speed: 1 // talk normally
-      }).then(() => {
-        // Aquí añadimos los comandos justo después de iniciar Artyom
-        artyom.addCommands([{
-            indexes: ["hola", "buenos días"],
-            action: function() {
-              artyom.fatality(); // parar la escucha antes de hablar
-              ultimaFrase = "¡Hola! ¿Cómo estás?";
-              artyom.say(ultimaFrase, {
-                onEnd: function() {
-                  // Volver a inicializar para escuchar de nuevo
-                  artyom.initialize({
-                    lang: "es-ES",
-                    continuous: true,
-                    listen: true,
-                    debug: true,
-                    speed: 1
-                  });
-                }
-              });
-            }
-          },
-          /* {
-             indexes: ["Привет", "_blank"],
-             action: function() {
-               artyom.fatality(); // parar la escucha antes de hablar
-               artyom.say("Привет, как ви?", {
-                 onEnd: function() {
-                   // Volver a inicializar para escuchar de nuevo
-                   artyom.initialize({
-                     lang: "es-ES",
-                     continuous: true,
-                     listen: true,
-                     debug: true,
-                     speed: 1
-                   });
-                 }
-               });
-             }
-           },*/
-          {
-            indexes: ["abre YouTube"],
-            action: function() {
-              window.open("https://www.youtube.com", "_blank");
-            }
-          },
-          {
-            indexes: ["todo sobre *"],
-            smart: true, // muy importante para que el wildcard funcione
-            action: function(i, wildcard) {
-              artyom.fatality();
-              ultimaFrase = `Aqui esta informacion sobre ${wildcard}`; // parar la escucha antes de hablar
-              artyom.say(ultimaFrase, {
-                onEnd: function() {
-                  // Volver a inicializar para escuchar de nuevo
-                  artyom.initialize({
-                    lang: "es-ES",
-                    continuous: true,
-                    listen: true,
-                    debug: true,
-                    speed: 1
-                  });
-                }
-              });
-              window.open("https://liza.ma-no.es/sobre_mi", "_blank");
-            }
-          },
-          {
-            indexes: ["cómo contactar con *",
-              "como puedo contactar con *",
-              "quiero contactar con *",
-              "necesito contactar con *", "contactar con *",
-            ],
-            smart: true, // muy importante para que el wildcard funcione
-            action: function(i, wildcard) {
-              artyom.fatality();
-              ultimaFrase = `Para contactar con ${wildcard}, puedes rellenar este formulario.`; // parar la escucha antes de hablar
-              artyom.say(ultimaFrase, {
-                onEnd: function() {
-                  // Volver a inicializar para escuchar de nuevo
-                  artyom.initialize({
-                    lang: "es-ES",
-                    continuous: true,
-                    listen: true,
-                    debug: true,
-                    speed: 1
-                  });
-                }
-              });
-              window.open("https://liza.ma-no.es/contacto", "_blank");
-            }
-          },
-          {
-            indexes: ["repite", "puedes repetir", "qué dijiste"],
-            action: function() {
-              if (ultimaFrase) {
-                artyom.say(ultimaFrase);
-              } else {
-                artyom.say("Todavía no he dicho nada.");
-              }
-            }
-          },
-          {
-            indexes: ["cuéntame un chiste"],
-            action: function() {
-              artyom.say("¿Por qué el café fue al médico? Porque se sentía expreso.");
-            }
-          },
-          {
-            indexes: ["noticias", "donde hay noticias en esta pagina"],
-            action: function() {
-              artyom.fatality();
-              ultimaFrase = `Las noticias de esta pagina`; // parar la escucha antes de hablar
-              artyom.say(ultimaFrase, {
-                onEnd: function() {
-                  // Volver a inicializar para escuchar de nuevo
-                  artyom.initialize({
-                    lang: "es-ES",
-                    continuous: true,
-                    listen: true,
-                    debug: true,
-                    speed: 1
-                  });
-                }
-              });
-              window.open("https://liza.ma-no.es/noticias", "_blank");
-            }
+  function agregarComandosBasicos() {
+    artyom.addCommands([{
+        indexes: ["alan", "ala", "oye alan", "hola alan"],
+        action: function() {
+          responder("Hola, dime.");
+          activarEscuchaTemporal();
+        }
+      },
+      {
+        indexes: ["repite", "puedes repetir", "qué dijiste"],
+        action: function() {
+          if (ultimaFrase) {
+            artyom.say(ultimaFrase);
+          } else {
+            artyom.say("Todavía no he dicho nada.");
           }
-        ]);
-      });
-    }, 3000);
-
-    console.log("%cAtenea started...", "font: 2em sans-serif; color: blue; background-color: white;");
-
+        }
+      }, {
+        indexes: ["bien", "muy bien", "super"],
+        action: function() {
+          responder("Me alegro. ¿En que puedo ayudarte?");
+        }
+      }
+    ]);
   }
+
+  function agregarComandosAvanzados() {
+    artyom.addCommands([{
+        indexes: ["hola", "buenos días"],
+        action: function() {
+          if (!escuchandoComandos) return;
+          responder("¡Hola! ¿Cómo estás?");
+        }
+      },
+      {
+        indexes: ["cómo te encuentras", "qué tal", "cómo estás", "como estas"],
+        action: function() {
+          if (!escuchandoComandos) return;
+          responder("Estoy muy bien, gracias por preguntar. ¿Y tú?");
+        }
+      },
+      {
+        indexes: ["abre YouTube"],
+        action: function() {
+          if (!escuchandoComandos) return;
+          responder("Abriendo YouTube");
+          window.open("https://www.youtube.com", "_blank");
+        }
+      },
+      {
+        indexes: ["enciende luz", "enciende rapido la luz"],
+        action: function() {
+          if (!escuchandoComandos) return;
+          responder("Encendiendo la luz ahora.");
+
+          fetch("https://192.168.1.136/actualizar_orden.php", {
+            method: "POST",
+            headers: {
+              "Content-Type": "text/plain"
+            },
+            body: "1"
+          });
+        }
+      },
+      {
+        indexes: ["apaga luz", "apaga rapido la luz"],
+        action: function() {
+          if (!escuchandoComandos) return;
+          responder("Luz apagada.");
+
+          fetch("https://liza.ma-no.es/actualizar_orden.php", {
+            method: "POST",
+            headers: {
+              "Content-Type": "text/plain"
+            },
+            body: "0"
+          });
+        }
+      },
+      {
+        indexes: ["cuéntame un chiste"],
+        action: function() {
+          if (!escuchandoComandos) return;
+          responder("¿Por qué el café fue al médico? Porque se sentía expreso.");
+        }
+      },
+      {
+        indexes: ["todo sobre *"],
+        smart: true,
+        action: function(i, wildcard) {
+          if (!escuchandoComandos) return;
+          responder(`Aquí está la información sobre ${wildcard}`);
+          window.open("https://liza.ma-no.es/sobre_mi", "_blank");
+        }
+      },
+      {
+        indexes: ["cómo contactar con *", "quiero contactar con *", "necesito contactar con *", "contactar con *"],
+        smart: true,
+        action: function(i, wildcard) {
+          if (!escuchandoComandos) return;
+          responder(`Para contactar con ${wildcard}, puedes rellenar este formulario.`);
+          window.open("https://liza.ma-no.es/contacto", "_blank");
+        }
+      }, {
+        indexes: ["alan acaba trabajo", "alan termina trabajo", "alan desconéctate"],
+        action: function() {
+          responder("Entendido. Cerrando sesión. Hasta pronto.");
+          artyom.fatality();
+          escuchandoComandos = false;
+        }
+      },
+      {
+        indexes: ["noticias", "dónde hay noticias en esta página"],
+        action: function() {
+          if (!escuchandoComandos) return;
+          responder("Las noticias están disponibles en la sección de noticias.");
+          window.open("https://liza.ma-no.es/noticias", "_blank");
+        }
+      }
+    ]);
+  }
+
+  function executeAlan() {
+    if (!artyom) artyom = new Artyom();
+    artyom.fatality();
+
+    setTimeout(() => {
+      reiniciarArtyom();
+      agregarComandosBasicos();
+      agregarComandosAvanzados();
+    }, 1000);
+
+    console.log("%cAlan esta listo. Di 'Alan' para activarlo.", "font: 1.5em sans-serif; color: green;");
+  }
+
+  // Espera a que cargue el DOM y el script externo
+  document.addEventListener("DOMContentLoaded", () => {
+    cargarScript("https://cdn.jsdelivr.net/npm/artyom.js@1.0.6/build/artyom.window.min.js", () => {
+      console.log("✅ Artyom.js cargado");
+      // Botón opcional para iniciar con permiso de micrófono
+      document.getElementById("btn").addEventListener("click", () => {
+        navigator.mediaDevices.getUserMedia({
+          audio: true
+        }).then(() => {
+          executeAlan();
+        });
+      });
+    });
+  });
 </script>
