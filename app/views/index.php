@@ -15,16 +15,17 @@
         <button class="btn m-2 btn-outline-secondary btn-lg" id="btn">Activar interfaz de voz</button>
 
         <p class="text-muted m-2 fst-italic">Haz clic en el botón y di "Alan" para activar la interfaz de voz y comenzar a interactuar con Alan.</p>
+
+        <select class="form-select text-bg-secondary">
+          <option selected>Opciones de comandos para Alan</option>
+          <option value="1">abre YouTube</option>
+          <option value="2">todo sobre Liza o Elizabeth</option>
+          <option value="3">contactar con Liza o Elizabeth</option>
+          <option value="4">repite lo que has dicho</option>
+          <option value="5">cuéntame un chiste</option>
+          <option value="6">noticias</option>
+        </select>
       </div>
-      <select class="form-select text-bg-secondary">
-        <option selected>Opciones de comandos para Alan</option>
-        <option value="1">abre YouTube</option>
-        <option value="2">todo sobre Liza o Elizabeth</option>
-        <option value="3">contactar con Liza o Elizabeth</option>
-        <option value="4">repite lo que has dicho</option>
-        <option value="5">cuéntame un chiste</option>
-        <option value="6">noticias</option>
-      </select>
     </div>
   </div>
   <?php include(BASE_PATH . "/template/standard/navegacion.inc.php"); ?>
