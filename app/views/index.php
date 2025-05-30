@@ -24,6 +24,8 @@
           <option value="4">repite lo que has dicho</option>
           <option value="5">cuéntame un chiste</option>
           <option value="6">noticias</option>
+          <option value="7">Busqueda en Google</option>
+          <option value="8">que clima hace</option>
         </select>
       </div>
     </div>
