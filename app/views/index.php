@@ -16,7 +16,7 @@
 
         <p class="m-2 fst-italic">Haz clic en el botón y di "Alan" para activar la interfaz de voz y comenzar a interactuar con Alan.</p>
 
-        <select class="form-select text-bg-secondary">
+        <select class="form-select text-bg-secondary w-80">
           <option selected>Opciones de comandos para Alan</option>
           <option value="1">abre YouTube</option>
           <option value="2">todo sobre Liza o Elizabeth</option>
