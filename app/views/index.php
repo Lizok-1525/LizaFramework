@@ -12,9 +12,9 @@
       <?php
       ?>
       <div class="p-2">
-        <button class="btn m-2 btn-outline-secondary btn-lg" id="btn">Activar interfaz de voz</button>
+        <button class="align-self-start btn m-2 btn-outline-secondary btn-lg" id="btn">Activar interfaz de voz</button>
 
-        <p class="text-muted m-2 fst-italic">Haz clic en el botón y di "Alan" para activar la interfaz de voz y comenzar a interactuar con Alan.</p>
+        <p class="text-start m-2 fst-italic">Haz clic en el botón y di "Alan" para activar la interfaz de voz y comenzar a interactuar con Alan.</p>
 
         <select class="form-select text-bg-secondary">
           <option selected>Opciones de comandos para Alan</option>
