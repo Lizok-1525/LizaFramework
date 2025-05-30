@@ -11,7 +11,7 @@
       <p>Además, cuento con conocimientos en programación web, lo que me permite crear y gestionar contenido digital de manera efectiva. Estoy emocionada por la oportunidad de contribuir al mundo del periodismo, informando y conectando a las personas con las historias que importan.</p>
       <?php
       ?>
-      <div>
+      <div class="p-2">
         <button class="btn m-2 btn-outline-secondary btn-lg" id="btn">Activar interfaz de voz</button>
 
         <p class="text-muted m-2 fst-italic">Haz clic en el botón y di "Alan" para activar la interfaz de voz y comenzar a interactuar con Alan.</p>
