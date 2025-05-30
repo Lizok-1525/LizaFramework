@@ -131,7 +131,7 @@ function agregarComandosAvanzados() {
             responder("¿Por qué el café fue al médico? Porque se sentía expreso.");
         }
     }, {
-        indexes: ["qué clima hace", "como está el clima", "qué clima hace", "cómo está el clima", "hace frío"],
+        indexes: ["qué clima hace", "como está el clima", "hace frío"],
         action: function () {
             if (!escuchandoComandos) return;
             responder("Consultando el clima...");
