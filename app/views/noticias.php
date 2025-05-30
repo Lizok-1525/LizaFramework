@@ -5,11 +5,7 @@
         <h2>Noticias Recientes</h2>
 
 
-
         <?php
-
-
-
         $result = $conn->query("SELECT * FROM noticias ORDER BY id DESC");
         if ($result->num_rows > 0) {
           while ($row = $result->fetch_assoc()) {
