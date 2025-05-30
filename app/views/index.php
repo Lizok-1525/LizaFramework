@@ -12,11 +12,10 @@
       <?php
       ?>
       <div>
-        <button class="btn btn-outline-secondary btn-lg" id="btn">Activar interfaz de voz</button>
+        <button class="btn m-2 btn-outline-secondary btn-lg" id="btn">Activar interfaz de voz</button>
 
         <p class="text-muted m-2 fst-italic">Haz clic en el botón y di "Alan" para activar la interfaz de voz y comenzar a interactuar con Alan.</p>
       </div>
-      <div id="div1"></div>
       <select class="form-select text-bg-secondary">
         <option selected>Opciones de comandos para Alan</option>
         <option value="1">abre YouTube</option>
