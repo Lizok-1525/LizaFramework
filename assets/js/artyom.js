@@ -130,6 +130,21 @@ function agregarComandosAvanzados() {
             if (!escuchandoComandos) return;
             responder("¿Por qué el café fue al médico? Porque se sentía expreso.");
         }
+    }, {
+        indexes: ["qué clima hace", "cómo está el clima", "hace frío"],
+        action: function () {
+            if (!escuchandoComandos) return;
+            responder("Consultando el clima...");
+            window.open("https://www.google.com/search?q=clima+actual", "_blank");
+        }
+    }, {
+        indexes: ["busca * en google", "quiero buscar *"],
+        smart: true,
+        action: function (i, termino) {
+            if (!escuchandoComandos) return;
+            responder(`Buscando ${termino} en Google.`);
+            window.open(`https://www.google.com/search?q=${encodeURIComponent(termino)}`, "_blank");
+        }
     },
     {
         indexes: ["todo sobre *"],
