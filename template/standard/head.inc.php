@@ -8,7 +8,7 @@
       </div>
       <div class="col-md-9 w-75">
 
-        <h1 class="text-center mt-3 w-75">Yelyzaveta Krasnolutska</h1>
+        <h1 class="text-center mt-3">Yelyzaveta Krasnolutska</h1>
 
         <nav class="navbar mt-2 ">
           <a href="../sobre_mi" class="nav-item m-1 p-2 custom-link btn btn-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-lines-fill" viewBox="0 0 16 16">
