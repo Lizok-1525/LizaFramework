@@ -9,7 +9,7 @@
         color: white;
         
     }*/
-    .active>.page-link,
+
     .page-link.active {
         background-color: #ff6600;
         /* Cambia este color al que quieras */
