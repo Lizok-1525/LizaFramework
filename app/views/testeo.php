@@ -1,15 +1,6 @@
 <?php //print_r($usuarios) 
 ?>
 <style>
-    /* .page-item.active .page-link {
-        background-color: #ff6600;
-      
-        border-color: #ff6600;
-     
-        color: white;
-        
-    }*/
-
     .page-link.active {
         background-color: #f7e8ba;
         /* Cambia este color al que quieras */
