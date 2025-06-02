@@ -9,88 +9,32 @@
     <script src="https://c-frame.github.io/aframe-physics-system/examples/components/force-pushable.js"></script>
     <script src="https://c-frame.github.io/aframe-physics-system/examples/components/grab.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 </head>
 
 <body>
-    <a-scene mouse-grab physics="driver: ammo; gravity: -9.8; debug: false" score-detector contador-bloques rotacion-crane>
+    <a-scene contador-bloques="" mouse-grab="" physics="driver: ammo; gravity: -9.8; debug: false" rotacion-crane="" score-detector="">
         <!-- Player -->
-        <a-entity camera look-controls wasd-controls position="0 1.6 0">
-            <a-entity id="mouseCursor"
-                cursor="rayOrigin: mouse"
-                raycaster="objects: .grabbable, .clickable"
-                material="color: red; shader: flat"
-                geometry="primitive: ring; radiusInner: 0.01; radiusOuter: 0.02">
+        <a-entity camera="" look-controls="" position="0 1.6 0" wasd-controls="">
+            <a-entity cursor="rayOrigin: mouse" geometry="primitive: ring; radiusInner: 0.01; radiusOuter: 0.02" id="mouseCursor" material="color: red; shader: flat" raycaster="objects: .grabbable, .clickable">
             </a-entity>
         </a-entity>
-
-
         <a-assets>
-            <a-torus id="torus-template"
-                radius="0.7"
-                radius-tubular="0.1"
-                segments-radial="8"
-                segments-tubular="12"
-                visible="false"
-                ammo-body="type: dynamic; disableDeactivation: false; linearDamping: 0.9; angularDamping: 0.9"
-                ammo-shape="type: hacd"
-                class="grabbable"
-                force-pushable
-                shadow></a-torus>
-            <a-box id="bloque-template"
-                width="0.5"
-                height="0.5"
-                depth="0.5"
-                visible="false"
-                ammo-body="type: dynamic; disableDeactivation: false; linearDamping: 0.1; angularDamping: 0.1"
-                ammo-shape="type: box"
-                class="grabbable bloque"
-                force-pushable
-                shadow></a-box>
+            <a-torus ammo-body="type: dynamic; disableDeactivation: false; linearDamping: 0.9; angularDamping: 0.9" ammo-shape="type: hacd" class="grabbable" force-pushable="" id="torus-template" radius="0.7" radius-tubular="0.1" segments-radial="8" segments-tubular="12" shadow="" visible="false"></a-torus>
+            <a-box ammo-body="type: dynamic; disableDeactivation: false; linearDamping: 0.1; angularDamping: 0.1" ammo-shape="type: box" class="grabbable bloque" depth="0.5" force-pushable="" height="0.5" id="bloque-template" shadow="" visible="false" width="0.5"></a-box>
         </a-assets>
-
-        <a-box class="load-level clickable" id="boton1" position="-2 0.2 -2" rotation="0 30 0" depth="1" width="2" height="1"
-            material="color: #FFF; opacity: 0.7; transparent: true" shadow
-            ammo-body="type: static;"
-            ammo-shape="type: box;"
-            data-type="level_1">
+        <a-box ammo-body="type: static;" ammo-shape="type: box;" class="load-level clickable" data-type="level_1" depth="1" height="1" id="boton1" material="color: #FFF; opacity: 0.7; transparent: true" position="-2 0.2 -2" rotation="0 30 0" shadow="" width="2">
         </a-box>
-
         <!-- Botón para subir el nivel-->
-        <a-box class="load-level clickable" id="boton2" position="-3 0.2 0" rotation="0 30 0" depth="1" width="2" height="1" visible="false"
-            material="color: #0FC; opacity: 0.7; transparent: true;" shadow
-            ammo-body="type: static;"
-            ammo-shape="type: box;"
-            data-type="level_2">
+        <a-box ammo-body="type: static;" ammo-shape="type: box;" class="load-level clickable" data-type="level_2" depth="1" height="1" id="boton2" material="color: #0FC; opacity: 0.7; transparent: true;" position="-3 0.2 0" rotation="0 30 0" shadow="" visible="false" width="2">
         </a-box>
-
-        <a-box class="load-level clickable" id="boton3" position="-3 0.2 1.5" rotation="0 30 0" depth="1" width="2" height="1" visible="false"
-            material="color: #0F0; opacity: 0.7; transparent: true;" shadow
-            ammo-body="type: static;"
-            ammo-shape="type: box;"
-            data-type="level_3">
+        <a-box ammo-body="type: static;" ammo-shape="type: box;" class="load-level clickable" data-type="level_3" depth="1" height="1" id="boton3" material="color: #0F0; opacity: 0.7; transparent: true;" position="-3 0.2 1.5" rotation="0 30 0" shadow="" visible="false" width="2">
         </a-box>
-
-        <a-text id="puntos" value="Para empezar el juego haz clic al botton gris" position="-1 2 -8" color="yellow" width="4"></a-text>
-
+        <a-text color="yellow" id="puntos" position="-1 2 -8" value="Para empezar el juego haz clic al botton gris" width="4"></a-text>
         <a-entity id="content" position="0 0 0"></a-entity>
-
-        <a-box
-            position="0 0 0"
-            width="200"
-            depth="200"
-            height="0.8"
-            color="transparent"
-            visible="false"
-
-            ammo-body="type: static"
-            ammo-shape="type: box">
+        <a-box ammo-body="type: static" ammo-shape="type: box" color="transparent" depth="200" height="0.8" position="0 0 0" visible="false" width="200">
         </a-box>
-
         <a-entity environment="preset: arches; ground: hills; shadow: true"></a-entity>
-
     </a-scene>
-
     <script>
         AFRAME.registerComponent('mouse-grab', {
             init: function() {
@@ -647,7 +591,6 @@
         */
         // -----------------------------------------------------------
     </script>
-
 </body>
 
 </html>
