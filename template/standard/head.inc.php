@@ -4,9 +4,9 @@
     <div class="row">
       <div class="col-md-3">
 
-        <a href="/"><img src="../assets/images/logo-min.webp" class="logo" alt="mi_logo"></a>
+        <a href="/"><img src="../assets/images/logo-min.webp" class="logo" width="12rem" height="auto" alt="mi_logo"></a>
       </div>
-      <div class="col-md-9 w-75">
+      <div class="col-md-9 ">
 
         <h1 class="text-center mt-3">Yelyzaveta Krasnolutska</h1>
 
