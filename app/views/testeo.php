@@ -1,7 +1,7 @@
 <?php //print_r($usuarios) 
 ?>
 <style>
-    .page-link.active {
+    .page-link.active .page-item {
         background-color: #f7e8ba;
         /* Cambia este color al que quieras */
         border-color: rgb(255, 237, 187);
