@@ -1,6 +1,23 @@
 <?php //print_r($usuarios) 
 ?>
-
+<style>
+    /* .page-item.active .page-link {
+        background-color: #ff6600;
+      
+        border-color: #ff6600;
+     
+        color: white;
+        
+    }*/
+    .active>.page-link,
+    .page-link.active {
+        background-color: #ff6600;
+        /* Cambia este color al que quieras */
+        border-color: #ff6600;
+        /* Opcional, para que el borde combine */
+        color: white;
+    }
+</style>
 <div class="row intro ">
     <h1> Testeo</h1>
     <?php if ($usuarios['content']) { ?>

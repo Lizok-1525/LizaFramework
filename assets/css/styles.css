@@ -46,14 +46,7 @@ h3 {
   justify-content: center;
 }
 
-.page-item.active .page-link {
-  background-color: #ff6600;
-  /* Cambia este color al que quieras */
-  border-color: #ff6600;
-  /* Opcional, para que el borde combine */
-  color: white;
-  /* Color del texto */
-}
+
 
 .nav-item {
   text-decoration: none;
