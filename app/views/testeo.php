@@ -11,7 +11,7 @@
     }*/
 
     .page-link.active {
-        background-color: rgb(243, 255, 190);
+        background-color: #f7e8ba;
         /* Cambia este color al que quieras */
         border-color: #ff6600;
         /* Opcional, para que el borde combine */
