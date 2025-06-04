@@ -16,7 +16,9 @@ const config = {
         update,
     },
 };
+
 const game = new Phaser.Game(config);
+
 let bee;
 let cursors;
 let mielGroup;
@@ -36,6 +38,8 @@ let restartButton;
 let backToMenuButton;
 let musicEnabled = false;
 let backgroundMusic;
+
+
 function preload() {
     this.load.image("bee", "https://lizok1525.files.show/bee-removebg-preview.png");
     this.load.image("miel", "https://lizok1525.files.show/miel-removebg-preview.png");
@@ -47,6 +51,8 @@ function preload() {
     this.load.image("soundon", "https://lizok1525.files.show/soundon.png");
     this.load.image("soundoff", "https://lizok1525.files.show/soundoff.png");
 }
+
+
 function create() {
     score = 0;
     gameStarted = false;
@@ -97,6 +103,8 @@ function create() {
         });
     })
 }
+
+
 function startGame() {
     // Cambiar estado del juego
     gameStarted = true;
@@ -155,6 +163,8 @@ function startGame() {
     this.physics.add.overlap(bee, mielGroup, collectMiel, null, this);
     this.physics.add.overlap(bee, spiderGroup, hitSpider, null, this);
 }
+
+
 function update() {
     if (!gameStarted || !bee || !bee.body) return;
     bee.setVelocityX(0);
@@ -164,6 +174,8 @@ function update() {
         bee.setVelocityX(200);
     }
 }
+
+
 function dropItem() {
     const x = Phaser.Math.Between(50, 350);
     const isMiel = Math.random() < 0.4;
@@ -175,11 +187,15 @@ function dropItem() {
         spider.setVelocityY(200);
     }
 }
+
+
 function collectMiel(bee, miel) {
     miel.destroy();
     score += 10;
     scoreText.setText("Puntos: " + score);
 }
+
+
 function hitSpider(bee, spider) {
     if (gameOver) return;
     gameOver = true;
@@ -201,6 +217,7 @@ function hitSpider(bee, spider) {
     localStorage.setItem("totalMiel", totalMiel);
     showEndScreen.call(this, "¡Has perdido!", "#ff0000");
 }
+
 
 function endGame() {
     if (gameOver) return;
