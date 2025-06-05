@@ -18,7 +18,7 @@
         <h2>Chat </h2>
         <div class="row mh-80" id="mensajes" style="padding-bottom: 80px;">
         </div>
-        <div class="input-group w-80  p-3 fixed-bottom">
+        <div class="input-group w-75  p-3 fixed-bottom">
 
             <input type="text" class="form-control" placeholder="Escribe tu mensaje..." name="mensaje" id="mensaje">
             <button id="enviar" class="btn btn-outline-secondary" type="submit" class="btn btn-outline-secondary">Enviar</button>
