@@ -1,40 +1,12 @@
 <head>
   <meta charset="utf-8">
-  <title>NAF con Firebase</title>
+  <title>Test con aframe</title>
   <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
   <script src="https://unpkg.com/aframe-environment-component@1.5.0/dist/aframe-environment-component.min.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/MozillaReality/ammo.js@8bbc0ea/builds/ammo.wasm.js"></script>
   <script src="https://c-frame.github.io/aframe-physics-system/dist/aframe-physics-system.js"></script>
   <script src="https://c-frame.github.io/aframe-physics-system/examples/components/force-pushable.js"></script>
   <script src="https://c-frame.github.io/aframe-physics-system/examples/components/grab.js"></script>
-  <script src="https://unpkg.com/networked-aframe@0.8.0/dist/networked-aframe.min.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyBJ-N2uReWcU07zx7Fla61qCHyQElIuMB4",
-      authDomain: "naf-firebase.firebaseapp.com",
-      databaseURL: "https://naf-firebase-default-rtdb.asia-southeast1.firebasedatabase.app",
-      projectId: "naf-firebase",
-      storageBucket: "naf-firebase.firebasestorage.app",
-      messagingSenderId: "303321259755",
-      appId: "1:303321259755:web:2c41c5700a087421dee8ae",
-      measurementId: "G-61P6R8Q44Y"
-    };
-    firebase.initializeApp(firebaseConfig);
-    firebase.analytics();
-  </script>
-
-  <!-- Luego, cargar el adaptador de Firebase para networked-aframe -->
-  <script src="https://unpkg.com/networked-aframe/dist/adapters/firebase-adapter.js"></script>
-  <script>
-    // Aquí, FirebaseAdapter ya está definido
-    NAF.adapters.register('firebase', firebaseConfig);
-  </script>
-
-  <!-- Finalmente, cargar networked-aframe -->
-  <script src="https://unpkg.com/networked-aframe@0.8.0/dist/networked-aframe.min.js"></script>
 
 
 </head>
@@ -327,39 +299,6 @@
         });
       }
     });
-    /* AFRAME.registerComponent('spawn-on-click', {
-      init: function() {
-        this.el.addEventListener('click', () => {
-          const scene = document.querySelector('a-scene');
-
-          const craneArm = document.querySelector('#craneArm');
-          const offset = new THREE.Vector3(0, 1, 0);
-          const worldOffset = craneArm.object3D.localToWorld(offset);
-          const newPos = {
-            x: worldOffset.x,
-            y: worldOffset.y,
-            z: worldOffset.z
-          };
-
-          if (!document.querySelector('.donut')) {
-            const donut = document.createElement('a-torus');
-            donut.setAttribute('networked', 'template:#donut-template');
-            donut.setAttribute('class', 'donut grabbable aro');
-            donut.setAttribute('position', newPos);
-            donut.setAttribute('material', 'color: #' + Math.floor(Math.random() * 16777215).toString(16));
-            donut.setAttribute('rotation', '90 0 0');
-            // No necesitas configurar física manual aquí, ya está en la plantilla
-            scene.appendChild(donut);
-
-
-
-            pegarDonutADraga();
-            jumpDonut(donut);
-          }
-        });
-      }
-    });
-  */
   </script>
 
 </body>

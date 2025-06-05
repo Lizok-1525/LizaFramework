@@ -154,7 +154,6 @@
                             torus.setAttribute('radius-tubular', 0.05);
                             torus.setAttribute('segments-radial', 8);
                             torus.setAttribute('segments-tubular', 12);
-
                             torus.setAttribute('color', '#' + Math.floor(Math.random() * 16777215).toString(16));
                             torus.setAttribute('class', 'donut grabbable aro');
                             torus.setAttribute('ammo-body', 'type: dynamic; disableDeactivation: false; linearDamping: 0.1; angularDamping: 0.1; ');
@@ -425,6 +424,9 @@
                     ) {
                         el.setAttribute('scored', true);
                         this.score++;
+                        el.classList.remove('donut');
+                        console.log("eliminado el clas donut")
+
                         document.querySelector('#puntos').setAttribute('value', `Puntos: ${this.score}`);
                     }
                 });
@@ -504,24 +506,6 @@
                 }
             }
         });
-
-
-        /*      window.addEventListener('load', () => {
-             const donut = document.querySelector('.donut');
-
-             // Establecer la posición del donut
-             donut.setAttribute('position', {
-               x: 0,
-               y: 2.4,
-               z: -2.3
-             });
-
-             pegarDonutADraga(); // ahora sí, seguro
-
-             jumpDonut(donut); // Llama a la función de salto aquí
-
-           });*/
-
 
         // -----------------------------------------------------------
         /*
