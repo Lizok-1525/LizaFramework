@@ -103,4 +103,3 @@ También he trabajado con placas Arduino para crear proyectos interactivos con s
 
 Este proyecto no solo es una presentación profesional, sino también una demostración de mis habilidades en **desarrollo web y seguridad en bases de datos**.
 
-*Para más información, puedes visitar la página directamente*: liza.ma-no.es
